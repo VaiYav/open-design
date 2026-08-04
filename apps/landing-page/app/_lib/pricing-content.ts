@@ -125,7 +125,7 @@ export interface PricingModel {
 
 export const PREMIUM_MODELS: readonly PricingModel[] = [
   { name: 'Claude-Fable-5' },
-  { name: 'GPT-5.6 (Sol/Terra/Luna)' },
+  { name: 'GPT-5.6 Sol/Terra/Luna' },
   { name: 'Grok-4.5', trial: true },
 ] as const;
 
