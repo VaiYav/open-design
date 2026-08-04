@@ -101,11 +101,14 @@ function teamView(tier: TeamPlanTierConfig, interval: 'monthly' | 'yearly') {
     (1 - introSeatMonth / regularSeatMonth) * 100,
   );
   const intervalTotal = teamIntroTotalUsd(tier, interval, initialTeamSeats);
+  const intervalSavings =
+    (selected.priceUsd - selected.introPriceUsd) * initialTeamSeats;
   return {
     amount: usd(introSeatMonth),
     strike: usd(regularSeatMonth),
     discountPct,
     intervalTotal: usd(intervalTotal),
+    intervalSavings: usd(intervalSavings),
   };
 }
 
@@ -472,6 +475,7 @@ const jsonLd = [
           <p class="pr-team-yearly-summary" data-team-summary>
             {fillTemplate(teamContent.yearlyTotal, {
               amount: initialTeamView.intervalTotal,
+              savings: initialTeamView.intervalSavings,
             })}
           </p>
 
@@ -819,9 +823,12 @@ const jsonLd = [
         const listSeatMonth = tier.monthly.priceUsd;
         const discountPct = Math.round((1 - introSeatMonth / listSeatMonth) * 100);
         const intervalTotal = selected.introPriceUsd * teamSeats;
+        const intervalSavings =
+          (selected.priceUsd - selected.introPriceUsd) * teamSeats;
         const amount = '$' + introSeatMonth.toLocaleString('en-US');
         const strike = '$' + listSeatMonth.toLocaleString('en-US');
         const total = '$' + intervalTotal.toLocaleString('en-US');
+        const savings = '$' + intervalSavings.toLocaleString('en-US');
         const introTotalTemplate =
           interval === 'yearly' ? teamCopy.yearlyTotal : teamCopy.monthlyTotal;
 
@@ -838,7 +845,7 @@ const jsonLd = [
         set(
           '[data-audience-panel="team"]',
           '[data-team-summary]',
-          fillTeam(introTotalTemplate, { amount: total }),
+          fillTeam(introTotalTemplate, { amount: total, savings }),
         );
         if (teamSeatsLabel) {
           teamSeatsLabel.textContent = fillTeam(teamCopy.seats, {
