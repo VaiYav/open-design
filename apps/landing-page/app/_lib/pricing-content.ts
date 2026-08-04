@@ -121,27 +121,28 @@ const FREE_TAGLINE_TRIAL_OFF: Partial<Record<LandingLocaleCode, string>> = {
 // also opens up; the Free card sorts those first and greys out the rest.
 export interface PricingModel {
   name: string;
+  icon: string;
   trial?: boolean;
 }
 
 export const PREMIUM_MODELS: readonly PricingModel[] = [
-  { name: 'Claude-Fable-5' },
-  { name: 'GPT-5.6 Sol/Terra/Luna' },
-  { name: 'Grok-4.5', trial: true },
+  { name: 'Claude-Fable-5', icon: '/agents/anthropic.svg' },
+  { name: 'GPT-5.6 Sol/Terra/Luna', icon: '/agents/openai.svg' },
+  { name: 'Grok-4.5', icon: '/agents/xai.svg', trial: true },
 ] as const;
 
 /** Product-review media catalogue mirrored from open-design#6389.
  * Variant suffixes are grouped so one model family reads as one benefit. */
 export const IMAGE_MODELS = [
-  'Seedream 5 Lite / Pro',
-  'Nano Banana 2',
-  'GPT Image 2',
+  { name: 'Seedream 5 Lite / Pro', icon: '/model-icons/bytedance.svg' },
+  { name: 'Nano Banana 2', icon: '/agents/gemini.svg' },
+  { name: 'GPT Image 2', icon: '/agents/openai.svg' },
 ] as const;
 
 export const VIDEO_MODELS = [
-  'Seedance 2.5',
-  'MiniMax H3',
-  'Kling 3.0 Standard / Pro / Turbo / 4K',
+  { name: 'Seedance 2.5', icon: '/model-icons/bytedance.svg' },
+  { name: 'MiniMax H3', icon: '/agents/minimax.svg' },
+  { name: 'Kling 3.0 Standard / Pro / Turbo / 4K', icon: '/model-icons/kling.svg' },
 ] as const;
 
 /**

@@ -317,7 +317,12 @@ const jsonLd = [
             <p class="pr-models-head">{L.topTextModels}</p>
             <ul class="pr-model-list">
               {FREE_PREMIUM_MODELS.map((m) => (
-                <li class={m.trial ? undefined : 'is-unavailable'}>{m.name}</li>
+                <li class={m.trial ? undefined : 'is-unavailable'}>
+                  <span class="pr-model-logo" aria-hidden="true">
+                    <img src={m.icon} alt="" width="14" height="14" loading="lazy" decoding="async" />
+                  </span>
+                  <span>{m.name}</span>
+                </li>
               ))}
             </ul>
           </div>
@@ -406,15 +411,36 @@ const jsonLd = [
             <div class="pr-models">
               <p class="pr-models-head">{L.topTextModels}</p>
               <ul class="pr-model-list">
-                {PREMIUM_MODELS.map((m) => <li>{m.name}</li>)}
+                {PREMIUM_MODELS.map((m) => (
+                  <li>
+                    <span class="pr-model-logo" aria-hidden="true">
+                      <img src={m.icon} alt="" width="14" height="14" loading="lazy" decoding="async" />
+                    </span>
+                    <span>{m.name}</span>
+                  </li>
+                ))}
               </ul>
               <p class="pr-models-head">{L.topImageModels}</p>
               <ul class="pr-model-list">
-                {IMAGE_MODELS.map((m) => <li>{m}</li>)}
+                {IMAGE_MODELS.map((m) => (
+                  <li>
+                    <span class="pr-model-logo" aria-hidden="true">
+                      <img src={m.icon} alt="" width="14" height="14" loading="lazy" decoding="async" />
+                    </span>
+                    <span>{m.name}</span>
+                  </li>
+                ))}
               </ul>
               <p class="pr-models-head">{L.topVideoModels}</p>
               <ul class="pr-model-list">
-                {VIDEO_MODELS.map((m) => <li>{m}</li>)}
+                {VIDEO_MODELS.map((m) => (
+                  <li>
+                    <span class="pr-model-logo" aria-hidden="true">
+                      <img src={m.icon} alt="" width="14" height="14" loading="lazy" decoding="async" />
+                    </span>
+                    <span>{m.name}</span>
+                  </li>
+                ))}
               </ul>
             </div>
           </article>
@@ -1303,25 +1329,34 @@ const jsonLd = [
   .pr-models-head:first-child { margin-top: 0; }
   .pr-model-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
   .pr-model-list li {
-    position: relative;
-    padding-left: 22px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-width: 0;
     font-size: 0.85rem;
+    line-height: 1.35;
     color: var(--ink, #2a2a2a);
   }
-  .pr-model-list li::before {
-    content: '✓';
-    position: absolute;
-    left: 0;
-    top: 0;
-    font-weight: 700;
-    color: var(--olive, #218c00);
+  .pr-model-logo {
+    display: inline-grid;
+    place-items: center;
+    flex: 0 0 20px;
+    width: 20px;
+    height: 20px;
+    border: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+    border-radius: 6px;
+    color: currentColor;
+    background: color-mix(in srgb, currentColor 3%, transparent);
   }
-  /* Models outside the Free trial pool render greyed-out with an ✕ mark. */
+  .pr-model-logo img {
+    display: block;
+    width: 13px;
+    height: 13px;
+    color: inherit;
+  }
+  /* Models outside the Free trial pool render greyed-out. */
   .pr-model-list li.is-unavailable { color: var(--ink-soft, #aaa); }
-  .pr-model-list li.is-unavailable::before {
-    content: '✕';
-    color: var(--ink-soft, #bbb);
-  }
+  .pr-model-list li.is-unavailable .pr-model-logo { opacity: 0.55; }
 
   /* ---- Shared hosted multimodal benefit ---- */
   .pr-multimodal {
