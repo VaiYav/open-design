@@ -142,7 +142,7 @@ export const IMAGE_MODELS = [
 export const VIDEO_MODELS = [
   { name: 'Seedance 2.5', icon: '/model-icons/bytedance.svg' },
   { name: 'MiniMax H3', icon: '/agents/minimax.svg' },
-  { name: 'Kling 3.0 Standard / Pro / Turbo / 4K', icon: '/model-icons/kling.svg' },
+  { name: 'Kling 3.0 Standard / Pro / Turbo', icon: '/model-icons/kling.svg' },
 ] as const;
 
 /**
