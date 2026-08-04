@@ -198,7 +198,7 @@ const EN: PricingContent = {
     tagline: 'Limited-time free trial; configure your own agent or BYOK afterwards',
     ctaLabel: 'Start free',
     concurrency: '1 concurrent task',
-    features: ['BYOK provider keys', 'Community support'],
+    features: ['BYOK provider keys · Local coding agents', 'Community support'],
   },
   plans: {
     plus: {
@@ -206,11 +206,9 @@ const EN: PricingContent = {
       ctaLabel: 'Upgrade to Plus',
       concurrency: '2 concurrent tasks',
       features: [
-        'BYOK provider keys',
         'Zero-config professional design agent',
         '{skillsCount}+ Skills workflows',
         '{systemsCount}+ Design Systems',
-        '20+ flagship model credits',
         'Email support',
       ],
     },
@@ -219,11 +217,9 @@ const EN: PricingContent = {
       ctaLabel: 'Upgrade to Pro',
       concurrency: '5 concurrent tasks',
       features: [
-        'BYOK provider keys',
         'Zero-config professional design agent',
         '{skillsCount}+ Skills workflows',
         '{systemsCount}+ Design Systems',
-        '20+ flagship model credits',
         'Priority email support',
       ],
     },
@@ -232,11 +228,9 @@ const EN: PricingContent = {
       ctaLabel: 'Upgrade to Max',
       concurrency: '10 concurrent tasks',
       features: [
-        'BYOK provider keys',
         'Zero-config professional design agent',
         '{skillsCount}+ Skills workflows',
         '{systemsCount}+ Design Systems',
-        '20+ flagship model credits',
         'Peak-time priority compute · lower latency',
         'Dedicated customer success',
       ],
@@ -277,7 +271,7 @@ const ZH_CN: PricingContent = {
     tagline: '限时免费体验，结束后需配置 Agent 或 BYOK',
     ctaLabel: '免费开始',
     concurrency: '1 个任务并发',
-    features: ['BYOK 自带密钥', '社区支持'],
+    features: ['BYOK 自带密钥，支持本地 Coding Agent', '社区支持'],
   },
   plans: {
     plus: {
@@ -285,11 +279,9 @@ const ZH_CN: PricingContent = {
       ctaLabel: '升级 Plus',
       concurrency: '2 个任务并发',
       features: [
-        'BYOK 自带密钥',
         '零配置专业设计 Agent',
         '{skillsCount}+ Skills 工作流',
         '{systemsCount}+ Design Systems',
-        '20+ 旗舰模型额度',
         '邮件支持',
       ],
     },
@@ -298,11 +290,9 @@ const ZH_CN: PricingContent = {
       ctaLabel: '升级 Pro',
       concurrency: '5 个任务并发',
       features: [
-        'BYOK 自带密钥',
         '零配置专业设计 Agent',
         '{skillsCount}+ Skills 工作流',
         '{systemsCount}+ Design Systems',
-        '20+ 旗舰模型额度',
         '优先邮件支持',
       ],
     },
@@ -311,11 +301,9 @@ const ZH_CN: PricingContent = {
       ctaLabel: '升级 Max',
       concurrency: '10 个任务并发',
       features: [
-        'BYOK 自带密钥',
         '零配置专业设计 Agent',
         '{skillsCount}+ Skills 工作流',
         '{systemsCount}+ Design Systems',
-        '20+ 旗舰模型额度',
         '高峰优先算力 · 更低时延',
         '专属客户成功',
       ],
@@ -356,7 +344,7 @@ const ZH_TW: PricingContent = {
     tagline: '限時免費體驗，結束後需配置 Agent 或 BYOK',
     ctaLabel: '免費開始',
     concurrency: '1 個任務並行',
-    features: ['BYOK 自帶密鑰', '社群支援'],
+    features: ['BYOK 自帶密鑰，支援本機 Coding Agent', '社群支援'],
   },
   plans: {
     plus: {
@@ -364,11 +352,9 @@ const ZH_TW: PricingContent = {
       ctaLabel: '升級 Plus',
       concurrency: '2 個任務並行',
       features: [
-        'BYOK 自帶密鑰',
         '零配置專業設計 Agent',
         '{skillsCount}+ Skills 工作流',
         '{systemsCount}+ Design Systems',
-        '20+ 旗艦模型額度',
         '郵件支援',
       ],
     },
@@ -377,11 +363,9 @@ const ZH_TW: PricingContent = {
       ctaLabel: '升級 Pro',
       concurrency: '5 個任務並行',
       features: [
-        'BYOK 自帶密鑰',
         '零配置專業設計 Agent',
         '{skillsCount}+ Skills 工作流',
         '{systemsCount}+ Design Systems',
-        '20+ 旗艦模型額度',
         '優先郵件支援',
       ],
     },
@@ -390,11 +374,9 @@ const ZH_TW: PricingContent = {
       ctaLabel: '升級 Max',
       concurrency: '10 個任務並行',
       features: [
-        'BYOK 自帶密鑰',
         '零配置專業設計 Agent',
         '{skillsCount}+ Skills 工作流',
         '{systemsCount}+ Design Systems',
-        '20+ 旗艦模型額度',
         '高峰優先算力 · 更低時延',
         '專屬客戶成功',
       ],
@@ -435,7 +417,7 @@ const ES: PricingContent = {
     tagline: 'Prueba gratis por tiempo limitado; después configura tu agent o usa BYOK',
     ctaLabel: 'Empezar gratis',
     concurrency: '1 tarea simultánea',
-    features: ['Claves BYOK de proveedores', 'Soporte de la comunidad'],
+    features: ['Claves BYOK · Coding agents locales', 'Soporte de la comunidad'],
   },
   plans: {
     plus: {
@@ -443,11 +425,9 @@ const ES: PricingContent = {
       ctaLabel: 'Subir a Plus',
       concurrency: '2 tareas simultáneas',
       features: [
-        'Claves BYOK de proveedores',
         'Agent de diseño profesional sin configuración',
         '{skillsCount}+ flujos de Skills',
         '{systemsCount}+ Design Systems',
-        'Créditos para más de 20 modelos punteros',
         'Soporte por email',
       ],
     },
@@ -456,11 +436,9 @@ const ES: PricingContent = {
       ctaLabel: 'Subir a Pro',
       concurrency: '5 tareas simultáneas',
       features: [
-        'Claves BYOK de proveedores',
         'Agent de diseño profesional sin configuración',
         '{skillsCount}+ flujos de Skills',
         '{systemsCount}+ Design Systems',
-        'Créditos para más de 20 modelos punteros',
         'Soporte prioritario por email',
       ],
     },
@@ -469,11 +447,9 @@ const ES: PricingContent = {
       ctaLabel: 'Subir a Max',
       concurrency: '10 tareas simultáneas',
       features: [
-        'Claves BYOK de proveedores',
         'Agent de diseño profesional sin configuración',
         '{skillsCount}+ flujos de Skills',
         '{systemsCount}+ Design Systems',
-        'Créditos para más de 20 modelos punteros',
         'Cómputo prioritario en horas pico · menor latencia',
         'Customer success dedicado',
       ],
@@ -514,7 +490,7 @@ const PT_BR: PricingContent = {
     tagline: 'Teste grátis por tempo limitado; depois configure seu agent ou use BYOK',
     ctaLabel: 'Começar grátis',
     concurrency: '1 tarefa simultânea',
-    features: ['Chaves BYOK de provedores', 'Suporte da comunidade'],
+    features: ['Chaves BYOK · Coding agents locais', 'Suporte da comunidade'],
   },
   plans: {
     plus: {
@@ -522,11 +498,9 @@ const PT_BR: PricingContent = {
       ctaLabel: 'Atualizar para Plus',
       concurrency: '2 tarefas simultâneas',
       features: [
-        'Chaves BYOK de provedores',
         'Agent de design profissional sem configuração',
         '{skillsCount}+ fluxos de Skills',
         '{systemsCount}+ Design Systems',
-        'Créditos para 20+ modelos de ponta',
         'Suporte por email',
       ],
     },
@@ -535,11 +509,9 @@ const PT_BR: PricingContent = {
       ctaLabel: 'Atualizar para Pro',
       concurrency: '5 tarefas simultâneas',
       features: [
-        'Chaves BYOK de provedores',
         'Agent de design profissional sem configuração',
         '{skillsCount}+ fluxos de Skills',
         '{systemsCount}+ Design Systems',
-        'Créditos para 20+ modelos de ponta',
         'Suporte prioritário por email',
       ],
     },
@@ -548,11 +520,9 @@ const PT_BR: PricingContent = {
       ctaLabel: 'Atualizar para Max',
       concurrency: '10 tarefas simultâneas',
       features: [
-        'Chaves BYOK de provedores',
         'Agent de design profissional sem configuração',
         '{skillsCount}+ fluxos de Skills',
         '{systemsCount}+ Design Systems',
-        'Créditos para 20+ modelos de ponta',
         'Computação prioritária em horários de pico · menor latência',
         'Customer success dedicado',
       ],
@@ -593,7 +563,7 @@ const RU: PricingContent = {
     tagline: 'Бесплатный пробный период; затем настройте агента или BYOK',
     ctaLabel: 'Начать бесплатно',
     concurrency: '1 одновременная задача',
-    features: ['Ключи провайдеров BYOK', 'Поддержка сообщества'],
+    features: ['Ключи BYOK · локальные coding-агенты', 'Поддержка сообщества'],
   },
   plans: {
     plus: {
@@ -601,11 +571,9 @@ const RU: PricingContent = {
       ctaLabel: 'Перейти на Plus',
       concurrency: '2 одновременные задачи',
       features: [
-        'Ключи провайдеров BYOK',
         'Профессиональный design agent без настройки',
         '{skillsCount}+ рабочих процессов Skills',
         '{systemsCount}+ Design Systems',
-        'Кредиты для 20+ флагманских моделей',
         'Поддержка по email',
       ],
     },
@@ -614,11 +582,9 @@ const RU: PricingContent = {
       ctaLabel: 'Перейти на Pro',
       concurrency: '5 одновременных задач',
       features: [
-        'Ключи провайдеров BYOK',
         'Профессиональный design agent без настройки',
         '{skillsCount}+ рабочих процессов Skills',
         '{systemsCount}+ Design Systems',
-        'Кредиты для 20+ флагманских моделей',
         'Приоритетная поддержка по email',
       ],
     },
@@ -627,11 +593,9 @@ const RU: PricingContent = {
       ctaLabel: 'Перейти на Max',
       concurrency: '10 одновременных задач',
       features: [
-        'Ключи провайдеров BYOK',
         'Профессиональный design agent без настройки',
         '{skillsCount}+ рабочих процессов Skills',
         '{systemsCount}+ Design Systems',
-        'Кредиты для 20+ флагманских моделей',
         'Приоритетные вычисления в пик · меньше задержек',
         'Выделенный customer success',
       ],
@@ -672,7 +636,7 @@ const FR: PricingContent = {
     tagline: 'Essai gratuit à durée limitée ; ensuite configurez votre agent ou BYOK',
     ctaLabel: 'Commencer gratuitement',
     concurrency: '1 tâche simultanée',
-    features: ['Clés fournisseur BYOK', 'Support communautaire'],
+    features: ['Clés BYOK · agents de code locaux', 'Support communautaire'],
   },
   plans: {
     plus: {
@@ -680,11 +644,9 @@ const FR: PricingContent = {
       ctaLabel: 'Passer à Plus',
       concurrency: '2 tâches simultanées',
       features: [
-        'Clés fournisseur BYOK',
         'Agent de design professionnel sans configuration',
         '{skillsCount}+ workflows Skills',
         '{systemsCount}+ Design Systems',
-        'Crédits pour 20+ modèles phares',
         'Support par email',
       ],
     },
@@ -693,11 +655,9 @@ const FR: PricingContent = {
       ctaLabel: 'Passer à Pro',
       concurrency: '5 tâches simultanées',
       features: [
-        'Clés fournisseur BYOK',
         'Agent de design professionnel sans configuration',
         '{skillsCount}+ workflows Skills',
         '{systemsCount}+ Design Systems',
-        'Crédits pour 20+ modèles phares',
         'Support email prioritaire',
       ],
     },
@@ -706,11 +666,9 @@ const FR: PricingContent = {
       ctaLabel: 'Passer à Max',
       concurrency: '10 tâches simultanées',
       features: [
-        'Clés fournisseur BYOK',
         'Agent de design professionnel sans configuration',
         '{skillsCount}+ workflows Skills',
         '{systemsCount}+ Design Systems',
-        'Crédits pour 20+ modèles phares',
         'Calcul prioritaire en heures de pointe · latence réduite',
         'Customer success dédié',
       ],
@@ -751,7 +709,7 @@ const KO: PricingContent = {
     tagline: '기간 한정 무료 체험, 종료 후 Agent 구성 또는 BYOK 필요',
     ctaLabel: '무료로 시작',
     concurrency: '동시 작업 1개',
-    features: ['BYOK 제공자 키', '커뮤니티 지원'],
+    features: ['BYOK 제공자 키 · 로컬 Coding Agent 지원', '커뮤니티 지원'],
   },
   plans: {
     plus: {
@@ -759,11 +717,9 @@ const KO: PricingContent = {
       ctaLabel: 'Plus로 업그레이드',
       concurrency: '동시 작업 2개',
       features: [
-        'BYOK 제공자 키',
         '무설정 전문 디자인 Agent',
         '{skillsCount}+ Skills 워크플로',
         '{systemsCount}+ Design Systems',
-        '20+ 플래그십 모델 크레딧',
         '이메일 지원',
       ],
     },
@@ -772,11 +728,9 @@ const KO: PricingContent = {
       ctaLabel: 'Pro로 업그레이드',
       concurrency: '동시 작업 5개',
       features: [
-        'BYOK 제공자 키',
         '무설정 전문 디자인 Agent',
         '{skillsCount}+ Skills 워크플로',
         '{systemsCount}+ Design Systems',
-        '20+ 플래그십 모델 크레딧',
         '우선 이메일 지원',
       ],
     },
@@ -785,11 +739,9 @@ const KO: PricingContent = {
       ctaLabel: 'Max로 업그레이드',
       concurrency: '동시 작업 10개',
       features: [
-        'BYOK 제공자 키',
         '무설정 전문 디자인 Agent',
         '{skillsCount}+ Skills 워크플로',
         '{systemsCount}+ Design Systems',
-        '20+ 플래그십 모델 크레딧',
         '피크 시간 우선 연산 · 더 낮은 지연',
         '전담 고객 성공 지원',
       ],
@@ -830,7 +782,7 @@ const DE: PricingContent = {
     tagline: 'Zeitlich begrenzte Gratis-Testphase; danach eigenen Agent konfigurieren oder BYOK',
     ctaLabel: 'Kostenlos starten',
     concurrency: '1 gleichzeitige Aufgabe',
-    features: ['BYOK-Anbieterschlüssel', 'Community-Support'],
+    features: ['BYOK-Anbieterschlüssel · lokale Coding Agents', 'Community-Support'],
   },
   plans: {
     plus: {
@@ -838,11 +790,9 @@ const DE: PricingContent = {
       ctaLabel: 'Auf Plus upgraden',
       concurrency: '2 gleichzeitige Aufgaben',
       features: [
-        'BYOK-Anbieterschlüssel',
         'Professioneller Design-Agent ohne Einrichtung',
         '{skillsCount}+ Skills-Workflows',
         '{systemsCount}+ Design Systems',
-        'Credits für 20+ Flagship-Modelle',
         'E-Mail-Support',
       ],
     },
@@ -851,11 +801,9 @@ const DE: PricingContent = {
       ctaLabel: 'Auf Pro upgraden',
       concurrency: '5 gleichzeitige Aufgaben',
       features: [
-        'BYOK-Anbieterschlüssel',
         'Professioneller Design-Agent ohne Einrichtung',
         '{skillsCount}+ Skills-Workflows',
         '{systemsCount}+ Design Systems',
-        'Credits für 20+ Flagship-Modelle',
         'Priorisierter E-Mail-Support',
       ],
     },
@@ -864,11 +812,9 @@ const DE: PricingContent = {
       ctaLabel: 'Auf Max upgraden',
       concurrency: '10 gleichzeitige Aufgaben',
       features: [
-        'BYOK-Anbieterschlüssel',
         'Professioneller Design-Agent ohne Einrichtung',
         '{skillsCount}+ Skills-Workflows',
         '{systemsCount}+ Design Systems',
-        'Credits für 20+ Flagship-Modelle',
         'Priorisierte Rechenleistung zu Spitzenzeiten · geringere Latenz',
         'Dedizierter Customer Success',
       ],
@@ -909,7 +855,7 @@ const JA: PricingContent = {
     tagline: '期間限定の無料体験。終了後は Agent 設定または BYOK が必要',
     ctaLabel: '無料で開始',
     concurrency: '同時実行タスク 1 件',
-    features: ['BYOK プロバイダーキー', 'コミュニティサポート'],
+    features: ['BYOK プロバイダーキー・ローカル Coding Agent 対応', 'コミュニティサポート'],
   },
   plans: {
     plus: {
@@ -917,11 +863,9 @@ const JA: PricingContent = {
       ctaLabel: 'Plus にアップグレード',
       concurrency: '同時実行タスク 2 件',
       features: [
-        'BYOK プロバイダーキー',
         '設定不要のプロ向けデザイン Agent',
         '{skillsCount}+ Skills ワークフロー',
         '{systemsCount}+ Design Systems',
-        '20+ フラッグシップモデル用クレジット',
         'メールサポート',
       ],
     },
@@ -930,11 +874,9 @@ const JA: PricingContent = {
       ctaLabel: 'Pro にアップグレード',
       concurrency: '同時実行タスク 5 件',
       features: [
-        'BYOK プロバイダーキー',
         '設定不要のプロ向けデザイン Agent',
         '{skillsCount}+ Skills ワークフロー',
         '{systemsCount}+ Design Systems',
-        '20+ フラッグシップモデル用クレジット',
         '優先メールサポート',
       ],
     },
@@ -943,11 +885,9 @@ const JA: PricingContent = {
       ctaLabel: 'Max にアップグレード',
       concurrency: '同時実行タスク 10 件',
       features: [
-        'BYOK プロバイダーキー',
         '設定不要のプロ向けデザイン Agent',
         '{skillsCount}+ Skills ワークフロー',
         '{systemsCount}+ Design Systems',
-        '20+ フラッグシップモデル用クレジット',
         'ピーク時優先コンピュート · 低レイテンシ',
         '専任カスタマーサクセス',
       ],
