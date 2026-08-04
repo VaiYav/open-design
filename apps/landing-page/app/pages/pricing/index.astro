@@ -475,8 +475,6 @@ const jsonLd = [
             })}
           </p>
 
-          <p class="pr-team-creator-benefits">{teamContent.creatorBenefitsNote}</p>
-
           <div class="pr-team-controls">
             <div class="pr-team-field">
               <span id="pr-team-tier-label">{teamContent.creditLabel}</span>
@@ -529,7 +527,9 @@ const jsonLd = [
             </div>
 
             <div class="pr-team-field">
-              <span>{teamContent.seats}</span>
+              <span data-team-seats-label>
+                {fillTemplate(teamContent.seats, { count: String(initialTeamTier.minSeats) })}
+              </span>
               <div class="pr-team-stepper">
                 <button type="button" data-team-seats-dec aria-label={teamContent.decreaseSeats}>−</button>
                 <output data-team-seats>{initialTeamSeats}</output>
@@ -537,9 +537,6 @@ const jsonLd = [
               </div>
             </div>
           </div>
-          <p class="pr-team-min-seats" data-team-min>
-            {fillTemplate(teamContent.minSeatsNote, { count: String(initialTeamTier.minSeats) })}
-          </p>
 
           <ul class="pr-team-feature-list">
             {teamContent.teamFeatures.map((feature) => <li>{feature}</li>)}
@@ -759,6 +756,7 @@ const jsonLd = [
       const teamTierValue = root.querySelector('[data-team-tier-value]');
       const teamTierOptionList = Array.from(root.querySelectorAll('[data-team-tier-option]'));
       const teamSeatsOutput = root.querySelector('[data-team-seats]');
+      const teamSeatsLabel = root.querySelector('[data-team-seats-label]');
       const teamSeatsDec = root.querySelector('[data-team-seats-dec]');
       const teamSeatsInc = root.querySelector('[data-team-seats-inc]');
       let teamSeats = Number(teamSeatsOutput?.textContent || 3);
@@ -842,11 +840,11 @@ const jsonLd = [
           '[data-team-summary]',
           fillTeam(introTotalTemplate, { amount: total }),
         );
-        set(
-          '[data-audience-panel="team"]',
-          '[data-team-min]',
-          fillTeam(teamCopy.minSeatsNote, { count: String(tier.minSeats) }),
-        );
+        if (teamSeatsLabel) {
+          teamSeatsLabel.textContent = fillTeam(teamCopy.seats, {
+            count: String(tier.minSeats),
+          });
+        }
       };
 
       teamTierTrigger?.addEventListener('click', () => {
@@ -1484,28 +1482,16 @@ const jsonLd = [
     font-size: 0.72rem;
     font-weight: 700;
   }
-  .pr-team-yearly-summary,
-  .pr-team-min-seats {
+  .pr-team-yearly-summary {
     margin: 8px 0 0;
     color: var(--ink-soft, #777);
     font-size: 0.78rem;
-  }
-  .pr-team-creator-benefits {
-    position: relative;
-    margin: 20px 0 0;
-    padding: 10px 12px;
-    border: 1px solid color-mix(in srgb, var(--brand, #2bd200) 24%, transparent);
-    border-radius: 8px;
-    background: color-mix(in srgb, var(--brand, #2bd200) 7%, transparent);
-    color: var(--ink, #222);
-    font-size: 0.82rem;
-    line-height: 1.55;
   }
   .pr-team-controls {
     display: grid;
     grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
     gap: 12px;
-    margin-top: 16px;
+    margin-top: 24px;
   }
   .pr-team-field {
     display: flex;
