@@ -23,7 +23,8 @@ import {
   getPricingContent,
   fillTemplate,
   PREMIUM_MODELS,
-  STANDARD_MODELS,
+  IMAGE_MODELS,
+  VIDEO_MODELS,
   CREDIT_BONUS_PCT,
   TRIAL_CREDIT_PROMO_ENABLED,
   type PlanTierId,
@@ -309,15 +310,11 @@ const jsonLd = [
 
         {TRIAL_CREDIT_PROMO_ENABLED && (
           <div class="pr-models">
-            <p class="pr-models-head">{L.premiumModels}</p>
+            <p class="pr-models-head">{L.topTextModels}</p>
             <ul class="pr-model-list">
               {FREE_PREMIUM_MODELS.map((m) => (
                 <li class={m.trial ? undefined : 'is-unavailable'}>{m.name}</li>
               ))}
-            </ul>
-            <p class="pr-models-head">{L.standardModels}</p>
-            <ul class="pr-model-list">
-              {STANDARD_MODELS.map((m) => <li>{m}</li>)}
             </ul>
           </div>
         )}
@@ -395,21 +392,25 @@ const jsonLd = [
                   </span>
                 )}
               </li>
-              <li class="pr-feat pr-feat-strong">{plan.concurrency}</li>
               <li class="pr-feat pr-feat-multimodal">{L.multimodalBenefit}</li>
+              <li class="pr-feat pr-feat-strong">{plan.concurrency}</li>
               {plan.features.map((f) => (
                 <li class="pr-feat">{renderCatalogLabel(f)}</li>
               ))}
             </ul>
 
             <div class="pr-models">
-              <p class="pr-models-head">{L.premiumModels}</p>
+              <p class="pr-models-head">{L.topTextModels}</p>
               <ul class="pr-model-list">
                 {PREMIUM_MODELS.map((m) => <li>{m.name}</li>)}
               </ul>
-              <p class="pr-models-head">{L.standardModels}</p>
+              <p class="pr-models-head">{L.topImageModels}</p>
               <ul class="pr-model-list">
-                {STANDARD_MODELS.map((m) => <li>{m}</li>)}
+                {IMAGE_MODELS.map((m) => <li>{m}</li>)}
+              </ul>
+              <p class="pr-models-head">{L.topVideoModels}</p>
+              <ul class="pr-model-list">
+                {VIDEO_MODELS.map((m) => <li>{m}</li>)}
               </ul>
             </div>
           </article>
@@ -426,7 +427,7 @@ const jsonLd = [
       <div class="pr-multimodal-modes" aria-label={L.multimodalTitle}>
         <div class="pr-mode">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14M5 9h9M5 13h14M5 17h9" /></svg>
-          <span>{L.textGeneration}</span>
+          <span>{L.designAgent}</span>
         </div>
         <div class="pr-mode">
           <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4" width="17" height="16" rx="2" /><circle cx="9" cy="9" r="1.5" /><path d="m5.5 17 4-4 3 3 2-2 4 3" /></svg>
