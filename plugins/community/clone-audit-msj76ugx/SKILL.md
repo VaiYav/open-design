@@ -1,0 +1,227 @@
+# Clone Audit
+
+- Project: /Users/valentinyakovlev/Library/Application Support/Open Design/namespaces/release-stable/data/projects/831fcc29-dd1f-41a4-9f94-426ab12d1569
+- Scanned files: 27
+- Findings: 202
+
+## 保真度硬伤（字体 / 图片 / 颜色）
+- 未发现
+
+## 追踪脚本 / 统计像素
+- .od-skills/web-clone-a5a9cd5828/SKILL.md:155 · Google Tag Manager · `googletagmanager`
+- vite/assets/command-JxDeIxa8.js:31 · Google Analytics / gtag · `gA(`
+- vite/assets/command-JxDeIxa8.js:31 · Google Analytics / gtag · `gA(`
+- vite/assets/command-JxDeIxa8.js:31 · Google Analytics / gtag · `GA(`
+- vite/assets/command-JxDeIxa8.js:33 · Google Analytics / gtag · `gA(`
+- vite/assets/command-JxDeIxa8.js:33 · Google Analytics / gtag · `GA(`
+- vite/assets/command-JxDeIxa8.js:426 · Google Analytics / gtag · `Ga(`
+- vite/assets/command-JxDeIxa8.js:426 · Google Analytics / gtag · `Ga(`
+- vite/assets/command-JxDeIxa8.js:426 · Google Analytics / gtag · `Ga(`
+- vite/assets/command-JxDeIxa8.js:426 · Google Analytics / gtag · `Ga(`
+- vite/assets/command-JxDeIxa8.js:426 · Google Analytics / gtag · `Ga(`
+- vite/assets/command-JxDeIxa8.js:426 · Google Analytics / gtag · `Ga(`
+- vite/assets/command-JxDeIxa8.js:426 · Google Analytics / gtag · `Ga(`
+- vite/assets/command-JxDeIxa8.js:426 · Google Analytics / gtag · `Ga(`
+- vite/assets/command-JxDeIxa8.js:426 · Google Analytics / gtag · `Ga(`
+- vite/assets/next-HfLpxsEV.js:590 · Google Analytics / gtag · `Ga(`
+- vite/assets/next-HfLpxsEV.js:590 · Google Analytics / gtag · `Ga(`
+- vite/assets/next-HfLpxsEV.js:590 · Google Analytics / gtag · `Ga(`
+- vite/assets/next-HfLpxsEV.js:590 · Google Analytics / gtag · `Ga(`
+- vite/assets/next-HfLpxsEV.js:590 · Google Analytics / gtag · `Ga(`
+- vite/assets/next-HfLpxsEV.js:590 · Google Analytics / gtag · `Ga(`
+- vite/assets/next-HfLpxsEV.js:592 · Google Analytics / gtag · `Ga(`
+- vite/assets/next-HfLpxsEV.js:638 · Google Analytics / gtag · `ga(`
+- vite/assets/next-HfLpxsEV.js:638 · Google Analytics / gtag · `ga(`
+- vite/assets/next-HfLpxsEV.js:638 · Google Analytics / gtag · `ga(`
+- vite/assets/next-HfLpxsEV.js:640 · Google Analytics / gtag · `ga(`
+- vite/assets/next-HfLpxsEV.js:640 · Google Analytics / gtag · `ga(`
+- vite/assets/next-HfLpxsEV.js:640 · Google Analytics / gtag · `ga(`
+- vite/assets/next-HfLpxsEV.js:640 · Google Analytics / gtag · `ga(`
+- vite/assets/next-HfLpxsEV.js:646 · Google Analytics / gtag · `gA(`
+- vite/assets/next-HfLpxsEV.js:646 · Google Analytics / gtag · `gA(`
+- vite/assets/next-HfLpxsEV.js:570 · Hotjar / Clarity · `hj(`
+
+## 原站品牌残留
+- index.html:4 · brand residue: Footy Addicts · `Footy Addicts`
+- index.html:7 · brand residue: Footy Addicts · `Footy Addicts`
+- index.html:7 · brand residue: Footy Addicts · `Footy Addicts`
+- index.html:34 · brand residue: Footy Addicts · `Footy Addicts`
+- index.html:146 · brand residue: Footy Addicts · `Footy Addicts`
+- index.html:152 · brand residue: Footy Addicts · `Footy Addicts`
+- index.html:293 · brand residue: Footy Addicts · `Footy Addicts`
+- index.html:374 · brand residue: Footy Addicts · `Footy Addicts`
+- index.html:381 · brand residue: Footy Addicts · `Footy Addicts`
+- index.html:409 · brand residue: Footy Addicts · `Footy Addicts`
+- index.html:476 · brand residue: Footy Addicts · `Footy Addicts`
+- index.html:570 · brand residue: Footy Addicts · `Footy Addicts`
+- index.html:573 · brand residue: Footy Addicts · `Footy Addicts`
+- index.html:587 · brand residue: Footy Addicts · `Footy Addicts`
+- index.html:626 · brand residue: Footy Addicts · `Footy Addicts`
+- index.html:632 · brand residue: Footy Addicts · `Footy Addicts`
+- index.html:670 · brand residue: Footy Addicts · `Footy Addicts`
+- vite/assets/command-JxDeIxa8.js:426 · brand residue: Footy Addicts · `Footy Addicts`
+- vite/assets/command-JxDeIxa8.js:426 · brand residue: Footy Addicts · `Footy Addicts`
+- vite/assets/command-JxDeIxa8.js:426 · brand residue: Footy Addicts · `Footy Addicts`
+- vite/assets/command-JxDeIxa8.js:426 · brand residue: Footy Addicts · `Footy Addicts`
+- vite/assets/command-JxDeIxa8.js:426 · brand residue: Footy Addicts · `Footy Addicts`
+- vite/assets/command-JxDeIxa8.js:426 · brand residue: Footy Addicts · `Footy Addicts`
+- vite/assets/command-JxDeIxa8.js:426 · brand residue: Footy Addicts · `Footy Addicts`
+- vite/assets/command-JxDeIxa8.js:426 · brand residue: Footy Addicts · `Footy Addicts`
+- vite/assets/command-JxDeIxa8.js:426 · brand residue: Footy Addicts · `Footy Addicts`
+- vite/assets/command-JxDeIxa8.js:426 · brand residue: Footy Addicts · `Footy Addicts`
+- vite/assets/command-JxDeIxa8.js:426 · brand residue: Footy Addicts · `Footy Addicts`
+- vite/assets/command-JxDeIxa8.js:426 · brand residue: Footy Addicts · `Footy Addicts`
+- vite/assets/command-JxDeIxa8.js:426 · brand residue: Footy Addicts · `Footy Addicts`
+- vite/assets/command-JxDeIxa8.js:426 · brand residue: Footy Addicts · `Footy Addicts`
+- vite/assets/command-JxDeIxa8.js:426 · brand residue: Footy Addicts · `Footy Addicts`
+- vite/assets/command-JxDeIxa8.js:426 · brand residue: Footy Addicts · `Footy Addicts`
+- vite/assets/next-HfLpxsEV.js:857 · brand residue: Footy Addicts · `Footy Addicts`
+
+## 日文残留
+- vite/assets/next-HfLpxsEV.js:2977 · Japanese kana residue · `ファッション`
+- vite/assets/next-HfLpxsEV.js:2977 · Japanese kana residue · `アマゾン`
+- vite/assets/next-HfLpxsEV.js:2977 · Japanese kana residue · `グーグル`
+- vite/assets/next-HfLpxsEV.js:2977 · Japanese kana residue · `クラウド`
+- vite/assets/next-HfLpxsEV.js:2977 · Japanese kana residue · `ポイント`
+- vite/assets/next-HfLpxsEV.js:2977 · Japanese kana residue · `ストア`
+- vite/assets/next-HfLpxsEV.js:2977 · Japanese kana residue · `セール`
+- vite/assets/next-HfLpxsEV.js:2977 · Japanese kana residue · `みんな`
+- vite/assets/next-HfLpxsEV.js:2977 · Japanese kana residue · `コム`
+
+## TODO / 占位内容
+- .od-skills/web-clone-a5a9cd5828/SKILL.md:265 · TODO / placeholder content · `TODO`
+- .od-skills/web-clone-a5a9cd5828/SKILL.md:280 · TODO / placeholder content · `TODO`
+- .od-skills/web-clone-a5a9cd5828/references/deliverables.md:137 · TODO / placeholder content · `TODO`
+- .od-skills/web-clone-a5a9cd5828/references/design-dna.md:41 · TODO / placeholder content · `TODO`
+- vite/assets/command-JxDeIxa8.js:426 · TODO / placeholder content · `todo`
+- vite/assets/command-JxDeIxa8.js:426 · TODO / placeholder content · `todo`
+- vite/assets/command-JxDeIxa8.js:426 · TODO / placeholder content · `todo`
+- vite/assets/command-JxDeIxa8.js:426 · TODO / placeholder content · `todo`
+- vite/assets/command-JxDeIxa8.js:426 · TODO / placeholder content · `todo`
+- vite/assets/command-JxDeIxa8.js:426 · TODO / placeholder content · `todo`
+- vite/assets/command-JxDeIxa8.js:426 · TODO / placeholder content · `Todo`
+- vite/assets/command-JxDeIxa8.js:426 · TODO / placeholder content · `todo`
+- vite/assets/command-JxDeIxa8.js:426 · TODO / placeholder content · `todo`
+- vite/assets/command-JxDeIxa8.js:426 · TODO / placeholder content · `todo`
+- vite/assets/command-JxDeIxa8.js:426 · TODO / placeholder content · `todo`
+- vite/assets/command-JxDeIxa8.js:426 · TODO / placeholder content · `todo`
+- vite/assets/command-JxDeIxa8.js:426 · TODO / placeholder content · `todo`
+- vite/assets/command-JxDeIxa8.js:426 · TODO / placeholder content · `todo`
+- vite/assets/command-JxDeIxa8.js:426 · TODO / placeholder content · `Todo`
+- vite/assets/command-JxDeIxa8.js:426 · TODO / placeholder content · `todo`
+- vite/assets/next-HfLpxsEV.js:638 · TODO / placeholder content · `ToDo`
+- vite/assets/next-HfLpxsEV.js:638 · TODO / placeholder content · `ToDo`
+
+## 外部依赖 / 外链风险
+- .od-skills/web-clone-a5a9cd5828/SKILL.md:64 · external URL · `https://raw.githubusercontent.com/`
+- .od-skills/web-clone-a5a9cd5828/SKILL.md:171 · external URL · `http://127.0.0.1:`
+- .od-skills/web-clone-a5a9cd5828/SKILL.md:176 · external URL · `http://127.0.0.1:`
+- .od-skills/web-clone-a5a9cd5828/SKILL.md:183 · external URL · `http://127.0.0.1:`
+- .od-skills/web-clone-a5a9cd5828/references/design-dna.md:7 · external URL · `https://github.com/zanwei/design-dna`
+- .od-skills/web-clone-a5a9cd5828/references/effect-extraction.md:6 · external URL · `https://github.com/lixiaolin94/skills`
+- .od-skills/web-clone-a5a9cd5828/references/marbles-case.md:3 · external URL · `https://chiuhans111.github.io/marbles/`
+- .od-skills/web-clone-a5a9cd5828/references/static-mirror.md:38 · external URL · `https://use.typekit.net/`
+- .od-skills/web-clone-a5a9cd5828/references/static-mirror.md:49 · external URL · `https://use.typekit.net/`
+- .od-skills/web-clone-a5a9cd5828/references/static-mirror.md:51 · external URL · `https://use\.typekit\.net/`
+- index.html:579 · external URL · `https://footyaddicts.uservoice.com/knowledgebase/articles/1807312-code-of-conduct`
+- index.html:599 · external URL · `https://store.footyaddicts.com`
+- mirror-manifest.json:3 · external URL · `https://footyaddicts.com/`
+- mirror-manifest.json:9 · external URL · `https://footyaddicts.com/vite/assets/next-iRq8svXQ.css`
+- mirror-manifest.json:15 · external URL · `https://footyaddicts.com/vite/assets/logo-the-telegraph-8H0cf7vC.webp`
+- mirror-manifest.json:21 · external URL · `https://footyaddicts.com/vite/assets/logo-len-Z1bGLCXu.webp`
+- mirror-manifest.json:27 · external URL · `https://footyaddicts.com/vite/assets/logo-bbc-7gteVsqO.webp`
+- mirror-manifest.json:33 · external URL · `https://footyaddicts.com/vite/assets/next-7sdMa8Cq.css`
+- mirror-manifest.json:39 · external URL · `https://footyaddicts.com/vite/assets/find-local-games-WPH7mM_X.svg`
+- mirror-manifest.json:45 · external URL · `https://footyaddicts.com/vite/assets/zinedine-6tDJKMS7.webp`
+- mirror-manifest.json:51 · external URL · `https://footyaddicts.com/vite/assets/logo-men-ULm9LJ26.webp`
+- mirror-manifest.json:57 · external URL · `https://footyaddicts.com/vite/assets/book-your-next-game-TNJDOCR4.svg`
+- mirror-manifest.json:63 · external URL · `https://footyaddicts.com/vite/assets/gemma-jPQDZ6VJ.webp`
+- mirror-manifest.json:69 · external URL · `https://footyaddicts.com/vite/assets/home-local-football-pitch-XvhAcnUd.webp`
+- mirror-manifest.json:75 · external URL · `https://footyaddicts.com/vite/assets/mac-gP9a2g6t.webp`
+- mirror-manifest.json:81 · external URL · `https://footyaddicts.com/vite/assets/play-81_I7r5N.svg`
+- mirror-manifest.json:87 · external URL · `https://footyaddicts.com/vite/assets/home-mobile-screen-_M3TKruF.webp`
+- mirror-manifest.json:93 · external URL · `https://footyaddicts.com/vite/assets/jsx-runtime-ftQxuvDu.js`
+- mirror-manifest.json:99 · external URL · `https://footyaddicts.com/vite/assets/home-hero-d29ZCKJz.webp`
+- mirror-manifest.json:105 · external URL · `https://footyaddicts.com/vite/assets/pattern-dark-KdWIdSUg.png`
+- mirror-manifest.json:111 · external URL · `https://footyaddicts.com/vite/assets/pattern-light-IjI-mh_C.png`
+- mirror-manifest.json:117 · external URL · `https://footyaddicts.com/vite/assets/apple-8fh8Yw4d.js`
+- mirror-manifest.json:123 · external URL · `https://footyaddicts.com/vite/assets/facebook-a7TBlwpo.js`
+- mirror-manifest.json:129 · external URL · `https://footyaddicts.com/vite/assets/next-HfLpxsEV.js`
+- mirror-manifest.json:135 · external URL · `https://footyaddicts.com/vite/assets/GT-Walsheim-Black-IdeZwsxs.woff2`
+- mirror-manifest.json:141 · external URL · `https://footyaddicts.com/vite/assets/GT-Walsheim-Bold-84XeKlfp.woff2`
+- mirror-manifest.json:147 · external URL · `https://footyaddicts.com/vite/assets/GT-Walsheim-Regular-C7IJlyTk.woff2`
+- mirror-manifest.json:153 · external URL · `https://footyaddicts.com/vite/assets/GT-Walsheim-Medium-9BqNYl97.woff2`
+- mirror-manifest.json:159 · external URL · `https://footyaddicts.com/vite/assets/GT-Walsheim-Light-OCUXV8hb.woff2`
+- mirror-manifest.json:165 · external URL · `https://footyaddicts.com/vite/assets/Fort-Quinsy-Regular-v9FspXg8.woff2`
+- mirror-manifest.json:171 · external URL · `https://footyaddicts.com/vite/assets/command-JxDeIxa8.js`
+- mirror-manifest.json:177 · external URL · `https://js.stripe.com/v3`
+- mirror-manifest.json:183 · external URL · `https://js.stripe.com/v3/controller-with-preconnect-3a41dc187e7e54f2cfd66e25fc4f4f48.html`
+- mirror-manifest.json:189 · external URL · `https://js.stripe.com/v3/fingerprinted/js/shared-6da8a46774dfc35e9190792ad4f288a5.js`
+- mirror-manifest.json:195 · external URL · `https://js.stripe.com/v3/fingerprinted/js/controller-with-preconnect-29937b09a361c9cdc6a63c4f9c637bd3.js`
+- mirror-manifest.json:201 · external URL · `https://js.stripe.com/v3/fingerprinted/js/stripe-cookies-ce969cce3f26a200935863ef2328b8a1.js`
+- mirror-manifest.json:207 · external URL · `https://js.stripe.com/v3/fingerprinted/js/consumerSchema-9407247883c2d79a9df960775dba69ce.js`
+- mirror-manifest.json:213 · external URL · `https://footyaddicts.com/vite/assets/favicon-NhcIk0bS.svg`
+- mirror-manifest.json:219 · external URL · `https://js.stripe.com/v3/m-outer-3437aaddcdf6922d623e172c2d6f9278.html`
+- mirror-manifest.json:225 · external URL · `https://js.stripe.com/v3/.deploy_status_henson.json`
+- mirror-manifest.json:231 · external URL · `https://js.stripe.com/v3/fingerprinted/data/en-GB-d4d097eb04e74c7cf79018df80998a02.json`
+- mirror-manifest.json:237 · external URL · `https://js.stripe.com/v3/fingerprinted/data/countries_en-GB-919c91fad2788750937cae126d4af487.json`
+- mirror-manifest.json:243 · external URL · `https://js.stripe.com/v3/fingerprinted/js/m-outer-15a2b40a058ddff1cffdb63779fe3de1.js`
+- mirror-manifest.json:249 · external URL · `https://m.stripe.network/inner.html`
+- mirror-manifest.json:255 · external URL · `https://m.stripe.network/out-4.5.45.js`
+- mirror-manifest.json:261 · external URL · `https://m.stripe.com/6`
+- mirror-manifest.json:267 · external URL · `https://r.stripe.com/b`
+- mirror-manifest.json:273 · external URL · `https://js.stripe.com/v3/fingerprinted/js/trusted-types-checker-5f0c8e2badcf649fffcda863f4764381.js`
+- package-lock.json:17 · external URL · `https://registry.npmjs.org/fsevents/-/fsevents-2.3.2.tgz`
+- package-lock.json:32 · external URL · `https://registry.npmjs.org/playwright/-/playwright-1.62.1.tgz`
+- package-lock.json:51 · external URL · `https://registry.npmjs.org/playwright-core/-/playwright-core-1.62.1.tgz`
+- vite/assets/command-JxDeIxa8.js:17 · external URL · `https://reactjs.org/docs/error-decoder.html?invariant=`
+- vite/assets/command-JxDeIxa8.js:24 · external URL · `https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md'}const`
+- vite/assets/command-JxDeIxa8.js:26 · external URL · `https://lodash.com/`
+- vite/assets/command-JxDeIxa8.js:27 · external URL · `https://openjsf.org/`
+- vite/assets/command-JxDeIxa8.js:28 · external URL · `https://lodash.com/license`
+- vite/assets/command-JxDeIxa8.js:29 · external URL · `http://underscorejs.org/LICENSE`
+- vite/assets/command-JxDeIxa8.js:31 · external URL · `https://npms.io/search?q=ponyfill.`
+- vite/assets/command-JxDeIxa8.js:339 · external URL · `https://radix-ui.com/primitives/docs/components/${t.docsSlug}';return`
+- vite/assets/command-JxDeIxa8.js:347 · external URL · `http://localhost`
+- vite/assets/command-JxDeIxa8.js:353 · external URL · `http://localhost`
+- vite/assets/command-JxDeIxa8.js:425 · external URL · `http://ricostacruz.com/nprogress`
+- vite/assets/next-HfLpxsEV.js:581 · external URL · `https://footyaddicts.com/football-games/123`
+- vite/assets/next-HfLpxsEV.js:598 · external URL · `https://yarnpkg.com/en/docs/selective-version-resolutions`
+- vite/assets/next-HfLpxsEV.js:638 · external URL · `https://go.apollo.dev/c/err#${encodeURIComponent(JSON.stringify({version:zb,message:e,args:t.map(Qd`
+- vite/assets/next-HfLpxsEV.js:646 · external URL · `http://dev.apollodata.com/core/fragments.html#unique-names'`
+- vite/assets/next-HfLpxsEV.js:742 · external URL · `http://fb.me/use-check-prop-types`
+- vite/assets/next-HfLpxsEV.js:743 · external URL · `https://stripe.com/docs/stripe-js/react#elements-props-stripe`
+- vite/assets/next-HfLpxsEV.js:743 · external URL · `https://stripe.com/docs/stripe-js/react`
+- vite/assets/next-HfLpxsEV.js:743 · external URL · `https://js.stripe.com/v3`
+- vite/assets/next-HfLpxsEV.js:1098 · external URL · `https://www.visa.com/splisting/searchGrsp.do?companyNameCriteria=stripe`
+- vite/assets/next-HfLpxsEV.js:1654 · external URL · `https://maps.googleapis.com/maps/api/js`
+- vite/assets/next-HfLpxsEV.js:1654 · external URL · `https://github.com/visgl/react-google-maps/issues/new`
+- vite/assets/next-HfLpxsEV.js:1654 · external URL · `https://github.com/visgl/react-google-maps/issues/new`
+- vite/assets/next-HfLpxsEV.js:1654 · external URL · `https://visgl.github.io/react-google-maps/docs/api-reference/components/map#required`
+- vite/assets/next-HfLpxsEV.js:2977 · external URL · `https://twitter.com/hashtag/`
+- vite/assets/next-HfLpxsEV.js:2977 · external URL · `https://www.facebook.com/hashtag/`
+- vite/assets/next-HfLpxsEV.js:2977 · external URL · `https://instagram.com/explore/tags/`
+- vite/assets/next-HfLpxsEV.js:2977 · external URL · `https://www.tiktok.com/tag/`
+- vite/assets/next-HfLpxsEV.js:2977 · external URL · `https://youtube.com/hashtag/`
+- vite/assets/next-HfLpxsEV.js:2977 · external URL · `https://twitter.com/`
+- vite/assets/next-HfLpxsEV.js:2977 · external URL · `https://instagram.com/`
+- vite/assets/next-HfLpxsEV.js:2977 · external URL · `https://soundcloud.com/`
+- vite/assets/next-HfLpxsEV.js:2977 · external URL · `https://www.tiktok.com/@`
+- vite/assets/next-HfLpxsEV.js:2977 · external URL · `https://youtube.com/@`
+- vite/assets/next-HfLpxsEV.js:3336 · external URL · `https://api.whatsapp.com/send?text=${encodeURIComponent(e+'`
+- vite/assets/next-HfLpxsEV.js:3337 · external URL · `https://www.google.com/maps/search/?api=1&query=${e.venue.latitude},${e.venue.longitude}',target:`
+- vite/assets/next-HfLpxsEV.js:3717 · external URL · `http://jedwatson.github.io/classnames`
+- vite/assets/next-HfLpxsEV.js:3736 · external URL · `https://purecatamphetamine.github.io/country-flag-icons/3x2/{XX}.svg`
+- vite/assets/next-HfLpxsEV.js:3737 · external URL · `https://purecatamphetamine.github.io/country-flag-icons/3x2/{XX}.svg`
+- vite/assets/next-HfLpxsEV.js:4131 · external URL · `https://example.com`
+- vite/assets/next-HfLpxsEV.js:4131 · external URL · `https://facebook.com/venue`
+- vite/assets/next-HfLpxsEV.js:4131 · external URL · `https://instagram.com/venue`
+- vite/assets/next-HfLpxsEV.js:4366 · external URL · `https://maps.googleapis.com/maps/api/staticmap?`
+- vite/assets/next-HfLpxsEV.js:4522 · external URL · `https://www.google.com/maps/search/?api=1&query=${O.latitude},${O.longitude}',target:`
+
+## 结论
+- 需要处理上面的残留项后再声明可部署。
+
+## Provenance
+
+Formalized by Open Design from candidate dcb1468e-2fc0-4154-b379-9526c0fafb98.
