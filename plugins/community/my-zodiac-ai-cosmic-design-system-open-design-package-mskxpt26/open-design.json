@@ -1,0 +1,22 @@
+{
+  "$schema": "https://open-design.ai/schemas/plugin.v1.json",
+  "specVersion": "1.0.0",
+  "name": "my-zodiac-ai-cosmic-design-system-open-design-package-mskxpt26",
+  "title": "My Zodiac AI — Cosmic Design System (Open Design package)",
+  "version": "0.1.0",
+  "description": "**Source product:** Soulwise AI, also shipped as My Zodiac AI. **Source tree:** `front/src/css/design-system/colors_and_type.css` and `front/src/shared/ui/*` in `/Users/valentinyakovlev/projects/my_zodiac_ai/front`. **St",
+  "od": {
+    "kind": "skill",
+    "taskKind": "new-generation",
+    "context": {
+      "skills": [
+        {
+          "path": "./SKILL.md"
+        }
+      ]
+    },
+    "capabilities": [
+      "prompt:inject"
+    ]
+  }
+}

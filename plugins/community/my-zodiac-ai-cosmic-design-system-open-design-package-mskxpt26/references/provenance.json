@@ -1,0 +1,40 @@
+{
+  "candidateId": "0198e6d5-7f92-4747-9a04-5854828d0540",
+  "projectId": "brand-product-128638",
+  "runId": "d8e8fa9b-a1db-4e25-889a-a12cc577b2d0",
+  "conversationId": "82f1e62d-5528-4b2c-8cb5-e0bb672d5b73",
+  "provenance": {
+    "summary": "Detected from README.md, SKILL.md, ui_kits/app/README.md, SCORECARD.md after a successful run.",
+    "detectedAt": 1786226867731
+  },
+  "sourceRefs": [
+    {
+      "kind": "file",
+      "value": "README.md",
+      "label": "README.md",
+      "size": 7733,
+      "copied": true
+    },
+    {
+      "kind": "file",
+      "value": "SKILL.md",
+      "label": "SKILL.md",
+      "size": 9354,
+      "copied": true
+    },
+    {
+      "kind": "file",
+      "value": "ui_kits/app/README.md",
+      "label": "ui_kits/app/README.md",
+      "size": 2381,
+      "copied": true
+    },
+    {
+      "kind": "file",
+      "value": "SCORECARD.md",
+      "label": "SCORECARD.md",
+      "size": 5126,
+      "copied": true
+    }
+  ]
+}
