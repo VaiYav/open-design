@@ -550,7 +550,11 @@ export async function waitForStatus<T>(
   }
 }
 
-async function retireExistingSidecarEndpoint(ipcPath: string, logPath: string): Promise<void> {
+export async function retireExistingSidecarEndpoint(
+  app: AppKey,
+  ipcPath: string,
+  logPath: string,
+): Promise<void> {
   let status: { pid?: number | null } | null = null;
   try {
     status = await requestJsonIpc<{ pid?: number | null }>(
@@ -577,10 +581,24 @@ async function retireExistingSidecarEndpoint(ipcPath: string, logPath: string): 
   }
 
   if (pid != null && pid !== process.pid && isProcessAlive(pid)) {
-    const exited = await waitForProcessExit(pid, 2500);
+    // The web sidecar's graceful shutdown budget is 3s (Next.js close) + 1s
+    // hard-exit buffer; the daemon is normally faster. Wait long enough for a
+    // well-behaved sidecar to clean up its IPC socket before we spawn a
+    // replacement, otherwise the new child can fail to bind the socket and the
+    // od:// proxy keeps forwarding to the dead port.
+    const gracefulMs = app === APP_KEYS.WEB ? 5_000 : 2_500;
+    let exited = await waitForProcessExit(pid, gracefulMs);
+    if (!exited) {
+      await appendSidecarLifecycleLog(
+        logPath,
+        `[open-design packaged] existing sidecar shutdown timeout app=${app} pid=${pid}; force-stopping`,
+      );
+      await stopProcesses([pid]);
+      exited = await waitForProcessExit(pid, 5_000);
+    }
     await appendSidecarLifecycleLog(
       logPath,
-      `[open-design packaged] existing sidecar endpoint ${exited ? "exited" : "still-running"} ipc=${ipcPath} pid=${pid}`,
+      `[open-design packaged] existing sidecar endpoint ${exited ? "exited" : "still-running"} app=${app} ipc=${ipcPath} pid=${pid}`,
     );
   }
 }
@@ -763,7 +781,7 @@ async function spawnSidecarChild(options: {
   } satisfies SidecarStamp;
   const logPath = logPathFor(options.paths, options.app);
   const logHandle = await openLog(logPath);
-  await retireExistingSidecarEndpoint(ipcPath, logPath);
+  await retireExistingSidecarEndpoint(options.app, ipcPath, logPath);
   const usesElectronAsNode = options.nodeCommand == null;
   const command = options.nodeCommand
     ?? options.electronNodeCommand
