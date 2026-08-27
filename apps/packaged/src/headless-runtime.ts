@@ -3,6 +3,7 @@ import { mkdir } from "node:fs/promises";
 import {
   APP_KEYS,
   SIDECAR_SOURCES,
+  normalizeNamespace,
 } from "@open-design/sidecar-proto";
 import {
   getSidecarStatus,
@@ -16,6 +17,7 @@ import {
 import { releaseChannelFromNamespace, releaseChannelFromVersion } from "@open-design/release";
 
 import type { PackagedConfig } from "./config.js";
+import { PACKAGED_RUNTIME_NAMESPACE_ENV } from "./config.js";
 import { confirmPackagedLauncherRuntime, resolvePackagedLauncherRuntime } from "./launcher-runtime.js";
 import { resolvePackagedNamespacePaths } from "./paths.js";
 import type { PackagedSidecarHandle } from "./sidecars.js";
@@ -62,6 +64,17 @@ export async function runPackagedMcpActionAgainstExistingDaemon(
   if (status?.state !== "running" || typeof status.url !== "string" || status.url.length === 0) return false;
   await (dependencies.installMcp ?? installCodexMcp)(status.url);
   return true;
+}
+
+export function resolvePackagedHeadlessRuntimeNamespace(
+  dataNamespace: string,
+  env: NodeJS.ProcessEnv = process.env,
+): string {
+  const configured = env[PACKAGED_RUNTIME_NAMESPACE_ENV]?.trim();
+  if (configured != null && configured.length > 0) {
+    return normalizeNamespace(configured);
+  }
+  return normalizeNamespace(`${dataNamespace}-headless`);
 }
 
 export interface PackagedHeadlessStartupDependencies {
@@ -162,10 +175,12 @@ export async function runPackagedHeadless(
   },
   options: RunPackagedHeadlessOptions = {},
 ): Promise<void> {
+  const runtimeNamespace = resolvePackagedHeadlessRuntimeNamespace(config.namespace);
   const initialPaths = resolvePackagedNamespacePaths(
     config,
-    config.namespace,
+    runtimeNamespace,
     process.env,
+    config.namespace,
   );
   const launcherRuntime = await resolvePackagedLauncherRuntime(config, initialPaths);
   const activeConfig = launcherRuntime.config;
@@ -179,7 +194,7 @@ export async function runPackagedHeadless(
       ?? releaseChannelFromNamespace(config.namespace, "default")
       ?? "stable",
     mode: "headless",
-    namespace: config.namespace,
+    namespace: runtimeNamespace,
     source: argvStamp?.source ?? SIDECAR_SOURCES.PACKAGED,
   };
   const mcpBootstrap =
@@ -199,7 +214,7 @@ export async function runPackagedHeadless(
     app: APP_KEYS.DESKTOP,
     base: paths.runtimeRoot,
     mode: "headless",
-    namespace: config.namespace,
+    namespace: runtimeNamespace,
     source: stamp.source,
   };
 
@@ -224,6 +239,7 @@ export async function runPackagedHeadless(
         electronNodeCommand: launcherRuntime.electronNodeCommand,
         mcpBootstrapArgs: mcpBootstrap.args,
         mcpBootstrapCommand: mcpBootstrap.command,
+        mcpBootstrapRuntimeNamespace: runtimeNamespace,
         nodeCommand: activeConfig.nodeCommand,
         telemetryRelayUrl: activeConfig.telemetryRelayUrl,
         posthogKey: activeConfig.posthogKey,

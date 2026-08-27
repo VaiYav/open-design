@@ -39,6 +39,7 @@ import {
 } from "./download-attribution.js";
 import {
   parsePackagedHeadlessRequest,
+  resolvePackagedHeadlessRuntimeNamespace,
   resolvePackagedMcpBootstrapLaunch,
   runPackagedMcpActionAgainstExistingDaemon,
 } from "./headless-runtime.js";
@@ -319,6 +320,7 @@ async function main(): Promise<void> {
     electronNodeCommand: launcherRuntime.electronNodeCommand,
     mcpBootstrapArgs: mcpBootstrap.args,
     mcpBootstrapCommand: mcpBootstrap.command,
+    mcpBootstrapRuntimeNamespace: resolvePackagedHeadlessRuntimeNamespace(namespace),
     nodeCommand: activeConfig.nodeCommand,
     telemetryRelayUrl: activeConfig.telemetryRelayUrl,
     posthogKey: activeConfig.posthogKey,
