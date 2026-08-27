@@ -86,6 +86,7 @@ function makeInstallInfoApp({ cliPath, port, env = {}, sidecarEnv = {}, dataDir 
     for (const key of [
       'OD_MCP_BOOTSTRAP_COMMAND',
       'OD_MCP_BOOTSTRAP_ARGS',
+      'OD_MCP_BOOTSTRAP_IPC_PATH',
     ] as const) {
       const value = env[key];
       if (value != null && value.length > 0) inheritedSidecarEnv[key] = value;
@@ -315,6 +316,8 @@ describe('GET /api/mcp/install-info', () => {
       {
         OD_MCP_BOOTSTRAP_COMMAND: '/usr/bin/open',
         OD_MCP_BOOTSTRAP_ARGS: bootstrapArgs,
+        OD_MCP_BOOTSTRAP_IPC_PATH:
+          '/tmp/open-design/ipc/release-stable-headless/daemon.sock',
       },
       dataDir,
       inheritedSidecarEnv,
@@ -329,6 +332,8 @@ describe('GET /api/mcp/install-info', () => {
         ...inheritedSidecarEnv,
         OD_MCP_BOOTSTRAP_COMMAND: '/usr/bin/open',
         OD_MCP_BOOTSTRAP_ARGS: bootstrapArgs,
+        OD_MCP_BOOTSTRAP_IPC_PATH:
+          '/tmp/open-design/ipc/release-stable-headless/daemon.sock',
       });
     } finally {
       await new Promise<void>((done) => server?.close(() => done()));
