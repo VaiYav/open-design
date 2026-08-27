@@ -87,6 +87,7 @@ function makeInstallInfoApp({ cliPath, port, env = {}, sidecarEnv = {}, dataDir 
       'OD_MCP_BOOTSTRAP_COMMAND',
       'OD_MCP_BOOTSTRAP_ARGS',
       'OD_MCP_BOOTSTRAP_IPC_PATH',
+      'OD_PACKAGED_RUNTIME_NAMESPACE',
     ] as const) {
       const value = env[key];
       if (value != null && value.length > 0) inheritedSidecarEnv[key] = value;
@@ -318,6 +319,7 @@ describe('GET /api/mcp/install-info', () => {
         OD_MCP_BOOTSTRAP_ARGS: bootstrapArgs,
         OD_MCP_BOOTSTRAP_IPC_PATH:
           '/tmp/open-design/ipc/release-stable-headless/daemon.sock',
+        OD_PACKAGED_RUNTIME_NAMESPACE: 'release-stable-headless',
       },
       dataDir,
       inheritedSidecarEnv,
@@ -334,6 +336,7 @@ describe('GET /api/mcp/install-info', () => {
         OD_MCP_BOOTSTRAP_ARGS: bootstrapArgs,
         OD_MCP_BOOTSTRAP_IPC_PATH:
           '/tmp/open-design/ipc/release-stable-headless/daemon.sock',
+        OD_PACKAGED_RUNTIME_NAMESPACE: 'release-stable-headless',
       });
     } finally {
       await new Promise<void>((done) => server?.close(() => done()));
