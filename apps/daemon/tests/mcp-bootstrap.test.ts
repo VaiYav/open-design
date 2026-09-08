@@ -1,5 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
+import { SIDECAR_CLIENT_ENDPOINT_ENV } from "@open-design/sidecar";
+
 import {
   ensureMcpDaemonUrl,
   planMcpDaemonBootstrap,
@@ -136,12 +138,12 @@ describe("ensureMcpDaemonUrl", () => {
     expect(spawnBootstrap).toHaveBeenCalledTimes(1);
   });
 
-  it("switches post-spawn polling to the isolated bootstrap IPC path", async () => {
+  it("switches post-spawn polling to the isolated bootstrap IPC endpoint", async () => {
     const discoveredEnvs: NodeJS.ProcessEnv[] = [];
     const discoverTargetDaemonUrl = vi
       .fn(async (env: NodeJS.ProcessEnv) => {
         discoveredEnvs.push(env);
-        return env.OD_SIDECAR_IPC_PATH?.includes("release-stable-headless")
+        return env[SIDECAR_CLIENT_ENDPOINT_ENV]?.includes("release-stable-headless")
           ? "http://127.0.0.1:61234"
           : null;
       });
@@ -152,7 +154,7 @@ describe("ensureMcpDaemonUrl", () => {
 
     await expect(ensureMcpDaemonUrl({
       env: {
-        OD_SIDECAR_IPC_PATH: "/tmp/open-design/ipc/release-stable/daemon.sock",
+        [SIDECAR_CLIENT_ENDPOINT_ENV]: "/tmp/open-design/ipc/release-stable/daemon.sock",
         OD_MCP_BOOTSTRAP_IPC_PATH: "/tmp/open-design/ipc/release-stable-headless/daemon.sock",
         OD_MCP_BOOTSTRAP_COMMAND: "/usr/bin/open",
         OD_MCP_BOOTSTRAP_ARGS:
@@ -165,10 +167,10 @@ describe("ensureMcpDaemonUrl", () => {
       timeoutMs: 1_000,
     })).resolves.toBe("http://127.0.0.1:61234");
 
-    expect(discoveredEnvs[0]?.OD_SIDECAR_IPC_PATH).toBe(
+    expect(discoveredEnvs[0]?.[SIDECAR_CLIENT_ENDPOINT_ENV]).toBe(
       "/tmp/open-design/ipc/release-stable/daemon.sock",
     );
-    expect(discoveredEnvs[1]?.OD_SIDECAR_IPC_PATH).toBe(
+    expect(discoveredEnvs[1]?.[SIDECAR_CLIENT_ENDPOINT_ENV]).toBe(
       "/tmp/open-design/ipc/release-stable-headless/daemon.sock",
     );
   });

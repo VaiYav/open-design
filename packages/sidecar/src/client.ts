@@ -15,6 +15,12 @@ const CONTROL_STOP = "sidecar:stop";
 const CONTROL_DESCRIBE = "sidecar:describe";
 const BUSINESS_INVOKE = "sidecar:invoke";
 const INHERITED_ENDPOINT_ENV = "OD_SIDECAR_CLIENT_ENDPOINT";
+/**
+ * Env var carrying the endpoint an inherited client connection targets.
+ * Exported so bootstrap orchestrators can retarget {@link SidecarFactory.connectInherited}
+ * to a runtime identity different from the ambient one.
+ */
+export const SIDECAR_CLIENT_ENDPOINT_ENV = INHERITED_ENDPOINT_ENV;
 const SUPERVISOR_HANDOFF = "sidecar:supervisor-handoff";
 const SUPERVISOR_HANDOFF_ACCEPTED = "sidecar:supervisor-handoff-accepted";
 export const SIDECAR_SUPERVISOR_TARGET_ENV = "OD_SIDECAR_SUPERVISOR_TARGET";

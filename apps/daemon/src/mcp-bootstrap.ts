@@ -1,7 +1,7 @@
 import { spawn } from "node:child_process";
 import { isAbsolute } from "node:path";
 
-import { SidecarFactory } from "@open-design/sidecar";
+import { SidecarFactory, SIDECAR_CLIENT_ENDPOINT_ENV } from "@open-design/sidecar";
 import {
   APP_KEYS,
   type DaemonStatusSnapshot,
@@ -137,7 +137,7 @@ export async function ensureMcpDaemonUrl(
     ? env
     : {
         ...env,
-        [SIDECAR_ENV.IPC_PATH]: env.OD_MCP_BOOTSTRAP_IPC_PATH,
+        [SIDECAR_CLIENT_ENDPOINT_ENV]: env.OD_MCP_BOOTSTRAP_IPC_PATH,
       };
   const deadline = Date.now() + timeoutMs;
   while (Date.now() < deadline) {

@@ -43,7 +43,7 @@ export type {
   SidecarLifecycle,
   SidecarResources,
 } from "./client.js";
-export { handoffCurrentSidecarGeneration, SidecarClient, SidecarFactory } from "./client.js";
+export { handoffCurrentSidecarGeneration, SidecarClient, SidecarFactory, SIDECAR_CLIENT_ENDPOINT_ENV } from "./client.js";
 export type { SidecarLifecycleLockOptions } from "./lifecycle-lock.js";
 export { withSidecarLifecycleLock } from "./lifecycle-lock.js";
 export type { SidecarStamp, SidecarStampField } from "./stamp.js";
@@ -51,6 +51,7 @@ export {
   normalizeSidecarStamp,
   isCurrentSidecarLauncher,
   readCurrentSidecarStamp,
+  resolvePrivateIpcPath as resolveSidecarEndpoint,
   SIDECAR_STAMP_FIELDS,
   SIDECAR_STAMP_FLAGS,
 } from "./stamp.js";

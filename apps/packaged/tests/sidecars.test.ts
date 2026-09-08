@@ -21,8 +21,8 @@ import { tmpdir } from 'node:os';
 import { delimiter, dirname, join, posix } from 'node:path';
 import { describe, expect, it, vi } from 'vitest';
 
-import type { SidecarStamp } from '@open-design/sidecar';
-import { APP_KEYS } from '@open-design/sidecar-proto';
+import { resolveSidecarEndpoint, type SidecarStamp } from '@open-design/sidecar';
+import { APP_KEYS, SIDECAR_SOURCES } from '@open-design/sidecar-proto';
 
 import {
   buildPackagedDaemonSpawnEnv,
@@ -649,7 +649,13 @@ describe('buildPackagedDaemonSpawnEnv', () => {
 
     expect(env.OD_PACKAGED_RUNTIME_NAMESPACE).toBe('release-stable-headless');
     expect(env.OD_MCP_BOOTSTRAP_IPC_PATH).toBe(
-      '/tmp/open-design/ipc/release-stable-headless/daemon.sock',
+      resolveSidecarEndpoint({
+        app: APP_KEYS.DAEMON,
+        channel: 'stable',
+        mode: 'headless',
+        namespace: 'release-stable-headless',
+        source: SIDECAR_SOURCES.PACKAGED,
+      }),
     );
   });
 

@@ -6,10 +6,10 @@ import { setTimeout as sleep } from "node:timers/promises";
 
 import {
   APP_KEYS,
-  OPEN_DESIGN_SIDECAR_CONTRACT,
   SIDECAR_ENV,
   SIDECAR_MESSAGES,
   SIDECAR_MODES,
+  SIDECAR_SOURCES,
   type AppKey,
   type DaemonStatusSnapshot,
   type RegisterWebUrlResult,
@@ -18,6 +18,7 @@ import {
 import {
   getSidecarStatus,
   invokeSidecar,
+  resolveSidecarEndpoint,
   spawnSidecar,
   stopSidecar,
   type SpawnedSidecar,
@@ -695,10 +696,20 @@ export function buildPackagedDaemonSpawnEnv(
       || options.mcpBootstrapRuntimeNamespace.length === 0
       ? {}
       : {
-          OD_MCP_BOOTSTRAP_IPC_PATH: resolveAppIpcPath({
+          // The MCP bootstrap spawns a second packaged instance in headless
+          // mode; its daemon binds the endpoint derived from the headless
+          // runtime identity, not the ambient one. Seed that endpoint so the
+          // daemon can forward it into MCP install payloads and post-spawn
+          // polling follows the isolated socket.
+          OD_MCP_BOOTSTRAP_IPC_PATH: resolveSidecarEndpoint({
             app: APP_KEYS.DAEMON,
-            contract: OPEN_DESIGN_SIDECAR_CONTRACT,
+            channel:
+              releaseChannelFromVersion(options.appVersion)
+              ?? releaseChannelFromNamespace(options.mcpBootstrapRuntimeNamespace, "default")
+              ?? "stable",
+            mode: "headless",
             namespace: options.mcpBootstrapRuntimeNamespace,
+            source: SIDECAR_SOURCES.PACKAGED,
           }),
           OD_PACKAGED_RUNTIME_NAMESPACE: options.mcpBootstrapRuntimeNamespace,
         }),
