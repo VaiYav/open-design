@@ -124,9 +124,15 @@
       '</div></div>';
   }
 
+  /* FLOW-8555: feedback collection is Admin / Main admin only — for the
+     `account` role every unit renders as nothing, whatever its state. */
+  function roleBlocked() {
+    return document.documentElement.getAttribute('data-role') === 'account';
+  }
+
   function renderUnit(unit) {
     var u = unit._fb;
-    if (u.st === 'none') { unit.innerHTML = ''; unit.hidden = true; return; }
+    if (u.st === 'none' || roleBlocked()) { unit.innerHTML = ''; unit.hidden = true; return; }
     unit.hidden = false;
     var openEditor = (u.st === 'editor' || u.st === 'editor-limit' || u.st === 'saving-comment');
     unit.innerHTML = row(u, unit) + (openEditor ? editorHtml(u) : '');
@@ -365,6 +371,6 @@
   document.addEventListener('DOMContentLoaded', function () {
     hydrate(document);
     onState();
-    new MutationObserver(onState).observe(document.documentElement, { attributes: true, attributeFilter: ['data-state'] });
+    new MutationObserver(onState).observe(document.documentElement, { attributes: true, attributeFilter: ['data-state', 'data-role'] });
   });
 })();

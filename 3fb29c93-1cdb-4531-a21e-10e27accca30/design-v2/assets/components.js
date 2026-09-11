@@ -117,6 +117,33 @@
     campaigns: { label: 'Campaigns', list: CAMPAIGNS_SUB }
   };
 
+  /* -- role gating (F.SCREEN_ROLES mirrors src/router.jsx checkRole) ------ */
+  function role() {
+    var r = document.documentElement.getAttribute('data-role');
+    if (r === 'account' || r === 'admin' || r === 'main_admin') return r;
+    try { r = localStorage.getItem('v2-role'); } catch (_) { r = null; }
+    return (r === 'admin' || r === 'main_admin') ? r : 'account';
+  }
+  function allows(href) {
+    var F = window.Fixtures;
+    if (!F || !F.roleAllows) return true;
+    return F.roleAllows(String(href || '').split('?')[0], role());
+  }
+  function deniedPanel(file) {
+    var F = window.Fixtures;
+    var r = role();
+    var meta = (F && F.ROLES && F.ROLES[r]) || { label: r, home: 'home.html' };
+    return '<div class="v2-denied" data-od-id="no-access">' +
+      '<div class="state">' +
+      '<div class="state__icon state__icon--muted"><span class="ic ic--lock ic--lg"></span></div>' +
+      '<h2>Not available for ' + esc(meta.label) + '</h2>' +
+      '<p><code>' + esc(file) + '</code> sits outside this role’s scope — in v1 the router redirects ' +
+      'this role to its home screen. The rail on the left already shows what ' + esc(meta.label) +
+      ' can actually reach.</p>' +
+      '<a class="btn btn--soft" href="' + esc(meta.home) + '?role=' + r + '">Go to ' + esc(meta.label) + ' home</a>' +
+      '</div></div>';
+  }
+
   function railLink(item, activeId) {
     var cls = 'v2-rail__link' + (item.id === activeId ? ' is-active' : '');
     var inner = '<span class="ic ic--' + item.icon + '"></span><span class="lbl">' + esc(item.label) + '</span>' +
@@ -127,9 +154,11 @@
 
   function subBlock(zone, cfg) {
     var meta = SUBS[zone];
+    var items = meta.list.filter(function (s) { return allows(s.href); });
+    if (!items.length) return '';
     var h = '<div class="v2-rail__sub" role="group" aria-label="' + esc(meta.label) + '">' +
       '<div class="v2-rail__subhead">' + esc(meta.label) + '</div>';
-    meta.list.forEach(function (s) {
+    items.forEach(function (s) {
       var act = cfg.sub && s.href.indexOf(cfg.sub) === 0;
       h += '<a class="v2-rail__sublink' + (act ? ' is-active' : '') + '" href="' + s.href + '"' +
         (act ? ' aria-current="page"' : '') + '>' + esc(s.label) + '</a>';
@@ -142,8 +171,19 @@
     rail.className = 'v2-rail';
     rail.setAttribute('data-od-id', 'nav-rail');
     var html = '<div class="v2-rail__brand"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iNDIiIGhlaWdodD0iNTciPgogIDxkZWZzPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJhIiB4MT0iMS43IiB4Mj0iMi43IiB5MT0iLjIiIHkyPSIuMiIgZ3JhZGllbnRVbml0cz0ib2JqZWN0Qm91bmRpbmdCb3giPgogICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiMzYjQyYjgiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMTgxYjg5Ii8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGxpbmVhckdyYWRpZW50IHhsaW5rOmhyZWY9IiNhIiBpZD0iYiIgeDE9Ii40IiB4Mj0iLjQiIHkxPSIxLjQiIHkyPSIuMiIvPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJjIiB4MT0iMS43IiB4Mj0iMS43IiB5MT0iMSIgeTI9Ii0uMyIgZ3JhZGllbnRVbml0cz0ib2JqZWN0Qm91bmRpbmdCb3giPgogICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM1ODYyZGUiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjOTE2N2ZmIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJkIiB4MT0iMS44IiB4Mj0iMS44IiB5MT0iMS44IiB5Mj0iLjIiIGdyYWRpZW50VW5pdHM9Im9iamVjdEJvdW5kaW5nQm94Ij4KICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjNTg2MmRlIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2VjNTBmZiIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHBhdGggZmlsbD0idXJsKCNhKSIgZD0ibTc1OS4xIDI0OC4yIDIwIDV2LTE2bC0yMS02djE1YzAgMSAuMiAxLjggMSAyWiIgZGF0YS1uYW1lPSJQYXRoIDEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC03NTguMSAtMTk2LjIpIi8+CiAgPHBhdGggZmlsbD0idXJsKCNiKSIgZD0iTTc5MC4xIDIxMC4ydjE1bC0zMS0xMGMtLjgtLjMtMS0xLjEtMS0ydi0xNGwzMCA5Yy45LjMgMiAxLjEgMiAyWiIgZGF0YS1uYW1lPSJQYXRoIDIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC03NTguMSAtMTg2LjIpIi8+CiAgPHBhdGggZmlsbD0idXJsKCNjKSIgZD0iTTc5MC4xIDIxNnYxNGMwIC44LTEgMS43LTIgMmwtMzAgOHYtMTRjMC0xIC4yLTEuOSAxLTJaIiBkYXRhLW5hbWU9IlBhdGggMyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTc1OC4xIC0xOTEpIi8+CiAgPHBhdGggZmlsbD0idXJsKCNkKSIgZD0iTTgwMC4xIDE3OS42djE0YzAgMSAwIDEuOC0xIDJsLTQxIDExdi0xNGMwLS45LjItMS44IDEtMloiIGRhdGEtbmFtZT0iUGF0aCA0IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNzU4LjEgLTE3OS42KSIvPgo8L3N2Zz4=" alt="Flow"><span class="v2-rail__tag">v2</span><button type="button" class="icon-btn v2-rail__close" data-nav-close aria-label="Close navigation"><span class="ic ic--close"></span></button></div><nav class="v2-rail__nav" aria-label="Primary">';
-    NAV.forEach(function (item) {
-      if (item.sec) { html += '<div class="v2-rail__sec" aria-hidden="true">' + esc(item.sec) + '</div>'; return; }
+    /* Filter the whole nav through the current role first so a section
+       heading is only emitted when at least one item under it survives. */
+    var items = NAV.filter(function (item) { return item.sec || allows(item.href); });
+    items.forEach(function (item, i) {
+      if (item.sec) {
+        var any = false;
+        for (var j = i + 1; j < items.length; j++) {
+          if (items[j].sec) break;
+          any = true;
+        }
+        if (any) html += '<div class="v2-rail__sec" aria-hidden="true">' + esc(item.sec) + '</div>';
+        return;
+      }
       var sub = SUBS[item.id] && cfg.zone === item.id ? subBlock(item.id, cfg) : '';
       html += (sub ? '<div class="v2-rail__group">' : '') + railLink(item, cfg.nav) + sub + (sub ? '</div>' : '');
     });
@@ -173,12 +213,16 @@
       });
       html += '</div></div>';
     }
-    html += '<div class="status-strip"><span class="status-pill"><span class="dot dot--on"></span>5 platforms</span><span class="status-pill"><span class="ic ic--clock ic--sm"></span>Shift 08:00–16:00</span></div>';
+    var F = window.Fixtures || {};
+    var me = (F.ROLES && F.ROLES[role()]) || { name: 'Katerina V.', label: 'Operator' };
+    var meIni = ini(me.name);
+    var meMail = me.name.toLowerCase().replace(/[^a-z]+/g, '.').replace(/^\.|\.$/g, '') + '@flow.local';
+    html += '<div class="status-strip"><span class="status-pill"><span class="dot dot--on"></span>5 platforms</span><span class="status-pill"><span class="ic ic--clock ic--sm"></span>Shift 08:00–16:00</span><span class="status-pill status-pill--role" title="Signed-in role">' + esc(me.label) + '</span></div>';
     html += '<a class="icon-btn" href="alerts.html" aria-label="Alerts" title="Alerts"><span class="ic ic--bell"></span><span class="ping"></span></a>';
     html += '<button type="button" class="icon-btn theme-ic" data-theme-toggle aria-label="Toggle theme" title="Toggle light/dark"><svg class="th th--moon" viewBox="0 0 24 24" width="19" height="19" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 7 7 0 1 0 20 14.5Z" fill="currentColor"/></svg><svg class="th th--sun" viewBox="0 0 24 24" width="19" height="19" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M19.4 4.6l-2.1 2.1M6.7 17.3l-2.1 2.1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>';
-    html += '<div style="position:relative"><button type="button" class="icon-btn" data-menu-open="acct-menu" aria-expanded="false" aria-haspopup="true" aria-label="Account menu"><span class="avatar avatar--sm" style="width:28px;height:28px;font-size:10px">KV</span></button>' +
+    html += '<div style="position:relative"><button type="button" class="icon-btn" data-menu-open="acct-menu" aria-expanded="false" aria-haspopup="true" aria-label="Account menu"><span class="avatar avatar--sm" style="width:28px;height:28px;font-size:10px">' + esc(meIni) + '</span></button>' +
       '<div class="menu" id="acct-menu" role="menu" style="right:0;top:46px;left:auto">' +
-      '<div style="padding:9px 11px"><div style="font-weight:700;font-size:13px">Katerina V.</div><div class="tiny muted">Operator · katerina@flow.local</div></div><div class="menu-sep"></div>' +
+      '<div style="padding:9px 11px"><div style="font-weight:700;font-size:13px">' + esc(me.name) + '</div><div class="tiny muted">' + esc(me.label) + ' · ' + esc(meMail) + '</div></div><div class="menu-sep"></div>' +
       '<button type="button" role="menuitem" data-toast="Opened profile settings (prototype)"><span class="ic ic--user ic--sm"></span>Profile settings</button>' +
       '<button type="button" role="menuitem" data-toast="Keyboard shortcuts (prototype)"><span class="ic ic--list ic--sm"></span>Shortcuts</button>' +
       '<div class="menu-sep"></div>' +
@@ -209,6 +253,18 @@
     shell.appendChild(col);
     col.appendChild(buildTopbar(cfg));
     col.appendChild(page);
+    /* Role gate: a screen outside the current role's scope renders as an
+       explicit denied panel instead of its content (mirrors the v1 router
+       redirect, kept visible here so the atlas can preview it). The panel
+       must land inside .v2-col — insert before `page` only after `page` is
+       already a child of col, otherwise it becomes a body-level sibling and
+       drops below the 100dvh shell. */
+    var file = location.pathname.split('/').pop() || 'index.html';
+    if (window.Fixtures && !window.Fixtures.roleAllows(file, role())) {
+      page.hidden = true;
+      page.insertAdjacentHTML('beforebegin', deniedPanel(file));
+      document.title = 'Not available — Flow v2';
+    }
     var mqMin = window.matchMedia ? matchMedia('(max-width:1080px)') : null;
     var mqMob = window.matchMedia ? matchMedia('(max-width:780px)') : null;
     function syncRail() {

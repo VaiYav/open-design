@@ -2,6 +2,32 @@
   "prototype": "Flow v2 — inbox-first operator workspace",
   "baseline": "../design-copy/",
   "entry": "index.html",
+  "generated": "2026-09-11",
+  "roleModel": {
+    "param": "?role=account|admin|main_admin",
+    "persisted": "localStorage v2-role",
+    "roles": {
+      "account": {
+        "name": "Anna K.",
+        "label": "Operator",
+        "home": "home.html",
+        "fb": false
+      },
+      "admin": {
+        "name": "Katerina V.",
+        "label": "Admin",
+        "home": "home.html",
+        "fb": true
+      },
+      "main_admin": {
+        "name": "Max R.",
+        "label": "Main admin",
+        "home": "admin.html",
+        "fb": true
+      }
+    },
+    "note": "Mirrors src/router.jsx checkRole() + roleMenus. Denied screens render an explicit panel (atlas previews it); nav + sub-nav are filtered; feedback controls are admin/main_admin only."
+  },
   "screens": 42,
   "states": 239,
   "v1Routes": 67,
@@ -26,7 +52,12 @@
           "v1": [
             "/login"
           ],
-          "v1File": "login.html"
+          "v1File": "login.html",
+          "roles": [
+            "account",
+            "admin",
+            "main_admin"
+          ]
         }
       ]
     },
@@ -60,7 +91,11 @@
             "/account/:lady_id",
             "/account/:lady_id/:male_id"
           ],
-          "v1File": "chats.html"
+          "v1File": "chats.html",
+          "roles": [
+            "account",
+            "admin"
+          ]
         },
         {
           "id": "mails",
@@ -87,7 +122,11 @@
             "/mails/:lady_id",
             "/mails/:lady_id/:male_id"
           ],
-          "v1File": "mails.html"
+          "v1File": "mails.html",
+          "roles": [
+            "account",
+            "admin"
+          ]
         },
         {
           "id": "history",
@@ -104,7 +143,11 @@
             "/history",
             "/history/:lady_id/:male_id"
           ],
-          "v1File": "history.html"
+          "v1File": "history.html",
+          "roles": [
+            "account",
+            "admin"
+          ]
         },
         {
           "id": "omniscience",
@@ -130,7 +173,11 @@
           "v1": [
             "/omniscience (dev/stage only)"
           ],
-          "v1File": "omniscience.html"
+          "v1File": "omniscience.html",
+          "roles": [
+            "admin",
+            "main_admin"
+          ]
         },
         {
           "id": "statistics",
@@ -145,7 +192,11 @@
           "v1": [
             "/statistics"
           ],
-          "v1File": "statistics.html"
+          "v1File": "statistics.html",
+          "roles": [
+            "account",
+            "admin"
+          ]
         },
         {
           "id": "scorecard",
@@ -159,7 +210,11 @@
             "error"
           ],
           "v1": [],
-          "v1File": null
+          "v1File": null,
+          "roles": [
+            "account",
+            "admin"
+          ]
         }
       ]
     },
@@ -186,7 +241,11 @@
             "/invites/chat_post_invite",
             "/newsfeeds"
           ],
-          "v1File": "auto-sendings.html"
+          "v1File": "auto-sendings.html",
+          "roles": [
+            "account",
+            "admin"
+          ]
         },
         {
           "id": "campaigns-templates",
@@ -221,7 +280,11 @@
             "/invites/chat_invite/:lady_id/templates",
             "/invites/chat_invite/:lady_id/templates/:template_id/edit"
           ],
-          "v1File": "icebreakers-lady-messages.html"
+          "v1File": "icebreakers-lady-messages.html",
+          "roles": [
+            "account",
+            "admin"
+          ]
         },
         {
           "id": "campaigns-groups",
@@ -238,7 +301,10 @@
             "/icebreakers/:lady_id/groups",
             "/icebreakers/:lady_id/groups/create"
           ],
-          "v1File": "icebreakers-lady-groups.html"
+          "v1File": "icebreakers-lady-groups.html",
+          "roles": [
+            "account"
+          ]
         },
         {
           "id": "campaigns-create",
@@ -256,7 +322,11 @@
             "/icebreakers/:lady_id/mails/create",
             "/invites/chat_invite/:lady_id/templates/create"
           ],
-          "v1File": "invites-lady-create.html"
+          "v1File": "invites-lady-create.html",
+          "roles": [
+            "account",
+            "admin"
+          ]
         },
         {
           "id": "campaigns-posts",
@@ -278,7 +348,10 @@
             "/newsfeeds/:lady_id/sent",
             "/newsfeeds/:lady_id/create"
           ],
-          "v1File": "newsfeeds-lady.html"
+          "v1File": "newsfeeds-lady.html",
+          "roles": [
+            "account"
+          ]
         },
         {
           "id": "campaigns-history",
@@ -293,7 +366,11 @@
           "v1": [
             "/invites/chat_invite/:lady_id/history"
           ],
-          "v1File": "invites-lady-history.html"
+          "v1File": "invites-lady-history.html",
+          "roles": [
+            "account",
+            "admin"
+          ]
         },
         {
           "id": "campaigns-performance",
@@ -307,7 +384,11 @@
             "error"
           ],
           "v1": [],
-          "v1File": null
+          "v1File": null,
+          "roles": [
+            "account",
+            "admin"
+          ]
         },
         {
           "id": "planner",
@@ -321,7 +402,11 @@
             "error"
           ],
           "v1": [],
-          "v1File": null
+          "v1File": null,
+          "roles": [
+            "account",
+            "admin"
+          ]
         }
       ]
     },
@@ -342,7 +427,12 @@
           "v1": [
             "/tools"
           ],
-          "v1File": "tools.html"
+          "v1File": "tools.html",
+          "roles": [
+            "account",
+            "admin",
+            "main_admin"
+          ]
         },
         {
           "id": "tools-autoreplies",
@@ -366,7 +456,12 @@
           "v1": [
             "/tools/:lady_id/autoreplies"
           ],
-          "v1File": "tools-lady-autoreplies.html"
+          "v1File": "tools-lady-autoreplies.html",
+          "roles": [
+            "account",
+            "admin",
+            "main_admin"
+          ]
         },
         {
           "id": "tools-mailing",
@@ -382,7 +477,12 @@
           "v1": [
             "/tools/:lady_id/mailing"
           ],
-          "v1File": null
+          "v1File": null,
+          "roles": [
+            "account",
+            "admin",
+            "main_admin"
+          ]
         },
         {
           "id": "tools-presets",
@@ -407,7 +507,12 @@
           "v1": [
             "/tools/:lady_id/presets"
           ],
-          "v1File": "tools-lady-presets.html"
+          "v1File": "tools-lady-presets.html",
+          "roles": [
+            "account",
+            "admin",
+            "main_admin"
+          ]
         },
         {
           "id": "tools-blacklists",
@@ -432,7 +537,12 @@
             "/tools/:lady_id/chat_post_blacklists",
             "/tools/:lady_id/male_credit_history_blacklists"
           ],
-          "v1File": "tools-lady-blacklists.html"
+          "v1File": "tools-lady-blacklists.html",
+          "roles": [
+            "account",
+            "admin",
+            "main_admin"
+          ]
         },
         {
           "id": "tools-blacklist-new",
@@ -447,7 +557,12 @@
           "v1": [
             "/tools/:lady_id/blacklists/new"
           ],
-          "v1File": "tools-lady-blacklist-new.html"
+          "v1File": "tools-lady-blacklist-new.html",
+          "roles": [
+            "account",
+            "admin",
+            "main_admin"
+          ]
         },
         {
           "id": "lady-360",
@@ -461,7 +576,12 @@
             "error"
           ],
           "v1": [],
-          "v1File": null
+          "v1File": null,
+          "roles": [
+            "account",
+            "admin",
+            "main_admin"
+          ]
         }
       ]
     },
@@ -482,7 +602,11 @@
           "v1": [
             "/administrator"
           ],
-          "v1File": "admin-dashboard.html"
+          "v1File": "admin-dashboard.html",
+          "roles": [
+            "admin",
+            "main_admin"
+          ]
         },
         {
           "id": "admin-administrators",
@@ -497,7 +621,10 @@
           "v1": [
             "/administrator/administrators"
           ],
-          "v1File": "admin-administrators.html"
+          "v1File": "admin-administrators.html",
+          "roles": [
+            "main_admin"
+          ]
         },
         {
           "id": "admin-admin-new",
@@ -511,7 +638,10 @@
           "v1": [
             "/administrator/administrators/new"
           ],
-          "v1File": "admin-administrator-new.html"
+          "v1File": "admin-administrator-new.html",
+          "roles": [
+            "main_admin"
+          ]
         },
         {
           "id": "admin-admin-edit",
@@ -524,7 +654,10 @@
           "v1": [
             "/administrator/administrators/:id/edit"
           ],
-          "v1File": "admin-administrator-new.html"
+          "v1File": "admin-administrator-new.html",
+          "roles": [
+            "main_admin"
+          ]
         },
         {
           "id": "admin-accounts",
@@ -539,7 +672,11 @@
           "v1": [
             "/administrator/accounts"
           ],
-          "v1File": "admin-accounts.html"
+          "v1File": "admin-accounts.html",
+          "roles": [
+            "admin",
+            "main_admin"
+          ]
         },
         {
           "id": "admin-account-new",
@@ -553,7 +690,11 @@
           "v1": [
             "/administrator/accounts/new"
           ],
-          "v1File": "admin-account-new.html"
+          "v1File": "admin-account-new.html",
+          "roles": [
+            "admin",
+            "main_admin"
+          ]
         },
         {
           "id": "admin-account-edit",
@@ -566,7 +707,11 @@
           "v1": [
             "/administrator/accounts/:account_id/edit"
           ],
-          "v1File": "admin-account-edit.html"
+          "v1File": "admin-account-edit.html",
+          "roles": [
+            "admin",
+            "main_admin"
+          ]
         },
         {
           "id": "admin-lady-profiles",
@@ -581,7 +726,11 @@
           "v1": [
             "/administrator/lady_profiles"
           ],
-          "v1File": "admin-lady-profiles.html"
+          "v1File": "admin-lady-profiles.html",
+          "roles": [
+            "admin",
+            "main_admin"
+          ]
         },
         {
           "id": "admin-lady-verify",
@@ -596,7 +745,11 @@
           "v1": [
             "/administrator/lady_profiles/new (verify)"
           ],
-          "v1File": "admin-lady-profile-new.html"
+          "v1File": "admin-lady-profile-new.html",
+          "roles": [
+            "admin",
+            "main_admin"
+          ]
         },
         {
           "id": "admin-lady-commit",
@@ -610,7 +763,11 @@
           "v1": [
             "/administrator/lady_profiles/new (commit)"
           ],
-          "v1File": "admin-lady-profile-create.html"
+          "v1File": "admin-lady-profile-create.html",
+          "roles": [
+            "admin",
+            "main_admin"
+          ]
         },
         {
           "id": "admin-lady-edit",
@@ -623,7 +780,11 @@
           "v1": [
             "/administrator/lady_profiles/:lady_id/edit"
           ],
-          "v1File": "admin-lady-profile-edit.html"
+          "v1File": "admin-lady-profile-edit.html",
+          "roles": [
+            "admin",
+            "main_admin"
+          ]
         },
         {
           "id": "admin-lady-group-edit",
@@ -636,7 +797,11 @@
           "v1": [
             "/administrator/lady_profiles/:group_id/edit_lady_group"
           ],
-          "v1File": "admin-lady-group-edit.html"
+          "v1File": "admin-lady-group-edit.html",
+          "roles": [
+            "admin",
+            "main_admin"
+          ]
         },
         {
           "id": "admin-schedules",
@@ -651,7 +816,11 @@
           "v1": [
             "/administrator/schedules"
           ],
-          "v1File": "admin-schedules.html"
+          "v1File": "admin-schedules.html",
+          "roles": [
+            "admin",
+            "main_admin"
+          ]
         },
         {
           "id": "admin-schedule-new",
@@ -665,7 +834,11 @@
           "v1": [
             "/administrator/schedules/new"
           ],
-          "v1File": "admin-schedule-new.html"
+          "v1File": "admin-schedule-new.html",
+          "roles": [
+            "admin",
+            "main_admin"
+          ]
         },
         {
           "id": "admin-message-feedback",
@@ -687,7 +860,11 @@
           "v1": [
             "/administrator/message_feedback"
           ],
-          "v1File": null
+          "v1File": null,
+          "roles": [
+            "admin",
+            "main_admin"
+          ]
         },
         {
           "id": "admin-coverage",
@@ -701,7 +878,11 @@
             "error"
           ],
           "v1": [],
-          "v1File": null
+          "v1File": null,
+          "roles": [
+            "admin",
+            "main_admin"
+          ]
         },
         {
           "id": "monitor",
@@ -715,7 +896,11 @@
             "error"
           ],
           "v1": [],
-          "v1File": null
+          "v1File": null,
+          "roles": [
+            "admin",
+            "main_admin"
+          ]
         }
       ]
     },
@@ -735,7 +920,11 @@
             "error"
           ],
           "v1": [],
-          "v1File": null
+          "v1File": null,
+          "roles": [
+            "account",
+            "admin"
+          ]
         },
         {
           "id": "inbox",
@@ -749,7 +938,11 @@
             "error"
           ],
           "v1": [],
-          "v1File": null
+          "v1File": null,
+          "roles": [
+            "account",
+            "admin"
+          ]
         },
         {
           "id": "alerts",
@@ -767,7 +960,12 @@
             "error"
           ],
           "v1": [],
-          "v1File": null
+          "v1File": null,
+          "roles": [
+            "account",
+            "admin",
+            "main_admin"
+          ]
         }
       ]
     }

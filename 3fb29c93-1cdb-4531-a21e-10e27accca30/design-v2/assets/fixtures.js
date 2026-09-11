@@ -255,6 +255,56 @@
     { reason: 'neg', reasonTxt: 'Negative feedback', platform: 'livebeam', msg: '“I dream about us cooking dinner together someday.”', comment: 'Escalates intimacy too fast for message 3.', who: 'Elena V. → Roman T.', date: 'Aug 29 · 13:58', cov: 'unknown', href: 'chats.html?msg=msg-2644' }
   ];
 
+  /* -- Role model ----------------------------------------------------------
+     Mirrors src/router.jsx checkRole() + ProtectedLayout roleMenus:
+       account    — operator: full workspace + campaigns, no admin zone,
+                    no message-feedback controls (FLOW-8555 is admin-only)
+       admin      — workspace + admin zone, but NOT auto_sendings /
+                    icebreakers / newsfeeds (account-only in v1 →
+                    campaigns-groups/campaigns-posts here) and NOT the
+                    Administrators screens (main_admin only)
+       main_admin — admin zone + tools + monitor + alerts; the router gates
+                    chats/mails/history/statistics to [account, admin], so
+                    the operator surfaces are denied for this role.
+                    omniscience: v1 showed it to every role on dev/stage;
+                    FLOW-8555 tightens it to admin/main_admin.
+     SCREEN_ROLES is keyed by file name — every shipped screen must appear. */
+  var ROLES = {
+    account:    { name: 'Anna K.',     label: 'Operator',   home: 'home.html',  fb: false },
+    admin:      { name: 'Katerina V.', label: 'Admin',      home: 'home.html',  fb: true },
+    main_admin: { name: 'Max R.',      label: 'Main admin', home: 'admin.html', fb: true }
+  };
+  var ROLE_ALL = ['account', 'admin', 'main_admin'];
+  var ROLE_OPS = ['account', 'admin'];
+  var ROLE_MNG = ['admin', 'main_admin'];
+  var ROLE_MA  = ['main_admin'];
+  var SCREEN_ROLES = {
+    'login.html': ROLE_ALL,
+    'home.html': ROLE_OPS, 'inbox.html': ROLE_OPS, 'chats.html': ROLE_OPS,
+    'mails.html': ROLE_OPS, 'history.html': ROLE_OPS, 'statistics.html': ROLE_OPS,
+    'scorecard.html': ROLE_OPS, 'omniscience.html': ROLE_MNG, 'alerts.html': ROLE_ALL,
+    'campaigns.html': ROLE_OPS, 'campaigns-templates.html': ROLE_OPS,
+    'campaigns-create.html': ROLE_OPS, 'campaigns-history.html': ROLE_OPS,
+    'campaigns-performance.html': ROLE_OPS, 'planner.html': ROLE_OPS,
+    'campaigns-groups.html': ['account'], 'campaigns-posts.html': ['account'],
+    'tools.html': ROLE_ALL, 'tools-autoreplies.html': ROLE_ALL, 'tools-mailing.html': ROLE_ALL,
+    'tools-presets.html': ROLE_ALL, 'tools-blacklists.html': ROLE_ALL,
+    'tools-blacklist-new.html': ROLE_ALL, 'lady-360.html': ROLE_ALL,
+    'admin.html': ROLE_MNG, 'admin-accounts.html': ROLE_MNG, 'admin-account-new.html': ROLE_MNG,
+    'admin-account-edit.html': ROLE_MNG, 'admin-lady-profiles.html': ROLE_MNG,
+    'admin-lady-verify.html': ROLE_MNG, 'admin-lady-commit.html': ROLE_MNG,
+    'admin-lady-edit.html': ROLE_MNG, 'admin-lady-group-edit.html': ROLE_MNG,
+    'admin-schedules.html': ROLE_MNG, 'admin-schedule-new.html': ROLE_MNG,
+    'admin-message-feedback.html': ROLE_MNG, 'admin-coverage.html': ROLE_MNG,
+    'monitor.html': ROLE_MNG,
+    'admin-administrators.html': ROLE_MA, 'admin-admin-new.html': ROLE_MA,
+    'admin-admin-edit.html': ROLE_MA
+  };
+  function roleAllows(file, role) {
+    var r = SCREEN_ROLES[file];
+    return !r || r.indexOf(role) !== -1;
+  }
+
   window.Fixtures = {
     PLATFORMS: PLATFORMS, LADIES: LADIES, MALES: MALES, MAILS: MAILS, MESSAGES: MESSAGES,
     TEMPLATES: TEMPLATES, GROUPS: GROUPS, HISTORY: HISTORY, ADMINS: ADMINS,
@@ -262,6 +312,7 @@
     ALERT_FEED: ALERT_FEED, COVERAGE: COVERAGE, STATS: STATS,
     FB_SUM: FB_SUM, FB_DAILY: FB_DAILY, FB_REPLY: FB_REPLY, FB_COHORTS: FB_COHORTS, FB_WEAK: FB_WEAK,
     FB_REASONS: FB_REASONS, FB_REVIEWERS: FB_REVIEWERS, FB_SLICE: FB_SLICE,
-    FB_TTF: FB_TTF, FB_MODELS: FB_MODELS
+    FB_TTF: FB_TTF, FB_MODELS: FB_MODELS,
+    ROLES: ROLES, SCREEN_ROLES: SCREEN_ROLES, roleAllows: roleAllows
   };
 })();

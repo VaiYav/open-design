@@ -35,6 +35,12 @@
   .atlas__hint { font: 400 10.5px/1.5 var(--mono); color: var(--faint); padding: 6px 16px; text-align: center; border-top: 1px solid var(--border); background: var(--surface); }
   .atlas__hint code { color: var(--muted); }
   .seg--vp button { padding: 6px 12px; font-family: var(--mono); font-size: 11px; }
+  .atlas__item.is-locked { opacity: .48; }
+  .atlas__item.is-locked:hover { opacity: .8; }
+  .atlas__item .st-lock { font: 400 9px/1 var(--mono); color: var(--faint); text-transform: uppercase; letter-spacing: .08em; margin-left: auto; }
+  .atlas__item.is-locked .st-n { display: none; }
+  .atlas__role-note { font: 600 11px/1.4 var(--font); color: var(--muted); padding: 4px 10px; border-radius: var(--r-md); background: var(--hover); }
+  .seg--role button { padding: 6px 11px; font-size: 11.5px; }
   @media (max-width: 900px) {
     .atlas { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
     .atlas__side { max-height: 40vh; border-right: 0; border-bottom: 1px solid var(--border); }
@@ -55,6 +61,11 @@
         <div class="atlas__file"><span id="atlas-file">—</span> · <a id="atlas-v1" href="#" target="_blank" rel="noopener" hidden>v1 copy ↗</a> · <a id="atlas-open" href="#" target="_blank" rel="noopener">open ↗</a></div>
       </div>
       <span style="flex:1"></span>
+      <div class="seg seg--role" role="group" aria-label="View as role" id="atlas-role">
+        <button type="button" data-role="account">Operator</button>
+        <button type="button" data-role="admin">Admin</button>
+        <button type="button" data-role="main_admin">Main admin</button>
+      </div>
       <div class="seg seg--vp" role="group" aria-label="Viewport width" id="atlas-vp">
         <button type="button" data-vp="0" class="is-active">fill</button>
         <button type="button" data-vp="1440">1440</button>
@@ -66,15 +77,18 @@
     </div>
     <div class="atlas__bar" style="padding-top:8px;padding-bottom:8px">
       <div class="atlas__states" id="atlas-states"><span class="lbl">State</span></div>
+      <span style="flex:1"></span>
+      <span class="atlas__role-note" id="atlas-role-note" hidden>not available for this role — preview shows the denial</span>
     </div>
     <div class="atlas__view">
       <div class="atlas__frame-wrap" id="atlas-frame-wrap">
         <iframe id="atlas-frame" title="Screen preview" src="about:blank"></iframe>
       </div>
     </div>
-    <div class="atlas__hint">deep-link: <code>?screen=&lt;id&gt;&amp;state=&lt;state&gt;&amp;theme=dark</code> · state matrix: every chip × light + dark</div>
+    <div class="atlas__hint">deep-link: <code>?screen=&lt;id&gt;&amp;state=&lt;state&gt;&amp;theme=dark&amp;role=admin</code> · state matrix: every chip × light + dark · role gates mirror the v1 router</div>
   </div>
 </div>
+<script src="assets/fixtures.js"></script>
 <script src="assets/manifest.js"></script>
 <script>
 (function () {
@@ -95,7 +109,9 @@
   M.zones.forEach(function (z) { z.screens.forEach(function (s) { s.zone = z.label; flat.push(s); }); });
 
   var params = new URLSearchParams(location.search);
-  var cur = { screen: params.get('screen') || 'home', state: params.get('state') || null, theme: params.get('theme') || 'light', vp: 0 };
+  var ROLES = ['account', 'admin', 'main_admin'];
+  var cur = { screen: params.get('screen') || 'home', state: params.get('state') || null, theme: params.get('theme') || 'light', vp: 0, role: params.get('role') || 'account' };
+  if (ROLES.indexOf(cur.role) === -1) cur.role = 'account';
   try {
     if (!params.get('screen')) {
       var saved = JSON.parse(localStorage.getItem('v2-atlas') || 'null');
@@ -103,9 +119,20 @@
     }
     var savedTheme = localStorage.getItem('v2-theme');
     if (!params.get('theme') && (savedTheme === 'dark' || savedTheme === 'light')) cur.theme = savedTheme;
+    if (!params.get('role')) {
+      var savedRole = localStorage.getItem('v2-role');
+      if (ROLES.indexOf(savedRole) !== -1) cur.role = savedRole;
+    }
   } catch (_) {}
   document.documentElement.setAttribute('data-theme', cur.theme);
   themeBtn.textContent = cur.theme === 'dark' ? 'Light' : 'Dark';
+  var roleNote = document.getElementById('atlas-role-note');
+  document.querySelectorAll('#atlas-role button').forEach(function (b) {
+    b.classList.toggle('is-active', b.getAttribute('data-role') === cur.role);
+  });
+  function allowed(s) {
+    return !(window.Fixtures && Fixtures.roleAllows) || Fixtures.roleAllows(s.file, cur.role);
+  }
 
   function find(id) { for (var i = 0; i < flat.length; i++) if (flat[i].id === id) return flat[i]; return flat[0]; }
 
@@ -119,10 +146,13 @@
       if (!items.length) return;
       h += '<div class="atlas__zone"><span>' + z.label + '</span><span class="n">' + items.length + '</span></div>';
       items.forEach(function (s) {
-        h += '<button type="button" class="atlas__item' + (s.id === cur.screen ? ' is-active' : '') + '" data-screen="' + s.id + '">' +
+        var locked = !allowed(s);
+        h += '<button type="button" class="atlas__item' + (s.id === cur.screen ? ' is-active' : '') + (locked ? ' is-locked' : '') + '" data-screen="' + s.id + '"' +
+          (locked ? ' title="Outside this role — preview shows the denial screen"' : '') + '>' +
           '<span>' + s.title + '</span>' +
           (s.vision ? '<span class="od-new">new</span>' : '') +
-          '<span class="st-n">' + s.states.length + '</span></button>';
+          (locked ? '<span class="st-lock">no access</span>' : '<span class="st-n">' + s.states.length + '</span>') +
+          '</button>';
       });
     });
     tree.innerHTML = h || '<div class="state" style="padding:32px 12px"><p>No screens match.</p></div>';
@@ -135,9 +165,10 @@
     titleEl.textContent = s.title;
     fileEl.textContent = s.file;
     if (s.v1File) { v1El.hidden = false; v1El.href = (M.baseline || '../design-copy/') + s.v1File; } else v1El.hidden = true;
-    var src = s.file + '?chrome=0&theme=' + cur.theme + '&state=' + cur.state;
+    var src = s.file + '?chrome=0&theme=' + cur.theme + '&state=' + cur.state + '&role=' + cur.role;
     if (frame.getAttribute('src') !== src) frame.src = src;
-    openEl.href = s.file + '?state=' + cur.state + '&theme=' + cur.theme;
+    openEl.href = s.file + '?state=' + cur.state + '&theme=' + cur.theme + '&role=' + cur.role;
+    roleNote.hidden = allowed(s);
     var h = '<span class="lbl">State</span>';
     s.states.forEach(function (st) {
       h += '<button type="button" class="chip' + (st === cur.state ? ' is-active' : '') + '" data-state="' + st + '">' + st + '</button>';
@@ -150,6 +181,7 @@
       u.searchParams.set('screen', cur.screen);
       u.searchParams.set('state', cur.state);
       u.searchParams.set('theme', cur.theme);
+      u.searchParams.set('role', cur.role);
       history.replaceState(null, '', u);
     } catch (_) {}
   }
@@ -174,6 +206,18 @@
     themeBtn.textContent = cur.theme === 'dark' ? 'Light' : 'Dark';
     try { localStorage.setItem('v2-theme', cur.theme); } catch (_) {}
     try { frame.contentWindow.postMessage({ type: 'v2:set', theme: cur.theme }, '*'); } catch (_) {}
+    load();
+  });
+  document.getElementById('atlas-role').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-role]');
+    if (!b) return;
+    var r = b.getAttribute('data-role');
+    if (ROLES.indexOf(r) === -1 || r === cur.role) return;
+    cur.role = r;
+    this.querySelectorAll('button').forEach(function (x) { x.classList.toggle('is-active', x === b); });
+    try { localStorage.setItem('v2-role', r); } catch (_) {}
+    /* The iframe keeps its own role via ?role= — reload the frame src rather
+       than postMessage, since a role change re-mounts the shell anyway. */
     load();
   });
   document.getElementById('atlas-vp').addEventListener('click', function (e) {

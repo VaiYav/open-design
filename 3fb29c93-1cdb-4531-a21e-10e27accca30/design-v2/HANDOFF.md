@@ -28,8 +28,16 @@ Status: pitch/research version. Baseline for before/after diffs: `../design-copy
 - `?theme=dark|light`, `?chrome=0` (hides the floating state FAB when embedded in the atlas).
 - Tabs that double as states use `data-tab-scope` + `data-tab` + `data-tab-panel` — the engine syncs tab chrome.
 - In-screen state jumps use `data-state-link="<state>"` on buttons/links.
-- Deep link shape: `index.html?screen=<id>&state=<state>&theme=dark`.
+- Deep link shape: `index.html?screen=<id>&state=<state>&theme=dark&role=<role>`.
 - Every list gets `populated/loading/empty/error`; forms get `default/validation/submitting/success`; feedback surfaces get the `fb-*` set. New states must be added both to `data-view` and to `manifest.js` (the audit enforces sync).
+
+## Roles
+
+- `?role=account|admin|main_admin` → `data-role` on `<html>`, persisted in `localStorage['v2-role']`. An absent param reads storage; an **invalid** param always falls back to `account` (least privileged), never to storage.
+- Canonical model lives in `fixtures.js`: `F.ROLES` (persona name/label/home/fb flag), `F.SCREEN_ROLES` (file → allowed roles), `F.roleAllows(file, role)`. It mirrors `src/router.jsx` `checkRole()` + `roleMenus`: `account` = full workspace, no admin zone, no feedback controls; `admin` = workspace + admin, but no `campaigns-groups`/`campaigns-posts` (account-only in v1) and no Administrators screens; `main_admin` = admin + tools + omniscience + alerts, but no chats/mails/history (router-gated to operators).
+- Effects: rail + zone sub-nav filter out disallowed items (section headers only render when children survive); a denied screen hides `<main>` and renders `.v2-denied` (lock icon, explanation, CTA to the role's home carrying `?role=`); the topbar persona + `.status-pill--role` swap to the role's identity; `feedback.js` renders nothing for `account`.
+- Atlas: `#atlas-role` seg switches `cur.role`, persists it, marks locked tree items (`is-locked` + "no access"), shows `#atlas-role-note` on denied screens, and propagates `&role=` into the iframe src, the open-link, and the deep-link URL. Standalone screens expose the same switcher inside the expanded state FAB (`data-st-role` chips → `applyRole` → one reload).
+- `manifest-v2.json` embeds the model (`roleModel`) plus a `roles` array per screen, so the handoff JSON is self-contained.
 
 ## Theming
 

@@ -1,6 +1,7 @@
 /* Flow v2 — state engine.
    ?state=<name> picks which [data-view] block is visible.
    ?theme=light|dark sets the theme (persisted in localStorage).
+   ?role=account|admin|main_admin gates nav, screens and feedback controls.
    ?chrome=0 hides the floating state switcher (atlas embeds its own chips).
    Communicates with the atlas via postMessage. */
 (function () {
@@ -21,6 +22,32 @@
     try { localStorage.setItem('v2-theme', t); } catch (_) {}
   }
   applyTheme(theme);
+
+  /* ---- role ---- */
+  var ROLE_IDS = ['account', 'admin', 'main_admin'];
+  var role = qp('role');
+  if (role === null) {
+    try { role = localStorage.getItem('v2-role') || 'account'; } catch (_) { role = 'account'; }
+  }
+  /* An explicit but unknown ?role= always falls back to the least-privileged
+     role — never silently to whatever was stored before. */
+  if (ROLE_IDS.indexOf(role) === -1) role = 'account';
+  /* A role switch re-mounts the shell (nav filtering, persona, denied
+     screens) — the URL carries the role first, then we reload once. */
+  function applyRole(r, opts) {
+    opts = opts || {};
+    if (ROLE_IDS.indexOf(r) === -1 || r === doc.getAttribute('data-role')) return;
+    doc.setAttribute('data-role', r);
+    try { localStorage.setItem('v2-role', r); } catch (_) {}
+    try {
+      var u = new URL(location.href);
+      u.searchParams.set('role', r);
+      history.replaceState(null, '', u);
+    } catch (_) {}
+    if (opts.reload !== false) location.reload();
+  }
+  doc.setAttribute('data-role', role);
+  try { localStorage.setItem('v2-role', role); } catch (_) {}
 
   if (qp('chrome') === '0') doc.setAttribute('data-chrome', '0');
 
@@ -88,12 +115,17 @@
       return;
     }
     bar.classList.remove('statebar--fab');
+    var roleLbl = { account: 'Operator', admin: 'Admin', main_admin: 'Main admin' };
     var h = '<div class="statebar__t">Screen state' +
       '<button type="button" class="chip theme-mini" data-st-theme aria-label="Toggle theme">' +
       (doc.getAttribute('data-theme') === 'dark' ? 'Light' : 'Dark') + '</button>' +
       '<button type="button" class="statebar__x" data-st-open aria-label="Collapse">×</button></div><div class="statebar__chips">';
     states.forEach(function (s) {
       h += '<button type="button" class="chip' + (s === current ? ' is-active' : '') + '" data-st="' + s + '">' + s + '</button>';
+    });
+    h += '</div><div class="statebar__roles"><span class="statebar__lbl">Role</span>';
+    ROLE_IDS.forEach(function (r) {
+      h += '<button type="button" class="chip' + (r === role ? ' is-active' : '') + '" data-st-role="' + r + '">' + roleLbl[r] + '</button>';
     });
     bar.innerHTML = h + '</div>';
   }
@@ -110,6 +142,8 @@
       syncBar();
       return;
     }
+    var rl = e.target.closest('[data-st-role]');
+    if (rl) { applyRole(rl.getAttribute('data-st-role')); return; }
     var tgl = e.target.closest('[data-st-open]');
     if (tgl) { barOpen = !barOpen; syncBar(); return; }
     if (barOpen && bar && !e.target.closest('.statebar')) { barOpen = false; syncBar(); }
@@ -120,19 +154,22 @@
     var d = e && e.data;
     if (!d || d.type !== 'v2:set') return;
     if (d.theme === 'light' || d.theme === 'dark') { applyTheme(d.theme); syncBar(); }
+    if (d.role && ROLE_IDS.indexOf(d.role) !== -1) applyRole(d.role);
     if (d.state) apply(d.state);
   });
 
   window.FlowState = {
     get current() { return current; },
+    get role() { return doc.getAttribute('data-role') || role; },
     states: states,
     set: apply,
-    setTheme: applyTheme
+    setTheme: applyTheme,
+    setRole: applyRole
   };
 
   /* announce capabilities to atlas */
   function announce() {
-    try { window.parent.postMessage({ type: 'v2:states', states: states, state: current }, '*'); } catch (_) {}
+    try { window.parent.postMessage({ type: 'v2:states', states: states, state: current, role: doc.getAttribute('data-role') }, '*'); } catch (_) {}
   }
 
   apply(qp('state'));
