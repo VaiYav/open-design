@@ -936,9 +936,15 @@ html[data-chrome='0'] .statebar { display: none; }
 .fc-seg.is-off { opacity: .1; }
 .fc-seg--p { fill: oklch(from var(--success) l c h / .88); }
 .fc-seg--n { fill: oklch(from var(--danger) l c h / .8); }
+.fc-seg--a { fill: oklch(from var(--accent) l c h / .85); }
+.fc-seg--f { fill: oklch(from var(--danger) l c h / .72); }
+.fc-seg--m { fill: oklch(from var(--muted) l c h / .4); }
 .fc-hatch-bg { fill: oklch(from var(--muted) l c h / .1); }
 .fc-hatch-ln { stroke: oklch(from var(--muted) l c h / .65); stroke-width: 1.7; }
 .fc-seg--x { stroke: oklch(from var(--muted) l c h / .6); stroke-width: 1; stroke-dasharray: 3 2; }
+/* "current" column highlight via cfg.colCls — e.g. live hour on monitor:
+   full-strength fill + hairline outline reads as "now" without a marker element */
+.fc-col--now .fc-seg { fill-opacity: 1; stroke: var(--fg); stroke-opacity: .22; stroke-width: 1; }
 
 /* line series */
 .fc-ln { fill: none; stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
@@ -962,6 +968,32 @@ html[data-chrome='0'] .statebar { display: none; }
 .fc-hit { fill: transparent; outline: none; }
 .fc-hit:focus-visible { fill: oklch(from var(--accent) l c h / .12); }
 
+/* sparkline — decorative trend hint inside KPI cards.
+   Host = [data-spark] element; auto-mounted by charts.js. */
+.fc-spark { width: 100%; height: 30px; margin-top: 10px; }
+.kpi .fc-spark { margin-top: 8px; }
+.fc-spk-svg { display: block; width: 100%; height: 30px; }
+.fc-spk-ln { fill: none; stroke-width: 1.8; stroke-linejoin: round; stroke-linecap: round; }
+.fc-spark--a .fc-spk-ln { stroke: var(--accent); }
+.fc-spark--ok .fc-spk-ln { stroke: var(--success); }
+.fc-spark--bad .fc-spk-ln { stroke: var(--danger); }
+.fc-spark--mut .fc-spk-ln { stroke: var(--muted); }
+.fc-spk-dot { fill: var(--surface); stroke-width: 1.6; }
+.fc-spark--a .fc-spk-dot { stroke: var(--accent); }
+.fc-spark--ok .fc-spk-dot { stroke: var(--success); }
+.fc-spark--bad .fc-spk-dot { stroke: var(--danger); }
+.fc-spark--mut .fc-spk-dot { stroke: var(--muted); }
+.fc-stop-ok-a { stop-color: var(--success); stop-opacity: .18; }
+.fc-stop-ok-b { stop-color: var(--success); stop-opacity: 0; }
+.fc-stop-bad-a { stop-color: var(--danger); stop-opacity: .18; }
+.fc-stop-bad-b { stop-color: var(--danger); stop-opacity: 0; }
+.fc-stop-mut-a { stop-color: var(--muted); stop-opacity: .16; }
+.fc-stop-mut-b { stop-color: var(--muted); stop-opacity: 0; }
+/* accent KPI cards: sparkline reads on the gradient, keep it white */
+.kpi--accent .fc-spk-ln { stroke: var(--c-white); }
+.kpi--accent .fc-spk-dot { stroke: var(--c-white); fill: var(--accent); }
+.kpi--accent .fc-spk-area { opacity: .55; }
+
 /* tooltip — inverted fg/bg pair, works in both themes */
 .fc-tip { position: absolute; z-index: 8; min-width: 148px; max-width: 240px; opacity: 0; pointer-events: none;
   transform: translateY(3px); transition: opacity .12s ease, transform .12s ease;
@@ -982,6 +1014,8 @@ html[data-chrome='0'] .statebar { display: none; }
 .fc-sw--x { background: repeating-linear-gradient(45deg, oklch(from var(--muted) l c h / .6) 0 2px, transparent 2px 5px); border: 1px dashed oklch(from var(--muted) l c h / .65); }
 .fc-sw--a { background: var(--accent); }
 .fc-sw--b { background: var(--accent-2); }
+.fc-sw--f { background: oklch(from var(--danger) l c h / .72); }
+.fc-sw--m { background: oklch(from var(--muted) l c h / .4); }
 
 /* legend — buttons, toggle dims the series (axis stays stable) */
 .fc-legend { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }

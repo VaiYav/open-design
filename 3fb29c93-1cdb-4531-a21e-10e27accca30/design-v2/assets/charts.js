@@ -156,7 +156,8 @@ window.FlowCharts = (function () {
       });
       // column hover bg
       s += '<rect class="fc-colbg" x="' + (cx - slot / 2 + 1).toFixed(1) + '" y="' + pt + '" width="' + (slot - 2).toFixed(1) + '" height="' + ph + '"/>';
-      s += '<g class="fc-col">';
+      var cc = cfg.colCls ? cfg.colCls(r, i) : '';
+      s += '<g class="fc-col' + (cc ? ' ' + cc : '') + '">';
       parts.forEach(function (p, pi) {
         var rx = (pi === parts.length - 1) ? ' rx="3"' : '';
         var fill = p.sg.cls === 'x' ? ' fill="url(#' + id + '-hatch)"' : '';
@@ -390,12 +391,13 @@ window.FlowCharts = (function () {
     cfg.rows.forEach(function (r, i) {
       var v = cfg.value(r);
       var share = cfg.total ? Math.round(v / cfg.total * 100) + '%' : '';
+      var vTxt = cfg.fmt ? cfg.fmt(v) : v;
       var row = document.createElement('div');
       row.className = 'fc-hbr' + (cfg.highlight && cfg.highlight(r, i) ? ' is-hot' : '');
       row.innerHTML =
         '<span class="fc-hbr-l" title="' + esc(cfg.label(r)) + '">' + esc(cfg.label(r)) + '</span>' +
         '<span class="fc-hbr-t"><i class="fc-hbr-f ' + (cfg.cls || '') + '" style="width:' + (v / max * 100).toFixed(1) + '%"></i></span>' +
-        '<span class="fc-hbr-v">' + v + (share ? ' <small>' + share + '</small>' : '') + '</span>';
+        '<span class="fc-hbr-v">' + vTxt + (share ? ' <small>' + share + '</small>' : '') + '</span>';
       if (cfg.extra) {
         var ex = cfg.extra(r);
         if (ex) {
@@ -409,5 +411,49 @@ window.FlowCharts = (function () {
     });
   }
 
-  return { bars: bars, lines: lines, hbars: hbars };
+  /* ---------- sparkline ---------- */
+  /* cfg = { values:[n], cls:'a|ok|bad|mut' }. Decorative trend hint —
+     aria-hidden: the KPI's own delta text already carries the meaning. */
+  function spark(el, cfg) {
+    cfg = cfg || {};
+    el.classList.add('fc-spark', 'fc-spark--' + (cfg.cls || 'a'));
+    var vs = (cfg.values || []).filter(function (v) { return typeof v === 'number' && isFinite(v); });
+    if (vs.length < 2) { el.innerHTML = ''; return; }
+    var W = 120, H = 30, p = 3;
+    var lo = Math.min.apply(null, vs), hi = Math.max.apply(null, vs);
+    if (hi - lo < 1e-9) { lo -= 1; hi += 1; }
+    var pad = (hi - lo) * 0.14; lo -= pad; hi += pad;
+    var X = function (i) { return p + i * (W - 2 * p) / (vs.length - 1); };
+    var Y = function (v) { return p + (hi - v) / (hi - lo) * (H - 2 * p); };
+    var pts = vs.map(function (v, i) { return [X(i), Y(v)]; });
+    var d = smoothPath(pts);
+    var id = 'fcs' + (++uid);
+    var last = pts[pts.length - 1];
+    el.innerHTML =
+      '<svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" class="fc-spk-svg" aria-hidden="true" focusable="false">' +
+      '<defs><linearGradient id="' + id + '" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0" class="fc-stop-' + (cfg.cls || 'a') + '-a"/><stop offset="1" class="fc-stop-' + (cfg.cls || 'a') + '-b"/></linearGradient></defs>' +
+      '<path class="fc-spk-area" d="' + d + ' L' + last[0].toFixed(1) + ',' + H + ' L' + pts[0][0].toFixed(1) + ',' + H + ' Z" fill="url(#' + id + ')"/>' +
+      '<path class="fc-spk-ln" d="' + d + '"/>' +
+      '<circle class="fc-spk-dot" cx="' + last[0].toFixed(1) + '" cy="' + last[1].toFixed(1) + '" r="2.6"/></svg>';
+  }
+
+  /* Auto-mount: any element with data-spark="v,v,…" (optional
+     data-spark-cls) becomes a sparkline host. Runs once on DOM ready —
+     page scripts add their data-spark hosts synchronously before it. */
+  function mountSparks(root) {
+    (root || document).querySelectorAll('[data-spark]').forEach(function (el) {
+      if (el.__sparked) return;
+      el.__sparked = true;
+      var vs = (el.getAttribute('data-spark') || '').split(',').map(function (s) { return parseFloat(s); });
+      spark(el, { values: vs, cls: el.getAttribute('data-spark-cls') || 'a' });
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { mountSparks(document); });
+  } else {
+    mountSparks(document);
+  }
+
+  return { bars: bars, lines: lines, hbars: hbars, spark: spark, mountSparks: mountSparks };
 })();

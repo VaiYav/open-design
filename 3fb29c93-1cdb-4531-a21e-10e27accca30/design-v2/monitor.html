@@ -17,12 +17,8 @@
   @media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } }
   .feed { max-height: 420px; overflow-y: auto; }
   .feed .lrow { padding: 10px 16px; }
-  .send-bars { display: flex; align-items: flex-end; gap: 5px; height: 110px; padding: 8px 4px 0; }
-  .send-bars .b { flex: 1; border-radius: 4px 4px 0 0; background: oklch(from var(--c-blue-500) l c h / 0.55); min-height: 4px; position: relative; }
-  .send-bars .b.now { background: var(--accent); }
-  .send-bars .b.err::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 22%; border-radius: 4px 4px 0 0; background: var(--danger); }
-  .send-bars-x { display: flex; gap: 5px; padding: 6px 4px 0; }
-  .send-bars-x span { flex: 1; text-align: center; font: 400 9.5px/1 var(--mono); color: var(--faint); }
+  .plat .fc-spark { width: 100%; margin-top: 5px; }
+  .plat .fc-spk-svg { height: 20px; }
 </style>
 </head>
 <body data-od-id="page" data-od-label="Live monitor">
@@ -40,10 +36,10 @@
     <div class="grid cols-5 mb-3" data-od-id="mon-platforms" id="mon-platforms"></div>
 
     <div class="grid cols-4 mb-3">
-      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--user ic--sm"></span>Operators online</div><div class="kpi__num">4<span class="muted" style="font-size:15px;font-weight:600">/5</span></div><div class="kpi__delta" style="color:var(--muted)">Roman T. starts 00:00</div></div>
-      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--send ic--sm"></span>Sends last hour</div><div class="kpi__num">312</div><div class="kpi__delta kpi__delta--up">+9% vs prev hour</div></div>
-      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--inbox ic--sm"></span>Inbound queue</div><div class="kpi__num">27</div><div class="kpi__delta" style="color:var(--muted)">oldest 4h 20m</div></div>
-      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--warn ic--sm"></span>Failing now</div><div class="kpi__num">14</div><div class="kpi__delta kpi__delta--down">LiveBeam API</div></div>
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--user ic--sm"></span>Operators online</div><div class="kpi__num">4<span class="muted" style="font-size:15px;font-weight:600">/5</span></div><div class="kpi__delta" style="color:var(--muted)">Roman T. starts 00:00</div><div data-spark="3,3,4,3,4,4,3,4" data-spark-cls="mut"></div></div>
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--send ic--sm"></span>Sends last hour</div><div class="kpi__num">312</div><div class="kpi__delta kpi__delta--up">+9% vs prev hour</div><div data-spark="236,255,289,244,198,231,274,296,312" data-spark-cls="a"></div></div>
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--inbox ic--sm"></span>Inbound queue</div><div class="kpi__num">27</div><div class="kpi__delta" style="color:var(--muted)">oldest 4h 20m</div><div data-spark="41,38,35,40,33,31,29,27" data-spark-cls="ok"></div></div>
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--warn ic--sm"></span>Failing now</div><div class="kpi__num">14</div><div class="kpi__delta kpi__delta--down">LiveBeam API</div><div data-spark="1,2,1,0,1,3,5,9,14" data-spark-cls="bad"></div></div>
     </div>
 
     <div class="grid" style="grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);align-items:start">
@@ -54,9 +50,8 @@
       <div style="display:flex;flex-direction:column;gap:14px">
         <div class="card" data-od-id="mon-sends">
           <div class="card__head"><h2>Sends per hour</h2><span class="tiny muted mono">last 12h</span></div>
-          <div class="send-bars" id="mon-bars"></div>
-          <div class="send-bars-x" id="mon-bars-x"></div>
-          <div class="card__foot tiny muted">Red cap = failed share of the hour. Current hour highlighted.</div>
+          <div id="mon-bars"></div>
+          <div class="card__foot tiny muted">Failed share sits on top of each hour. Current hour outlined.</div>
         </div>
         <div class="card" data-od-id="mon-floor">
           <div class="card__head"><h2>On the floor</h2><a class="btn btn--quiet btn--sm" href="admin-schedules.html">Schedules</a></div>
@@ -89,6 +84,7 @@
 
 </main>
 <script src="assets/fixtures.js"></script>
+<script src="assets/charts.js"></script>
 <script src="assets/components.js"></script>
 <script src="assets/stateful.js"></script>
 <script src="assets/app.js"></script>
@@ -98,15 +94,16 @@
   var F = window.Fixtures;
 
   var plats = [
-    { p: 'realloves', st: 'on', lat: '210ms · 0.2% err' },
-    { p: 'findbride', st: 'on', lat: '340ms · 0.4% err' },
-    { p: 'livebeam', st: 'err', lat: 'timeout · 8.1% err' },
-    { p: 'talkytimes', st: 'on', lat: '180ms · 0.1% err' },
-    { p: 'chatshouse', st: 'off', lat: 'maintenance' }
+    { p: 'realloves', st: 'on', lat: '210ms · 0.2%', spark: '180,195,210,204,215,208,210' },
+    { p: 'findbride', st: 'on', lat: '340ms · 0.4%', spark: '310,322,318,330,336,342,340' },
+    { p: 'livebeam', st: 'err', lat: 'timeout · 8.1%', spark: '220,240,260,310,380,520,900' },
+    { p: 'talkytimes', st: 'on', lat: '180ms · 0.1%', spark: '176,180,178,184,181,179,180' },
+    { p: 'chatshouse', st: 'off', lat: 'maintenance', spark: '' }
   ];
   document.getElementById('mon-platforms').innerHTML = plats.map(function (x) {
     var d = x.st === 'on' ? 'dot--on' : (x.st === 'err' ? 'dot--err' : 'dot--off');
-    return '<div class="card plat"><img src="' + F.PLATFORMS[x.p].logo + '" alt="' + F.PLATFORMS[x.p].name + '"><div style="flex:1;min-width:0"><div class="nm">' + F.PLATFORMS[x.p].name + '</div><div class="lat">' + x.lat + '</div></div><span class="dot ' + d + '"></span></div>';
+    var sp = x.spark ? '<div data-spark="' + x.spark + '" data-spark-cls="' + (x.st === 'err' ? 'bad' : 'a') + '"></div>' : '';
+    return '<div class="card plat"><img src="' + F.PLATFORMS[x.p].logo + '" alt="' + F.PLATFORMS[x.p].name + '"><div style="flex:1;min-width:0"><div class="nm">' + F.PLATFORMS[x.p].name + '</div><div class="lat">' + x.lat + '</div>' + sp + '</div><span class="dot ' + d + '"></span></div>';
   }).join('');
 
   var feed = [
@@ -126,13 +123,19 @@
   }).join('');
 
   var hours = [142, 168, 201, 236, 255, 289, 244, 198, 231, 274, 296, 312];
-  var errs = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1];
-  var max = Math.max.apply(null, hours);
-  document.getElementById('mon-bars').innerHTML = hours.map(function (v, i) {
-    var h = Math.round(v / max * 100);
-    return '<div class="b' + (i === hours.length - 1 ? ' now' : '') + (errs[i] ? ' err' : '') + '" style="height:' + h + '%" title="' + v + ' sends' + (errs[i] ? ' · failures' : '') + '"></div>';
-  }).join('');
-  document.getElementById('mon-bars-x').innerHTML = ['01','02','03','04','05','06','07','08','09','10','11','12'].map(function (h) { return '<span>' + h + '</span>'; }).join('');
+  var errs = [2, 1, 0, 0, 1, 0, 3, 1, 4, 2, 6, 11];
+  FlowCharts.bars(document.getElementById('mon-bars'), {
+    aria: 'Sends per hour, last 12 hours',
+    rows: hours.map(function (v, i) { return { d: (i + 1 < 10 ? '0' : '') + (i + 1) + ':00', ok: v - errs[i], fail: errs[i] }; }),
+    segments: [
+      { k: 'ok', label: 'Delivered', cls: 'a' },
+      { k: 'fail', label: 'Failed', cls: 'f' }
+    ],
+    colCls: function (r, i) { return i === hours.length - 1 ? 'fc-col--now' : ''; },
+    tip: function (r, i) {
+      return '<div class="fc-tip-m">' + (errs[i] ? Math.round(errs[i] / hours[i] * 100) + '% failure share' : 'no failures') + (i === hours.length - 1 ? ' · live' : '') + '</div>';
+    }
+  });
 
   document.getElementById('mon-floor').innerHTML = [
     { n: 'Katerina V.', s: 'until 16:00 · 14 chats', st: 'online' },

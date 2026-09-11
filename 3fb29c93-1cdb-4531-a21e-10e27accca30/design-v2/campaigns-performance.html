@@ -20,10 +20,15 @@
     </div>
 
     <div class="grid cols-4 mb-3">
-      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--send ic--sm"></span>Sends</div><div class="kpi__num">8 412</div><div class="kpi__delta kpi__delta--up">▲ 9%</div></div>
-      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--reply ic--sm"></span>Reply rate</div><div class="kpi__num">23.4<span class="unit">%</span></div><div class="kpi__delta kpi__delta--up">▲ 2.1 pts</div></div>
-      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--templates ic--sm"></span>Best template</div><div class="kpi__num" style="font-size:20px;line-height:1.2">Weekend plans</div><div class="kpi__delta kpi__delta--up">41% reply rate</div></div>
-      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--declined ic--sm"></span>Declined</div><div class="kpi__num">2.1<span class="unit">%</span></div><div class="kpi__delta" style="color:var(--muted)">of submissions</div></div>
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--send ic--sm"></span>Sends</div><div class="kpi__num">8 412</div><div class="kpi__delta kpi__delta--up">▲ 9%</div><div data-spark="480,505,530,560,545,590,610,640,660,690,705,720,760,790" data-spark-cls="a"></div></div>
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--reply ic--sm"></span>Reply rate</div><div class="kpi__num">23.4<span class="unit">%</span></div><div class="kpi__delta kpi__delta--up">▲ 2.1 pts</div><div data-spark="19.8,20.4,21.1,20.6,21.8,22.0,22.6,22.2,23.0,23.1,23.6,23.2,23.5,23.4" data-spark-cls="ok"></div></div>
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--templates ic--sm"></span>Best template</div><div class="kpi__num" style="font-size:20px;line-height:1.2">Weekend plans</div><div class="kpi__delta kpi__delta--up">41% reply rate</div><div data-spark="28,30,31,33,35,34,36,38,39,40,40,41,41,41" data-spark-cls="a"></div></div>
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--declined ic--sm"></span>Declined</div><div class="kpi__num">2.1<span class="unit">%</span></div><div class="kpi__delta" style="color:var(--muted)">of submissions</div><div data-spark="3.4,3.1,2.9,3.0,2.7,2.6,2.4,2.5,2.3,2.2,2.2,2.1,2.1,2.1" data-spark-cls="ok"></div></div>
+    </div>
+
+    <div class="card mb-3" data-od-id="perf-trend">
+      <div class="card__head"><h2>Sends &amp; replies — 14 days</h2><span class="small muted">green share = replies</span></div>
+      <div id="perf-trend"></div>
     </div>
 
     <div class="grid" style="grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);align-items:start">
@@ -37,7 +42,7 @@
       <div style="display:flex;flex-direction:column;gap:14px">
         <div class="card card--pad">
           <h3 class="mb-2" style="font-size:14px">By type</h3>
-          <div id="perf-bars" style="display:flex;flex-direction:column;gap:12px"></div>
+          <div id="perf-bars" style="--hbl:118px"></div>
         </div>
         <div class="copilot-card">
           <h4><span class="ic ic--omni ic--sm"></span>Beloved insight</h4>
@@ -63,6 +68,7 @@
 
 </main>
 <script src="assets/fixtures.js"></script>
+<script src="assets/charts.js"></script>
 <script src="assets/components.js"></script>
 <script src="assets/stateful.js"></script>
 <script src="assets/app.js"></script>
@@ -82,11 +88,29 @@
       '<td class="num">' + r[2] + '</td><td class="num">' + Math.round(r[2] * pct / 100) + '</td><td class="num strong" style="color:' + col + '">' + r[3] + '</td>' +
       '<td><div style="height:8px;border-radius:999px;background:var(--surface-2)"><div style="height:100%;width:' + w + '%;border-radius:999px;background:' + col + '"></div></div></td></tr>';
   }).join('');
+  var days = ['Aug 18','Aug 19','Aug 20','Aug 21','Aug 22','Aug 23','Aug 24','Aug 25','Aug 26','Aug 27','Aug 28','Aug 29','Aug 30','Aug 31'];
+  var sent = [480, 505, 530, 560, 545, 590, 610, 640, 660, 690, 705, 720, 760, 790];
+  var rep  = [95, 103, 112, 115, 118, 130, 138, 142, 152, 159, 166, 167, 178, 185];
+  FlowCharts.bars(document.getElementById('perf-trend'), {
+    aria: 'Sends and replies per day, last 14 days',
+    rows: sent.map(function (v, i) { return { d: days[i].replace('Aug ', ''), quiet: v - rep[i], rep: rep[i], sent: v }; }),
+    segments: [
+      { k: 'quiet', label: 'Sent, no reply', cls: 'm' },
+      { k: 'rep', label: 'Replies', cls: 'p' }
+    ],
+    tip: function (r) {
+      return '<div class="fc-tip-m">reply rate ' + Math.round(r.rep / r.sent * 100) + '% · ' + r.sent + ' sent</div>';
+    }
+  });
   var types = [['Chat invites', 34], ['Welcome letters', 24], ['Icebreaker mail', 21], ['Icebreaker msg', 18], ['Newsfeed posts', 12]];
-  document.getElementById('perf-bars').innerHTML = types.map(function (t) {
-    return '<div><div class="row row--between" style="font-size:12.5px;margin-bottom:5px"><span>' + t[0] + '</span><span class="mono">' + t[1] + '%</span></div>' +
-      '<div style="height:8px;border-radius:999px;background:var(--surface-2)"><div style="height:100%;width:' + t[1] * 2.8 + '%;border-radius:999px;background:var(--accent-grad)"></div></div></div>';
-  }).join('');
+  FlowCharts.hbars(document.getElementById('perf-bars'), {
+    rows: types,
+    label: function (t) { return t[0]; },
+    value: function (t) { return t[1]; },
+    total: 109,
+    fmt: function (v) { return v + '%'; },
+    highlight: function (t, i) { return i === 0; }
+  });
   var sk = '';
   for (var i = 0; i < 6; i++) sk += '<div class="sk-row"><span class="skeleton" style="width:22%;height:13px"></span><span class="skeleton" style="width:10%;height:22px;border-radius:999px"></span><span style="flex:1"></span><span class="skeleton" style="width:140px;height:8px;border-radius:999px"></span></div>';
   document.getElementById('perf-sk').innerHTML = sk;
