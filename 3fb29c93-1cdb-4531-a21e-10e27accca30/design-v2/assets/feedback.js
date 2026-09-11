@@ -124,10 +124,14 @@
       '</div></div>';
   }
 
-  /* FLOW-8555: feedback collection is Admin / Main admin only — for the
-     `account` role every unit renders as nothing, whatever its state. */
+  /* Feedback roles: every signed-in role can vote and comment, operators
+     included. A role with fb:false would render every unit as nothing —
+     kept data-driven via F.ROLES[r].fb. The `fb-no-perm` demo state
+     (→ 'none') covers the revoked-permission case independent of role. */
   function roleBlocked() {
-    return document.documentElement.getAttribute('data-role') === 'account';
+    var r = document.documentElement.getAttribute('data-role');
+    var R = window.Fixtures && window.Fixtures.ROLES;
+    return !!(R && R[r] && R[r].fb === false);
   }
 
   function renderUnit(unit) {

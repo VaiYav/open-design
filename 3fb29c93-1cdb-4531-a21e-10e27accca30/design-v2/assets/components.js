@@ -119,10 +119,14 @@
 
   /* -- role gating (F.SCREEN_ROLES mirrors src/router.jsx checkRole) ------ */
   function role() {
+    var ok = { all: 1, account: 1, admin: 1, main_admin: 1 };
     var r = document.documentElement.getAttribute('data-role');
-    if (r === 'account' || r === 'admin' || r === 'main_admin') return r;
-    try { r = localStorage.getItem('v2-role'); } catch (_) { r = null; }
-    return (r === 'admin' || r === 'main_admin') ? r : 'account';
+    if (ok[r]) return r;
+    /* Storage counts only when it was an explicit pick — see stateful.js. */
+    try {
+      r = localStorage.getItem('v2-role-picked') ? localStorage.getItem('v2-role') : null;
+    } catch (_) { r = null; }
+    return ok[r] ? r : 'all';
   }
   function allows(href) {
     var F = window.Fixtures;

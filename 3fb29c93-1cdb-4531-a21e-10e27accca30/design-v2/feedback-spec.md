@@ -26,7 +26,8 @@ Feature, not redesign — everything reuses the Flow v2 shell, tokens, and `data
   vote: 'up'|'down'|null, comment: string|null }
 ```
 
-- Vote → `saving` → recorded badge. Two admins keep independent revisions (server owns `mine`/`summary`/`revision`; component renders server state, never recomputes).
+- Vote → `saving` → recorded badge. Reviewers keep independent revisions (server owns `mine`/`summary`/`revision`; component renders server state, never recomputes).
+- **Who can vote:** every signed-in role — operators (account), admins, main admins. Operators interact with feedback inline on their own surfaces (chats, mails, tools, campaigns); the management/analytics page stays admin/main_admin only. `F.ROLES[r].fb` drives the gate; `fb-no-perm` demos revoked permission without needing a role.
 - Comment editor: `Intl.Segmenter` grapheme counter, 200 max, Save disabled when empty/over limit, draft survives errors.
 - Idempotency: production should send `Idempotency-Key` per vote submission; UI already models retry-safe flows.
 - All `fb-*` page states map onto the control via a `data-state` observer — the atlas switcher demos every variant.
@@ -41,7 +42,7 @@ Feature, not redesign — everything reuses the Flow v2 shell, tokens, and `data
 | `fb-error` | save failed, retryable |
 | `fb-lineage` | AI label + "Lineage pending" |
 | `fb-regfail` | omniscience only: output stays, "Retry feedback" |
-| `fb-no-perm` | controls hidden (account role) |
+| `fb-no-perm` | controls hidden — revoked permission (role-independent) |
 
 ## Omniscience rules
 

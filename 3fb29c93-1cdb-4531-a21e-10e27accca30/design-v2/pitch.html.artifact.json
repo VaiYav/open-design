@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "deck",
+  "title": "design-v2/pitch.html",
+  "entry": "design-v2/pitch.html",
+  "renderer": "deck-html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-09-11T10:01:51.803Z",
+  "updatedAt": "2026-09-11T10:01:51.803Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

@@ -1,7 +1,8 @@
 /* Flow v2 — state engine.
    ?state=<name> picks which [data-view] block is visible.
    ?theme=light|dark sets the theme (persisted in localStorage).
-   ?role=account|admin|main_admin gates nav, screens and feedback controls.
+   ?role=all|account|admin|main_admin gates nav, screens and feedback controls.
+   Default `all` = ungated design-review lens.
    ?chrome=0 hides the floating state switcher (atlas embeds its own chips).
    Communicates with the atlas via postMessage. */
 (function () {
@@ -23,22 +24,39 @@
   }
   applyTheme(theme);
 
-  /* ---- role ---- */
-  var ROLE_IDS = ['account', 'admin', 'main_admin'];
+  /* ---- role ----
+     `all` is the design-review default: every screen and every feedback
+     control renders. Picking a concrete role is what switches gating on.
+     Persistence stores only an *explicit* pick (param or chip) — earlier
+     builds wrote the resolved default too, so a stored value without the
+     `v2-role-picked` flag is residue, not a preference, and is dropped. */
+  var ROLE_IDS = ['all', 'account', 'admin', 'main_admin'];
   var role = qp('role');
+  var explicit = role !== null;
   if (role === null) {
-    try { role = localStorage.getItem('v2-role') || 'account'; } catch (_) { role = 'account'; }
+    try {
+      if (localStorage.getItem('v2-role') && !localStorage.getItem('v2-role-picked')) {
+        localStorage.removeItem('v2-role');
+      }
+      role = localStorage.getItem('v2-role') || 'all';
+    } catch (_) { role = 'all'; }
   }
-  /* An explicit but unknown ?role= always falls back to the least-privileged
-     role — never silently to whatever was stored before. */
-  if (ROLE_IDS.indexOf(role) === -1) role = 'account';
+  /* An explicit but unknown ?role= falls back to the ungated preview role —
+     the atlas exists to show designs, not to hide them. */
+  if (ROLE_IDS.indexOf(role) === -1) role = 'all';
+  function persistRole(r) {
+    try {
+      localStorage.setItem('v2-role', r);
+      localStorage.setItem('v2-role-picked', '1');
+    } catch (_) {}
+  }
   /* A role switch re-mounts the shell (nav filtering, persona, denied
      screens) — the URL carries the role first, then we reload once. */
   function applyRole(r, opts) {
     opts = opts || {};
     if (ROLE_IDS.indexOf(r) === -1 || r === doc.getAttribute('data-role')) return;
     doc.setAttribute('data-role', r);
-    try { localStorage.setItem('v2-role', r); } catch (_) {}
+    persistRole(r);
     try {
       var u = new URL(location.href);
       u.searchParams.set('role', r);
@@ -47,7 +65,7 @@
     if (opts.reload !== false) location.reload();
   }
   doc.setAttribute('data-role', role);
-  try { localStorage.setItem('v2-role', role); } catch (_) {}
+  if (explicit) persistRole(role);
 
   if (qp('chrome') === '0') doc.setAttribute('data-chrome', '0');
 
@@ -115,7 +133,7 @@
       return;
     }
     bar.classList.remove('statebar--fab');
-    var roleLbl = { account: 'Operator', admin: 'Admin', main_admin: 'Main admin' };
+    var roleLbl = { all: 'All roles', account: 'Operator', admin: 'Admin', main_admin: 'Main admin' };
     var h = '<div class="statebar__t">Screen state' +
       '<button type="button" class="chip theme-mini" data-st-theme aria-label="Toggle theme">' +
       (doc.getAttribute('data-theme') === 'dark' ? 'Light' : 'Dark') + '</button>' +

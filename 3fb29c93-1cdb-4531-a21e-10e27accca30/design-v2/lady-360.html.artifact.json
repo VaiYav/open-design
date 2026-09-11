@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "design-v2/lady-360.html",
+  "entry": "design-v2/lady-360.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-09-11T09:17:10.257Z",
+  "updatedAt": "2026-09-11T09:17:10.257Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

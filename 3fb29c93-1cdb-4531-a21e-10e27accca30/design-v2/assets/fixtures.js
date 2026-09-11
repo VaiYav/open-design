@@ -257,8 +257,9 @@
 
   /* -- Role model ----------------------------------------------------------
      Mirrors src/router.jsx checkRole() + ProtectedLayout roleMenus:
-       account    — operator: full workspace + campaigns, no admin zone,
-                    no message-feedback controls (FLOW-8555 is admin-only)
+       account    — operator: full workspace + campaigns, no admin zone.
+                    Operators also rate outgoing/AI output (fb: true) — the
+                    management screen stays admin/main_admin only.
        admin      — workspace + admin zone, but NOT auto_sendings /
                     icebreakers / newsfeeds (account-only in v1 →
                     campaigns-groups/campaigns-posts here) and NOT the
@@ -270,7 +271,11 @@
                     FLOW-8555 tightens it to admin/main_admin.
      SCREEN_ROLES is keyed by file name — every shipped screen must appear. */
   var ROLES = {
-    account:    { name: 'Anna K.',     label: 'Operator',   home: 'home.html',  fb: false },
+    /* `all` is a preview-only lens for the atlas/design review — nothing is
+       gated, every screen and every feedback control renders. It is not a
+       product role: v1 has only the three below. */
+    all:        { name: 'Katerina V.', label: 'All roles',  home: 'home.html',  fb: true, preview: true },
+    account:    { name: 'Anna K.',     label: 'Operator',   home: 'home.html',  fb: true },
     admin:      { name: 'Katerina V.', label: 'Admin',      home: 'home.html',  fb: true },
     main_admin: { name: 'Max R.',      label: 'Main admin', home: 'admin.html', fb: true }
   };
@@ -301,6 +306,7 @@
     'admin-admin-edit.html': ROLE_MA
   };
   function roleAllows(file, role) {
+    if (role === 'all') return true;
     var r = SCREEN_ROLES[file];
     return !r || r.indexOf(role) !== -1;
   }

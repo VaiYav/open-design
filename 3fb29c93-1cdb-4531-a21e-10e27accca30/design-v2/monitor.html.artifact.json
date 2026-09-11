@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "design-v2/monitor.html",
+  "entry": "design-v2/monitor.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-09-11T09:16:34.728Z",
+  "updatedAt": "2026-09-11T09:16:34.728Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

@@ -62,6 +62,7 @@
       </div>
       <span style="flex:1"></span>
       <div class="seg seg--role" role="group" aria-label="View as role" id="atlas-role">
+        <button type="button" data-role="all">All</button>
         <button type="button" data-role="account">Operator</button>
         <button type="button" data-role="admin">Admin</button>
         <button type="button" data-role="main_admin">Main admin</button>
@@ -85,7 +86,7 @@
         <iframe id="atlas-frame" title="Screen preview" src="about:blank"></iframe>
       </div>
     </div>
-    <div class="atlas__hint">deep-link: <code>?screen=&lt;id&gt;&amp;state=&lt;state&gt;&amp;theme=dark&amp;role=admin</code> · state matrix: every chip × light + dark · role gates mirror the v1 router</div>
+    <div class="atlas__hint">deep-link: <code>?screen=&lt;id&gt;&amp;state=&lt;state&gt;&amp;theme=dark&amp;role=admin</code> · state matrix: every chip × light + dark · <code>role=all</code> (default) shows every screen — pick a role to preview its gates</div>
   </div>
 </div>
 <script src="assets/fixtures.js"></script>
@@ -109,9 +110,9 @@
   M.zones.forEach(function (z) { z.screens.forEach(function (s) { s.zone = z.label; flat.push(s); }); });
 
   var params = new URLSearchParams(location.search);
-  var ROLES = ['account', 'admin', 'main_admin'];
-  var cur = { screen: params.get('screen') || 'home', state: params.get('state') || null, theme: params.get('theme') || 'light', vp: 0, role: params.get('role') || 'account' };
-  if (ROLES.indexOf(cur.role) === -1) cur.role = 'account';
+  var ROLES = ['all', 'account', 'admin', 'main_admin'];
+  var cur = { screen: params.get('screen') || 'home', state: params.get('state') || null, theme: params.get('theme') || 'light', vp: 0, role: params.get('role') || 'all' };
+  if (ROLES.indexOf(cur.role) === -1) cur.role = 'all';
   try {
     if (!params.get('screen')) {
       var saved = JSON.parse(localStorage.getItem('v2-atlas') || 'null');
@@ -120,7 +121,9 @@
     var savedTheme = localStorage.getItem('v2-theme');
     if (!params.get('theme') && (savedTheme === 'dark' || savedTheme === 'light')) cur.theme = savedTheme;
     if (!params.get('role')) {
-      var savedRole = localStorage.getItem('v2-role');
+      /* Only an explicit pick persists (v2-role-picked) — a stored value
+         without it is residue from an older default and is ignored. */
+      var savedRole = localStorage.getItem('v2-role-picked') ? localStorage.getItem('v2-role') : null;
       if (ROLES.indexOf(savedRole) !== -1) cur.role = savedRole;
     }
   } catch (_) {}
@@ -215,7 +218,10 @@
     if (ROLES.indexOf(r) === -1 || r === cur.role) return;
     cur.role = r;
     this.querySelectorAll('button').forEach(function (x) { x.classList.toggle('is-active', x === b); });
-    try { localStorage.setItem('v2-role', r); } catch (_) {}
+    try {
+      localStorage.setItem('v2-role', r);
+      localStorage.setItem('v2-role-picked', '1');
+    } catch (_) {}
     /* The iframe keeps its own role via ?role= — reload the frame src rather
        than postMessage, since a role change re-mounts the shell anyway. */
     load();
