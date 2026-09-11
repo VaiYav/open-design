@@ -139,6 +139,16 @@
 
   function find(id) { for (var i = 0; i < flat.length; i++) if (flat[i].id === id) return flat[i]; return flat[0]; }
 
+  /* Directory base of this page, normalized to end with '/'. Static hosts
+     (Vercel) may serve the directory index at a slashless URL like
+     '/design-v2' — a naive relative 'login.html' would then resolve to
+     '/login.html' and 404. Resolving against an explicit base is safe under
+     every mount point and never causes redirect loops. */
+  var baseHref = location.href.replace(/[?#].*$/, '');
+  if (/\/[^/?#]*\.html?$/i.test(baseHref)) baseHref = baseHref.slice(0, baseHref.lastIndexOf('/') + 1);
+  else if (!/\/$/.test(baseHref)) baseHref += '/';
+  function screenUrl(file, params) { return new URL(file + (params || ''), baseHref).href; }
+
   function buildTree(filter) {
     var h = '';
     M.zones.forEach(function (z) {
@@ -167,10 +177,10 @@
     if (!cur.state) cur.state = s.states[0];
     titleEl.textContent = s.title;
     fileEl.textContent = s.file;
-    if (s.v1File) { v1El.hidden = false; v1El.href = (M.baseline || '../design-copy/') + s.v1File; } else v1El.hidden = true;
-    var src = s.file + '?chrome=0&theme=' + cur.theme + '&state=' + cur.state + '&role=' + cur.role;
+    if (s.v1File) { v1El.hidden = false; v1El.href = new URL((M.baseline || '../design-copy/') + s.v1File, baseHref).href; } else v1El.hidden = true;
+    var src = screenUrl(s.file, '?chrome=0&theme=' + cur.theme + '&state=' + cur.state + '&role=' + cur.role);
     if (frame.getAttribute('src') !== src) frame.src = src;
-    openEl.href = s.file + '?state=' + cur.state + '&theme=' + cur.theme + '&role=' + cur.role;
+    openEl.href = screenUrl(s.file, '?state=' + cur.state + '&theme=' + cur.theme + '&role=' + cur.role);
     roleNote.hidden = allowed(s);
     var h = '<span class="lbl">State</span>';
     s.states.forEach(function (st) {
