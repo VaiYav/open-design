@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="42" height="57">
+  <defs>
+    <linearGradient id="a" x1="1.7" x2="2.7" y1=".2" y2=".2" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#3b42b8"/>
+      <stop offset="1" stop-color="#181b89"/>
+    </linearGradient>
+    <linearGradient xlink:href="#a" id="b" x1=".4" x2=".4" y1="1.4" y2=".2"/>
+    <linearGradient id="c" x1="1.7" x2="1.7" y1="1" y2="-.3" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#5862de"/>
+      <stop offset="1" stop-color="#9167ff"/>
+    </linearGradient>
+    <linearGradient id="d" x1="1.8" x2="1.8" y1="1.8" y2=".2" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#5862de"/>
+      <stop offset="1" stop-color="#ec50ff"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#a)" d="m759.1 248.2 20 5v-16l-21-6v15c0 1 .2 1.8 1 2Z" data-name="Path 1" transform="translate(-758.1 -196.2)"/>
+  <path fill="url(#b)" d="M790.1 210.2v15l-31-10c-.8-.3-1-1.1-1-2v-14l30 9c.9.3 2 1.1 2 2Z" data-name="Path 2" transform="translate(-758.1 -186.2)"/>
+  <path fill="url(#c)" d="M790.1 216v14c0 .8-1 1.7-2 2l-30 8v-14c0-1 .2-1.9 1-2Z" data-name="Path 3" transform="translate(-758.1 -191)"/>
+  <path fill="url(#d)" d="M800.1 179.6v14c0 1 0 1.8-1 2l-41 11v-14c0-.9.2-1.8 1-2Z" data-name="Path 4" transform="translate(-758.1 -179.6)"/>
+</svg>

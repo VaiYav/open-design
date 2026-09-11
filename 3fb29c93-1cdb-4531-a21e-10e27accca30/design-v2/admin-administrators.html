@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Administrators · Flow v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+</head>
+<body data-od-id="page" data-od-label="Administrators">
+<main class="v2-main" id="page">
+
+  <div data-view="populated">
+    <div class="page-head">
+      <div class="page-head__t"><h1>Administrators</h1><p class="sub">Everyone who can sign in — operators, admins, dev. Roles decide what a person sees.</p></div>
+      <div class="page-head__actions">
+        <div class="search"><span class="ic ic--search"></span><input class="input" type="search" placeholder="Search people" id="adm-q" aria-label="Search people"></div>
+        <a class="btn btn--primary" href="admin-admin-new.html"><span class="ic ic--plus"></span>New person</a>
+      </div>
+    </div>
+    <div class="card tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>Person</th><th>Email</th><th>Role</th><th>Ladies</th><th>Last active</th><th>Status</th><th style="text-align:right">Actions</th></tr></thead>
+        <tbody id="adm-rows"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div data-view="loading" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Administrators</h1><p class="sub">Everyone who can sign in.</p></div></div>
+    <div class="card"><div id="adm-sk"></div></div>
+  </div>
+  <div data-view="empty" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Administrators</h1><p class="sub">Everyone who can sign in.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon"><span class="ic ic--admin ic--lg"></span></div><h2>No people yet</h2><p>Create the first account — admins manage settings, operators work chats.</p><a class="btn btn--primary" href="admin-admin-new.html">New person</a></div></div>
+  </div>
+  <div data-view="error" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Administrators</h1><p class="sub">Everyone who can sign in.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon state__icon--danger"><span class="ic ic--warn ic--lg"></span></div><h2>People failed to load</h2><p>Retry in a moment.</p><button type="button" class="btn btn--ghost" data-reload>Try again</button></div></div>
+  </div>
+
+</main>
+<script src="assets/fixtures.js"></script>
+<script src="assets/components.js"></script>
+<script src="assets/stateful.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  FlowUI.mount({ nav: 'admin', zone: 'admin', sub: 'admin-administrators.html', title: 'Administrators', crumbs: ['Admin'], role: 'admin' });
+  var F = window.Fixtures;
+  var lastActive = ['Now', 'Now', 'Now', '2h ago', 'Yesterday'];
+  var tbody = document.getElementById('adm-rows');
+  tbody.innerHTML = F.ADMINS.map(function (a, i) {
+    return '<tr><td><span class="row"><span class="avatar avatar--sm">' + a.initials + '</span><span class="strong">' + a.name + '</span></span></td>' +
+      '<td class="muted">' + a.email + '</td><td><span class="badge badge--muted" style="text-transform:capitalize">' + a.role + '</span></td>' +
+      '<td class="num">' + (a.role === 'operator' ? (i * 2 + 3) : '—') + '</td><td class="num muted">' + lastActive[i % 5] + '</td>' +
+      '<td><span class="badge badge--success">Active</span></td>' +
+      '<td class="t-actions"><a class="icon-btn" href="admin-admin-edit.html" title="Edit"><span class="ic ic--pencil"></span></a><button type="button" class="icon-btn" title="Reset password" data-toast="Reset link sent"><span class="ic ic--mail"></span></button><button type="button" class="icon-btn" title="Deactivate" data-toast="Person deactivated (prototype)"><span class="ic ic--stop"></span></button></td></tr>';
+  }).join('');
+  document.getElementById('adm-q').addEventListener('input', function (e) {
+    var qv = e.target.value.trim().toLowerCase();
+    tbody.querySelectorAll('tr').forEach(function (tr) { tr.style.display = tr.textContent.toLowerCase().indexOf(qv) !== -1 ? '' : 'none'; });
+  });
+  var sk = '';
+  for (var i = 0; i < 5; i++) sk += '<div class="sk-row"><span class="skeleton" style="width:32px;height:32px;border-radius:50%"></span><span class="skeleton" style="width:20%;height:13px"></span><span class="skeleton" style="width:26%;height:12px"></span><span style="flex:1"></span><span class="skeleton" style="width:110px;height:30px;border-radius:6px"></span></div>';
+  document.getElementById('adm-sk').innerHTML = sk;
+})();
+</script>
+</body>
+</html>

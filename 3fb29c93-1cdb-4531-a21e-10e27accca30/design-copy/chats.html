@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accounts — Chats · Flow (design copy)</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="assets/tokens.css">
+  <style>
+    /* Three panes: Accounts (nav + platform filters + list) → chat list → ChatRoom.
+       Source: AccountBaseLayout/Accounts + AccountLayoutChatList + ChatRoom. */
+    .chat3 { display: grid; grid-template-columns: 232px 320px 1fr; gap: 2px; align-items: stretch; min-height: calc(100vh - 70px); }
+    .pane { background: var(--c-white); border-radius: var(--radius); display: flex; flex-direction: column; overflow: hidden; }
+    .accounts-pane .pane-nav { display: flex; gap: 2px; padding: 10px 12px 0; }
+    .accounts-pane .pane-nav a {
+      flex: 1; text-align: center; padding: 8px 0;
+      border-radius: var(--radius);
+      font-weight: 600; font-size: 13px;
+      color: var(--muted); text-decoration: none;
+      transition: color var(--t-fast), background var(--t-fast);
+    }
+    .accounts-pane .pane-nav a:hover { color: var(--link-color); background: rgba(var(--link-color-rgb), 0.08); }
+    .accounts-pane .pane-nav a.is-active { color: var(--link-color); background: rgba(var(--link-color-rgb), 0.12); }
+    .platform-filters { display: flex; gap: 6px; flex-wrap: wrap; padding: 12px; border-bottom: 1px solid var(--border); }
+    .platform-filters .pf-chip { padding: 4px 8px; background: var(--c-white); }
+    .platform-filters .pf-chip img { height: 14px; width: auto; display: block; }
+    .accounts-list { flex: 1; min-height: 0; overflow-y: auto; }
+    .account-item {
+      display: flex; align-items: center; gap: 10px;
+      width: 100%; text-align: left; font: inherit; color: inherit;
+      padding: 10px 12px; border: none; border-bottom: 1px solid var(--border);
+      background: var(--c-white); cursor: pointer;
+      transition: background var(--t-fast);
+    }
+    .account-item:hover { background: var(--surface); }
+    .account-item.is-active { background: rgba(var(--link-color-rgb), 0.08); }
+    .account-item .name { font-weight: 700; font-size: 13px; }
+    .account-item .meta { font-size: 11px; color: var(--muted); }
+    .chat-list-pane .chat-list { flex: 1; min-height: 0; overflow-y: auto; }
+    .chat-item {
+      display: flex; gap: 12px; align-items: flex-start;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer; transition: background var(--t-fast);
+      width: 100%; text-align: left;
+      border-left: none; border-right: none; border-top: none;
+      background: var(--c-white); font: inherit; color: inherit;
+    }
+    .chat-item:hover { background: var(--surface); }
+    .chat-item[aria-current="true"] { background: rgba(var(--link-color-rgb), 0.08); }
+    .chat-item .who { display: flex; justify-content: space-between; gap: 8px; width: 100%; }
+    .chat-item .name { font-weight: 700; font-size: 13px; }
+    .chat-item .time { font-size: 11px; color: var(--muted); white-space: nowrap; }
+    .chat-item .preview { display: flex; justify-content: space-between; gap: 8px; align-items: center; margin-top: 3px; }
+    .chat-item .snippet { font-size: 12px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .unread {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 20px; height: 20px; padding: 0 6px;
+      border-radius: var(--radius-pill);
+      background: var(--link-color); color: #fff;
+      font-size: 11px; font-weight: 700;
+    }
+    .list-toolbar { display: flex; flex-direction: column; gap: 10px; padding: 14px 16px; border-bottom: 1px solid var(--border); }
+    .conversation { display: flex; flex-direction: column; }
+    .conversation__messages { flex: 1; min-height: 0; padding: 20px; display: flex; flex-direction: column; overflow-y: auto; max-height: calc(100vh - 210px); }
+    .conversation__composer { border-top: 1px solid var(--border); padding: 14px 20px; }
+    .composer-row { display: flex; gap: 10px; align-items: flex-end; }
+    .composer-row textarea {
+      flex: 1; resize: vertical; min-height: 38px; max-height: 160px;
+      padding: 9px 14px; border: none;
+      border-radius: var(--radius); background: var(--surface); line-height: 1.4;
+      font: 600 14px/1.4 var(--font);
+    }
+    .composer-row textarea:focus { outline: none; border: 2px solid var(--link-color); padding: 7px 12px; background: var(--c-white); }
+    .day-sep { text-align: center; font-size: 11px; color: var(--muted); margin: 8px 0 16px; }
+    .ai-suggest {
+      border: 1px dashed var(--link-color);
+      background: rgba(var(--link-color-rgb), 0.06);
+      border-radius: var(--radius);
+      padding: 12px 14px; margin-bottom: 12px;
+    }
+    .ai-suggest p { margin: 0 0 8px; font-size: 13px; }
+    .ai-suggest .tag { font-size: 11px; font-weight: 700; color: var(--link-color); text-transform: uppercase; letter-spacing: 0.06em; }
+    @media (max-width: 1240px) { .chat3 { grid-template-columns: 232px 1fr; } .conversation-pane { display: none; } }
+    @media (max-width: 900px) { .chat3 { grid-template-columns: 1fr; } .accounts-pane { display: none; } }
+  </style>
+</head>
+<body data-od-id="page" data-od-label="Accounts / Chats">
+  <header class="appheader" data-od-id="appheader">
+    <div class="appheader__left">
+      <img class="appheader__logo" src="assets/logos/flow.svg" alt="Flow">
+      <div class="account-info">
+        <span class="account-info__role">Account</span>
+        <span class="account-info__data">
+          <span class="account-info__name">Anna S.</span>
+          <span class="account-info__id">RL-88421</span>
+        </span>
+      </div>
+    </div>
+    <div class="appheader__right">
+      <ul class="appmenu">
+        <li><a href="omniscience.html" title="Omniscience" aria-label="Omniscience"><span class="ic ic--lightning"></span></a></li>
+        <li><a href="statistics.html" title="Statistics" aria-label="Statistics"><span class="ic ic--statistics"></span></a></li>
+        <li><a href="newsfeeds.html" title="Newsfeeds" aria-label="Newsfeeds"><span class="ic ic--newsfeed"></span></a></li>
+        <li><a href="mails.html" title="Mails" aria-label="Mails"><span class="ic ic--mail"></span></a></li>
+        <li><a class="is-active" href="chats.html" title="Accounts" aria-label="Accounts" aria-current="page"><span class="ic ic--chat"></span><span class="appmenu__badge"><span class="ic ic--attention"></span></span></a></li>
+        <li><a href="auto-sendings.html" title="Auto Sendings" aria-label="Auto Sendings"><span class="ic ic--auto-sendings"></span></a></li>
+        <li><a href="icebreakers.html" title="Icebreakers" aria-label="Icebreakers"><span class="ic ic--icebreakers"></span></a></li>
+        <li><a href="invites.html" title="Chat Invite" aria-label="Chat Invite"><span class="ic ic--chat-invite"></span></a></li>
+        <li><a href="tools.html" title="Tools" aria-label="Tools"><span class="ic ic--settings"></span></a></li>
+      </ul>
+      <div class="logout">
+        <button type="button" data-logout-toggle aria-expanded="false" aria-label="Account menu"><span class="ic ic--more"></span></button>
+        <div class="logout__menu" role="menu">
+          <button type="button" role="menuitem" onclick="flowToast('Logged out (prototype)')"><span class="ic ic--logout"></span><span>Log out</span></button>
+          <button type="button" role="menuitem" onclick="flowToast('Log out of all devices (prototype)')"><span class="ic ic--logout-all"></span><span>Log out of all devices</span></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="page" style="padding-top:10px" data-od-id="chats-main">
+    <div class="chat3">
+      <!-- Pane 1: Accounts (Navigation tabs + PlatformFilters + AccountsList) -->
+      <aside class="pane accounts-pane" data-od-id="accounts-pane" aria-label="Accounts">
+        <nav class="pane-nav" aria-label="Account context">
+          <a href="chats.html" class="is-active" aria-current="page">Profiles</a>
+          <a href="history.html">History</a>
+        </nav>
+        <div class="platform-filters" role="group" aria-label="Platform filters" id="platform-filters">
+          <button class="pf-chip is-active" aria-pressed="true"><img src="assets/logos/real-loves.svg" alt="RealLoves"></button>
+          <button class="pf-chip" aria-pressed="false"><img src="assets/logos/find-bride.svg" alt="FindBride"></button>
+          <button class="pf-chip" aria-pressed="false"><img src="assets/logos/live-beam.svg" alt="LiveBeam"></button>
+          <button class="pf-chip" aria-pressed="false"><img src="assets/logos/talky-times.svg" alt="TalkyTimes"></button>
+        </div>
+        <div class="accounts-list" id="accounts-list">
+          <button class="account-item is-active" aria-current="true" data-platform="RealLoves">
+            <span class="avatar avatar--sm">AS</span>
+            <span style="flex:1"><span class="name">Anna S.</span><br><span class="meta">RealLoves · RL-884217</span></span>
+            <span class="dot dot--online" title="Online"></span>
+          </button>
+          <button class="account-item" data-platform="FindBride">
+            <span class="avatar avatar--sm">MK</span>
+            <span style="flex:1"><span class="name">Marina K.</span><br><span class="meta">FindBride · FB-771903</span></span>
+            <span class="dot dot--offline" title="Offline"></span>
+          </button>
+          <button class="account-item" data-platform="RealLoves">
+            <span class="avatar avatar--sm">LT</span>
+            <span style="flex:1"><span class="name">Lena T.</span><br><span class="meta">RealLoves · RL-640122</span></span>
+            <span class="dot dot--online" title="Online"></span>
+          </button>
+          <button class="account-item" data-platform="TalkyTimes">
+            <span class="avatar avatar--sm">OD</span>
+            <span style="flex:1"><span class="name">Olga D.</span><br><span class="meta">TalkyTimes · TT-593280</span></span>
+            <span class="dot dot--online" title="Online"></span>
+          </button>
+          <button class="account-item" data-platform="LiveBeam">
+            <span class="avatar avatar--sm">EV</span>
+            <span style="flex:1"><span class="name">Elena V.</span><br><span class="meta">LiveBeam · LB-511477</span></span>
+            <span class="dot dot--error" title="Error"></span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- Pane 2: chat list for the selected account -->
+      <section class="pane chat-list-pane" data-od-id="chat-list" aria-label="Conversation list">
+        <div class="list-toolbar">
+          <div class="search-box">
+            <span class="ic ic--search"></span>
+            <input class="input" id="chat-search" type="search" placeholder="Search conversations" aria-label="Search conversations">
+          </div>
+          <div class="tabs tabs--compact" role="tablist" style="width:100%">
+            <button type="button" data-tab="all" class="is-active" role="tab" aria-selected="true">All</button>
+            <button type="button" data-tab="unanswered" role="tab" aria-selected="false">Unanswered</button>
+            <button type="button" data-tab="flagged" role="tab" aria-selected="false">Flagged</button>
+          </div>
+        </div>
+        <div class="chat-list" id="chat-items" data-tab-scope>
+          <div data-tab-panel="all">
+            <button class="chat-item" aria-current="true">
+              <span class="avatar">DM</span>
+              <span style="flex:1;min-width:0">
+                <span class="who"><span class="name">Dmitri M. <span class="dot dot--online" title="Online"></span></span><span class="time">12:41</span></span>
+                <span class="preview"><span class="snippet">Sounds great, what time works for you?</span><span class="unread">2</span></span>
+              </span>
+            </button>
+            <button class="chat-item" data-flags="unanswered flagged">
+              <span class="avatar">AK</span>
+              <span style="flex:1;min-width:0">
+                <span class="who"><span class="name">Andrey K.</span><span class="time">10:58</span></span>
+                <span class="preview"><span class="snippet">Can you send another photo of the garden?</span><span class="badge badge--warning">2h</span></span>
+              </span>
+            </button>
+            <button class="chat-item">
+              <span class="avatar">SV</span>
+              <span style="flex:1;min-width:0">
+                <span class="who"><span class="name">Sergey V.</span><span class="time">09:32</span></span>
+                <span class="preview"><span class="snippet">Thank you! Talk tomorrow 😊</span></span>
+              </span>
+            </button>
+            <button class="chat-item">
+              <span class="avatar">IP</span>
+              <span style="flex:1;min-width:0">
+                <span class="who"><span class="name">Igor P.</span><span class="time">Yesterday</span></span>
+                <span class="preview"><span class="snippet">Message could not be delivered</span><span class="badge badge--danger">Failed</span></span>
+              </span>
+            </button>
+            <button class="chat-item" data-flags="flagged">
+              <span class="avatar">LT</span>
+              <span style="flex:1;min-width:0">
+                <span class="who"><span class="name">Leonid T.</span><span class="time">Yesterday</span></span>
+                <span class="preview"><span class="snippet">Do you like jazz?</span><span class="badge badge--accent">AI flag</span></span>
+              </span>
+            </button>
+            <button class="chat-item">
+              <span class="avatar">PM</span>
+              <span style="flex:1;min-width:0">
+                <span class="who"><span class="name">Pavel M.</span><span class="time">Mon</span></span>
+                <span class="preview"><span class="snippet">The concert was amazing, thanks!</span></span>
+              </span>
+            </button>
+          </div>
+          <div data-tab-panel="unanswered" hidden>
+            <button class="chat-item">
+              <span class="avatar">AK</span>
+              <span style="flex:1;min-width:0">
+                <span class="who"><span class="name">Andrey K.</span><span class="time">10:58</span></span>
+                <span class="preview"><span class="snippet">Can you send another photo of the garden?</span><span class="badge badge--warning">2h</span></span>
+              </span>
+            </button>
+            <button class="chat-item">
+              <span class="avatar">DM</span>
+              <span style="flex:1;min-width:0">
+                <span class="who"><span class="name">Dmitri M.</span><span class="time">12:41</span></span>
+                <span class="preview"><span class="snippet">Sounds great, what time works for you?</span><span class="unread">2</span></span>
+              </span>
+            </button>
+          </div>
+          <div data-tab-panel="flagged" hidden>
+            <button class="chat-item">
+              <span class="avatar">LT</span>
+              <span style="flex:1;min-width:0">
+                <span class="who"><span class="name">Leonid T.</span><span class="time">Yesterday</span></span>
+                <span class="preview"><span class="snippet">Do you like jazz?</span><span class="badge badge--accent">AI flag</span></span>
+              </span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Pane 3: ChatRoom -->
+      <section class="pane conversation conversation-pane" data-od-id="chat-conversation" aria-label="Conversation with Dmitri M.">
+        <div class="card__head">
+          <div class="row">
+            <span class="avatar">DM</span>
+            <div>
+              <strong>Dmitri M.</strong>
+              <p class="small muted" style="margin:0">RealLoves · online · site ID <span class="mono-id">884217</span></p>
+            </div>
+          </div>
+          <div class="row">
+            <button class="btn btn--quiet" onclick="flowToast('Conversation bookmarked (prototype)')"><span class="ic ic--bookmark"></span>Bookmark</button>
+            <button class="btn btn--ghost" onclick="flowToast('AI summary generated (prototype)')">AI summary</button>
+          </div>
+        </div>
+
+        <div class="conversation__messages" id="messages">
+          <p class="day-sep">Today</p>
+          <div class="chat-row">
+            <div class="chat-bubble chat-bubble--assistant">Hi! How was your weekend?</div>
+          </div>
+          <div class="chat-row chat-row--user">
+            <div>
+              <div class="chat-bubble chat-bubble--user">Pretty good — spent it hiking. Yours?</div>
+              <div class="chat-meta" style="justify-content:flex-end"><span>11:58</span><span>Delivered</span></div>
+            </div>
+          </div>
+          <div class="chat-row">
+            <div class="chat-bubble chat-bubble--assistant">Lovely. I tried a new coffee place and thought of you. Fancy meeting there this week?</div>
+          </div>
+          <div class="chat-row chat-row--user">
+            <div>
+              <div class="chat-bubble chat-bubble--user">Sounds great, what time works for you?</div>
+              <div class="chat-meta" style="justify-content:flex-end"><span>12:41</span><span>Sent</span></div>
+            </div>
+          </div>
+          <div class="chat-row" id="typing-row" hidden aria-live="polite">
+            <div class="chat-bubble chat-bubble--assistant"><span class="typing-dots"><span></span><span></span><span></span></span></div>
+          </div>
+        </div>
+
+        <div class="conversation__composer">
+          <div class="ai-suggest" id="ai-suggest">
+            <p><span class="tag">AI suggestion</span></p>
+            <p>“How about Thursday around 7 pm? The place does a great flat white ☕”</p>
+            <div class="row">
+              <button class="btn btn--ghost btn--sm" id="use-suggestion">Use suggestion</button>
+              <button class="btn btn--quiet btn--sm" id="dismiss-suggestion">Dismiss</button>
+            </div>
+          </div>
+          <form class="composer-row" id="composer">
+            <label class="sr-only" for="message-input">Message</label>
+            <textarea id="message-input" placeholder="Type a message…"></textarea>
+            <button class="btn btn--quiet" type="button" aria-label="Attach media" onclick="flowToast('Attach media (prototype)')"><span class="ic ic--media"></span></button>
+            <button class="btn btn--quiet" type="button" aria-label="Stickers" onclick="flowToast('Stickers (prototype)')"><span class="ic ic--stickers"></span></button>
+            <button class="btn btn--primary" type="submit" data-od-id="chat-send">Send</button>
+          </form>
+        </div>
+      </section>
+    </div>
+  </main>
+  <script src="assets/app.js"></script>
+  <script>
+  (function () {
+    var items = Array.prototype.slice.call(document.querySelectorAll('#chat-items .chat-item'));
+
+    var search = document.getElementById('chat-search');
+    search.addEventListener('input', function () {
+      var q = search.value.trim().toLowerCase();
+      items.forEach(function (item) {
+        item.style.display = item.textContent.toLowerCase().indexOf(q) !== -1 ? '' : 'none';
+      });
+    });
+
+    var chips = Array.prototype.slice.call(document.querySelectorAll('#platform-filters .pf-chip'));
+    var accounts = Array.prototype.slice.call(document.querySelectorAll('#accounts-list .account-item'));
+    chips.forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        chips.forEach(function (c) {
+          c.classList.toggle('is-active', c === chip);
+          c.setAttribute('aria-pressed', String(c === chip));
+        });
+        var platform = chip.querySelector('img').getAttribute('alt');
+        accounts.forEach(function (a) {
+          a.style.display = a.getAttribute('data-platform') === platform ? '' : 'none';
+        });
+      });
+    });
+
+    accounts.forEach(function (a) {
+      a.addEventListener('click', function () {
+        accounts.forEach(function (x) { x.classList.remove('is-active'); x.removeAttribute('aria-current'); });
+        a.classList.add('is-active');
+        a.setAttribute('aria-current', 'true');
+        window.flowToast('Switched to ' + a.querySelector('.name').textContent + ' (prototype — list unchanged)');
+      });
+    });
+
+    items.forEach(function (i) {
+      i.addEventListener('click', function () {
+        document.querySelectorAll('#chat-items .chat-item').forEach(function (x) { x.removeAttribute('aria-current'); });
+        i.setAttribute('aria-current', 'true');
+      });
+    });
+
+    var messages = document.getElementById('messages');
+    var typingRow = document.getElementById('typing-row');
+    var input = document.getElementById('message-input');
+
+    function append(text, side) {
+      var row = document.createElement('div');
+      row.className = 'chat-row is-new' + (side === 'user' ? ' chat-row--user' : '');
+      var bubble = document.createElement('div');
+      bubble.className = 'chat-bubble chat-bubble--' + (side === 'user' ? 'user' : 'assistant');
+      bubble.textContent = text;
+      if (side === 'user') {
+        var meta = document.createElement('div');
+        meta.className = 'chat-meta';
+        meta.style.justifyContent = 'flex-end';
+        meta.innerHTML = '<span>Just now</span><span>Delivered</span>';
+        var wrap = document.createElement('div');
+        wrap.appendChild(bubble); wrap.appendChild(meta);
+        row.appendChild(wrap);
+      } else {
+        row.appendChild(bubble);
+      }
+      messages.appendChild(row);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    document.getElementById('composer').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var text = input.value.trim();
+      if (!text) { input.focus(); return; }
+      append(text, 'user');
+      input.value = '';
+      typingRow.hidden = false;
+      messages.appendChild(typingRow);
+      setTimeout(function () {
+        typingRow.hidden = true;
+        append('Perfect, see you then!', 'assistant');
+      }, 1600);
+    });
+
+    var suggest = document.getElementById('ai-suggest');
+    document.getElementById('use-suggestion').addEventListener('click', function () {
+      input.value = 'How about Thursday around 7 pm? The place does a great flat white ☕';
+      input.focus();
+      suggest.hidden = true;
+    });
+    document.getElementById('dismiss-suggestion').addEventListener('click', function () {
+      suggest.hidden = true;
+      window.flowToast('AI suggestion dismissed');
+    });
+  })();
+  </script>
+</body>
+</html>

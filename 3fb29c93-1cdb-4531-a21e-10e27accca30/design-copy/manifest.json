@@ -1,0 +1,93 @@
+{
+  "prototype": "flow-webapp-frontend design copy",
+  "source": "/Users/valentinyakovlev/projects/leximatech/flow-webapp-frontend",
+  "entry": "index.html",
+  "zones": {
+    "public": [
+      { "route": "/login", "file": "login.html", "label": "Login" }
+    ],
+    "account_workspace": [
+      { "route": "/account", "file": "chats.html", "label": "Chats — empty 3-pane" },
+      { "route": "/account/:lady_id", "file": "chats.html", "label": "Chats — lady chat list" },
+      { "route": "/account/:lady_id/:male_id", "file": "chats.html", "label": "Chats — 3-pane with ChatRoom" },
+      { "route": "/mails", "file": "mails.html", "label": "Mails — empty 3-pane" },
+      { "route": "/mails/:lady_id", "file": "mails.html", "label": "Mails — mail list" },
+      { "route": "/mails/:lady_id/:male_id", "file": "mails.html", "label": "Mails — MailRoom" },
+      { "route": "/history", "file": "history.html", "label": "History — index" },
+      { "route": "/history/:lady_id/:male_id", "file": "history.html", "label": "History — archived conversation" }
+    ],
+    "omniscience": [
+      { "route": "/omniscience (dev/stage only)", "file": "omniscience.html", "label": "Omniscience (AI chat)" }
+    ],
+    "administrator": [
+      { "route": "/administrator", "file": "admin-dashboard.html", "label": "Dashboard" },
+      { "route": "/administrator/administrators", "file": "admin-administrators.html", "label": "Administrators" },
+      { "route": "/administrator/administrators/new", "file": "admin-administrator-new.html", "label": "Create administrator" },
+      { "route": "/administrator/administrators/:id/edit", "file": "admin-administrator-new.html", "label": "Edit administrator" },
+      { "route": "/administrator/accounts", "file": "admin-accounts.html", "label": "Accounts" },
+      { "route": "/administrator/accounts/new", "file": "admin-account-new.html", "label": "Create account" },
+      { "route": "/administrator/accounts/:account_id/edit", "file": "admin-account-edit.html", "label": "Edit account" },
+      { "route": "/administrator/lady_profiles", "file": "admin-lady-profiles.html", "label": "Lady Profiles" },
+      { "route": "/administrator/lady_profiles/new (verify)", "file": "admin-lady-profile-new.html", "label": "Create lady profile — verify" },
+      { "route": "/administrator/lady_profiles/new (commit)", "file": "admin-lady-profile-create.html", "label": "Create lady profile — commit" },
+      { "route": "/administrator/lady_profiles/:lady_id/edit", "file": "admin-lady-profile-edit.html", "label": "Edit lady profile" },
+      { "route": "/administrator/lady_profiles/:group_id/edit_lady_group", "file": "admin-lady-group-edit.html", "label": "Edit lady profile group" },
+      { "route": "/administrator/schedules", "file": "admin-schedules.html", "label": "Schedules" },
+      { "route": "/administrator/schedules/new", "file": "admin-schedule-new.html", "label": "Create schedule" }
+    ],
+    "tools": [
+      { "route": "/tools", "file": "tools.html", "label": "Tools — lady index" },
+      { "route": "/tools/:lady_id/autoreplies", "file": "tools-lady-autoreplies.html", "label": "Autoreplies" },
+      { "route": "/tools/:lady_id/mailing", "file": null, "label": "Mailing — stub in source (`<p>mailing</p>`)" },
+      { "route": "/tools/:lady_id/presets", "file": "tools-lady-presets.html", "label": "Presets" },
+      { "route": "/tools/:lady_id/blacklists", "file": "tools-lady-blacklists.html", "label": "Blacklist (RealLoves tab set)" },
+      { "route": "/tools/:lady_id/blacklists (FindBride lady)", "file": "tools-lady-blacklists-fb.html", "label": "Blacklist (FindBride tab set)" },
+      { "route": "/tools/:lady_id/blacklists (LiveBeam lady)", "file": "tools-lady-blacklists-lb.html", "label": "Blacklist (generic 4-tab set)" },
+      { "route": "/tools/:lady_id/blacklists/new", "file": "tools-lady-blacklist-new.html", "label": "Add to blacklist (verify + commit)" },
+      { "route": "/tools/:lady_id/bookmarked_blacklists", "file": "tools-lady-blacklists-bookmarked.html", "label": "Bookmarked blacklist" },
+      { "route": "/tools/:lady_id/mail_blacklists", "file": "tools-lady-blacklists-mail.html", "label": "Mail blacklist" },
+      { "route": "/tools/:lady_id/chat_post_blacklists", "file": "tools-lady-blacklists-posts.html", "label": "Posts blacklist" },
+      { "route": "/tools/:lady_id/male_credit_history_blacklists", "file": "tools-lady-blacklists-credit.html", "label": "Credit history blacklist" }
+    ],
+    "auto_sendings": [
+      { "route": "/auto_sendings", "file": "auto-sendings.html", "label": "Autosendings pivot" },
+      { "route": "/auto_sendings/:lady_id/chat_invites", "file": "auto-sendings-lady.html", "label": "Chat invites templates" },
+      { "route": "/auto_sendings/:lady_id/welcome_letters", "file": "auto-sendings-lady-welcome.html", "label": "Welcome letters templates" }
+    ],
+    "icebreakers": [
+      { "route": "/icebreakers/messages", "file": "icebreakers.html", "label": "Icebreakers pivot — Messages" },
+      { "route": "/icebreakers/mails", "file": "icebreakers-mails.html", "label": "Icebreakers pivot — Mails" },
+      { "route": "/icebreakers/:lady_id/groups", "file": "icebreakers-lady-groups.html", "label": "Message groups" },
+      { "route": "/icebreakers/:lady_id/groups/create", "file": "icebreakers-lady-group-create.html", "label": "Create group" },
+      { "route": "/icebreakers/:lady_id/messages/templates", "file": "icebreakers-lady-messages.html", "label": "Message templates" },
+      { "route": "/icebreakers/:lady_id/messages/on_moderation", "file": "icebreakers-lady-messages-moderation.html", "label": "Messages on moderation" },
+      { "route": "/icebreakers/:lady_id/messages/suggested_moods", "file": "icebreakers-lady-messages-moods.html", "label": "Suggested moods" },
+      { "route": "/icebreakers/:lady_id/messages/declined", "file": "icebreakers-lady-messages-declined.html", "label": "Declined messages" },
+      { "route": "/icebreakers/:lady_id/messages/create", "file": "icebreakers-lady-create.html", "label": "Create message template" },
+      { "route": "/icebreakers/:lady_id/mails/templates", "file": "icebreakers-lady-mails.html", "label": "Mails templates" },
+      { "route": "/icebreakers/:lady_id/mails/on_moderation", "file": "icebreakers-lady-mails-moderation.html", "label": "Mails on moderation" },
+      { "route": "/icebreakers/:lady_id/mails/declined", "file": "icebreakers-lady-mails-declined.html", "label": "Declined mails" },
+      { "route": "/icebreakers/:lady_id/mails/create", "file": "icebreakers-lady-create.html", "label": "Create mail template" }
+    ],
+    "invites": [
+      { "route": "/invites/chat_invite", "file": "invites.html", "label": "Chat invite pivot" },
+      { "route": "/invites/mail_invite", "file": "invites-mail.html", "label": "Mail invite pivot" },
+      { "route": "/invites/chat_post_invite", "file": "invites-post.html", "label": "Chat post invite pivot" },
+      { "route": "/invites/chat_invite/:lady_id/templates", "file": "invites-lady.html", "label": "Invite templates" },
+      { "route": "/invites/chat_invite/:lady_id/history", "file": "invites-lady-history.html", "label": "Invite history" },
+      { "route": "/invites/chat_invite/:lady_id/templates/create", "file": "invites-lady-create.html", "label": "Create invite template" },
+      { "route": "/invites/chat_invite/:lady_id/templates/:template_id/edit", "file": "invites-lady-edit.html", "label": "Edit invite template" }
+    ],
+    "newsfeeds": [
+      { "route": "/newsfeeds", "file": "newsfeeds.html", "label": "Newsfeeds pivot" },
+      { "route": "/newsfeeds/:lady_id/on_moderation", "file": "newsfeeds-lady.html", "label": "On moderation" },
+      { "route": "/newsfeeds/:lady_id/approved", "file": "newsfeeds-lady-approved.html", "label": "Approved" },
+      { "route": "/newsfeeds/:lady_id/declined", "file": "newsfeeds-lady-declined.html", "label": "Declined" },
+      { "route": "/newsfeeds/:lady_id/sent", "file": "newsfeeds-lady-sent.html", "label": "Sent" },
+      { "route": "/newsfeeds/:lady_id/create", "file": "newsfeeds-lady-create.html", "label": "Create post" }
+    ],
+    "statistics": [
+      { "route": "/statistics", "file": "statistics.html", "label": "Autoreply stats" }
+    ]
+  }
+}

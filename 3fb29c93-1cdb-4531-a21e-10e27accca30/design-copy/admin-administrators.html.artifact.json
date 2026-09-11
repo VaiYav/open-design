@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "design-copy/admin-administrators.html",
+  "entry": "design-copy/admin-administrators.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-09-10T18:01:53.397Z",
+  "updatedAt": "2026-09-10T18:01:53.397Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

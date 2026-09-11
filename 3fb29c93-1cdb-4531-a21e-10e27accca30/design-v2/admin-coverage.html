@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coverage · Flow v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+<style>
+  .cov-grid { display: grid; grid-template-columns: 110px repeat(24, 1fr); gap: 3px; font-size: 10px; }
+  .cov-grid .lbl { display: flex; align-items: center; font-weight: 600; font-size: 12px; color: var(--fg-2); }
+  .cov-grid .h { display: flex; align-items: center; justify-content: center; color: var(--faint); }
+  .cov-cell { height: 26px; border-radius: 4px; background: var(--surface-2); }
+  .cov-cell--low { background: color-mix(in oklab, var(--accent) 24%, var(--surface-2)); }
+  .cov-cell--mid { background: color-mix(in oklab, var(--accent) 55%, var(--surface-2)); }
+  .cov-cell--high { background: var(--accent); }
+  .cov-cell--gap { background: color-mix(in oklab, var(--danger) 22%, var(--surface-2)); outline: 1px dashed var(--danger); }
+  .cov-legend { display: flex; align-items: center; gap: 14px; font-size: 12px; color: var(--muted); flex-wrap: wrap; }
+  .cov-legend i { width: 18px; height: 10px; border-radius: 3px; display: inline-block; vertical-align: -1px; margin-right: 5px; }
+</style>
+</head>
+<body data-od-id="page" data-od-label="Coverage">
+<main class="v2-main" id="page">
+
+  <div data-view="populated">
+    <div class="page-head">
+      <div class="page-head__t"><h1>Coverage</h1><p class="sub">Staffed hours per lady for the next 7 days — red cells are send-blocking gaps.</p></div>
+      <div class="page-head__actions"><a class="btn btn--primary" href="admin-schedule-new.html"><span class="ic ic--plus"></span>New schedule</a></div>
+    </div>
+
+    <div class="card card--pad" data-od-id="cov-heatmap">
+      <div class="cov-legend mb-3">
+        <span><i class="cov-cell--gap" style="outline:1px dashed var(--danger)"></i>Gap — sends block</span>
+        <span><i style="background:color-mix(in oklab,var(--accent) 24%,var(--surface-2))"></i>1 operator</span>
+        <span><i style="background:color-mix(in oklab,var(--accent) 55%,var(--surface-2))"></i>2</span>
+        <span><i style="background:var(--accent)"></i>3+</span>
+        <span style="flex:1"></span>
+        <span class="mono tiny">hours 00–23, Europe/Kyiv</span>
+      </div>
+      <div class="cov-grid" id="cov-grid"></div>
+      <p class="tiny muted mt-2">Hover a cell for the shift detail. Darker blue = more operators overlapping.</p>
+    </div>
+
+    <div class="notice notice--warning mt-3"><span class="ic ic--warn-o"></span><div><span class="t">2 gaps this week.</span> Anna S. is unstaffed tomorrow 06:00–09:00 and Sunday 00:00–08:00. Assign a night-shift operator or accept queued sends.</div></div>
+  </div>
+
+  <div data-view="loading" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Coverage</h1><p class="sub">Staffed hours per lady, 7 days.</p></div></div>
+    <div class="card"><div id="cov-sk"></div></div>
+  </div>
+  <div data-view="empty" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Coverage</h1><p class="sub">Staffed hours per lady, 7 days.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon"><span class="ic ic--clock ic--lg"></span></div><h2>No schedules</h2><p>The heatmap fills in once schedules exist.</p><a class="btn btn--primary" href="admin-schedule-new.html">New schedule</a></div></div>
+  </div>
+  <div data-view="error" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Coverage</h1><p class="sub">Staffed hours per lady, 7 days.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon state__icon--danger"><span class="ic ic--warn ic--lg"></span></div><h2>Coverage failed to load</h2><p>Retry in a moment.</p><button type="button" class="btn btn--ghost" data-reload>Try again</button></div></div>
+  </div>
+
+</main>
+<script src="assets/fixtures.js"></script>
+<script src="assets/components.js"></script>
+<script src="assets/stateful.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  FlowUI.mount({ nav: 'admin', zone: 'admin', sub: 'admin-coverage.html', title: 'Coverage', crumbs: ['Admin'], role: 'admin' });
+  var grid = document.getElementById('cov-grid');
+  var head = '<span class="lbl">Lady</span>';
+  for (var h = 0; h < 24; h++) head += '<span class="h">' + (h % 3 === 0 ? h : '') + '</span>';
+  var ladies = ['Anna S.', 'Elena V.', 'Irina K.', 'Maria D.'];
+  var html = head;
+  ladies.forEach(function (name, li) {
+    html += '<span class="lbl">' + name + '</span>';
+    for (var h = 0; h < 24; h++) {
+      var cls = 'cov-cell';
+      var tip = 'Unstaffed';
+      /* synthetic pattern: 9–18 staffed, mornings thin, Anna has a 6–9 gap */
+      var staffed = h >= 9 && h < 18;
+      var level = staffed ? (h >= 12 && h < 16 ? 2 : 1) : 0;
+      if (li === 0 && h >= 6 && h < 9) level = -1;           /* Anna gap 06–09 */
+      if (li === 0 && h >= 0 && h < 6) level = 0;
+      if (li === 3 && h >= 18 && h < 22) level = 1;           /* Maria evenings */
+      if (level === -1) { cls += ' cov-cell--gap'; tip = 'GAP — sends block'; }
+      else if (level === 1) { cls += ' cov-cell--low'; tip = '1 operator'; }
+      else if (level === 2) { cls += ' cov-cell--mid'; tip = '2 operators'; }
+      html += '<span class="' + cls + '" title="' + name + ' · ' + h + ':00 — ' + tip + '"></span>';
+    }
+  });
+  grid.innerHTML = html;
+  var sk = '';
+  for (var i = 0; i < 5; i++) sk += '<div class="sk-row"><span class="skeleton" style="width:100%;height:26px"></span></div>';
+  document.getElementById('cov-sk').innerHTML = sk;
+})();
+</script>
+</body>
+</html>

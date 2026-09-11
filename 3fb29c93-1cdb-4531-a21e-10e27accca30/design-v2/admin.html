@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin · Flow v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+</head>
+<body data-od-id="page" data-od-label="Admin dashboard">
+<main class="v2-main" id="page">
+
+  <div data-view="populated">
+    <div class="page-head">
+      <div class="page-head__t"><h1>Administration</h1><p class="sub">People, accounts, profiles and schedules — the management layer above the operator workspace.</p></div>
+      <div class="page-head__actions">
+        <a class="btn btn--ghost" href="admin-coverage.html"><span class="ic ic--omni"></span>Coverage</a>
+        <a class="btn btn--ghost" href="admin-accounts.html"><span class="ic ic--admin"></span>Accounts</a>
+        <a class="btn btn--primary" href="admin-administrators.html"><span class="ic ic--plus"></span>Manage people</a>
+      </div>
+    </div>
+
+    <div class="grid cols-4 mb-3" data-od-id="admin-kpis">
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--admin ic--sm"></span>People</div><div class="kpi__num">7</div><div class="kpi__delta" style="color:var(--muted)">4 operators · 2 admins · 1 dev</div></div>
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--settings ic--sm"></span>Accounts</div><div class="kpi__num">12</div><div class="kpi__delta" style="color:var(--muted)">across 5 platforms</div></div>
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--avatar ic--sm"></span>Lady profiles</div><div class="kpi__num">18</div><div class="kpi__delta kpi__delta--up">▲ 2 this week</div></div>
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--alert ic--sm"></span>Open alerts</div><div class="kpi__num">4</div><div class="kpi__delta kpi__delta--down">1 critical</div></div>
+    </div>
+
+    <div class="grid" style="grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);align-items:start">
+      <div class="card" data-od-id="admin-ops">
+        <div class="card__head"><h2>Operators online</h2><a class="btn btn--quiet btn--sm" href="admin-administrators.html">All people</a></div>
+        <div id="ops-rows"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card">
+          <div class="card__head"><h2>Needs attention</h2><a class="btn btn--quiet btn--sm" href="alerts.html">Alerts</a></div>
+          <div class="lrow"><span class="ic ic--alert" style="color:var(--danger)"></span><div class="main"><div class="t1">RealLoves send limit hit</div><div class="t2">RL-884217 · invites paused until reset</div></div></div>
+          <div class="lrow"><span class="ic ic--warn" style="color:var(--warning)"></span><div class="main"><div class="t1">LiveBeam account erroring</div><div class="t2">Elena V. · autoreplies paused</div></div></div>
+          <div class="lrow"><span class="ic ic--alert" style="color:var(--warning)"></span><div class="main"><div class="t1">2 posts awaiting review &gt; 6h</div><div class="t2">Moderation queue above SLA</div></div></div>
+        </div>
+        <div class="card">
+          <div class="card__head"><h2>Quick links</h2></div>
+          <div class="lrow"><span class="ic ic--lady ic--sm" style="color:var(--accent)"></span><div class="main"><a class="t1" href="admin-lady-profiles.html" style="color:var(--fg);text-decoration:none">Lady profiles — verify queue: 1</a></div></div>
+          <div class="lrow"><span class="ic ic--clock ic--sm" style="color:var(--accent)"></span><div class="main"><a class="t1" href="admin-schedules.html" style="color:var(--fg);text-decoration:none">Schedules — gap tomorrow 06:00–09:00</a></div></div>
+          <div class="lrow"><span class="ic ic--stats ic--sm" style="color:var(--accent)"></span><div class="main"><a class="t1" href="statistics.html" style="color:var(--fg);text-decoration:none">Statistics — August report ready</a></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div data-view="loading" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Administration</h1><p class="sub">Management layer above the workspace.</p></div></div>
+    <div class="grid cols-4 mb-3"><div class="skeleton" style="height:110px;border-radius:16px"></div><div class="skeleton" style="height:110px;border-radius:16px"></div><div class="skeleton" style="height:110px;border-radius:16px"></div><div class="skeleton" style="height:110px;border-radius:16px"></div></div>
+    <div class="card"><div id="adm-sk"></div></div>
+  </div>
+  <div data-view="empty" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Administration</h1><p class="sub">Management layer above the workspace.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon"><span class="ic ic--admin ic--lg"></span></div><h2>Fresh install</h2><p>No people or accounts yet. Create the first administrator to start onboarding the team.</p><a class="btn btn--primary" href="admin-admin-new.html">New administrator</a></div></div>
+  </div>
+  <div data-view="error" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Administration</h1><p class="sub">Management layer above the workspace.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon state__icon--danger"><span class="ic ic--warn ic--lg"></span></div><h2>Admin panel failed to load</h2><p>Retry in a moment.</p><button type="button" class="btn btn--ghost" data-reload>Try again</button></div></div>
+  </div>
+
+</main>
+<script src="assets/fixtures.js"></script>
+<script src="assets/components.js"></script>
+<script src="assets/stateful.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  FlowUI.mount({ nav: 'admin', zone: 'admin', sub: 'admin.html', title: 'Admin', role: 'admin' });
+  var F = window.Fixtures;
+  document.getElementById('ops-rows').innerHTML = F.ADMINS.map(function (a) {
+    return '<div class="lrow"><span class="avatar avatar--sm">' + a.initials + '</span>' +
+      '<div class="main"><div class="t1">' + a.name + '</div><div class="t2">' + a.email + '</div></div>' +
+      '<span class="badge badge--muted" style="text-transform:capitalize">' + a.role + '</span>' +
+      (a.role !== 'admin' ? '<span class="badge badge--success"><span class="dot dot--on"></span>Online</span>' : '') +
+      '<a class="btn btn--ghost btn--sm" href="admin-admin-edit.html">Edit</a></div>';
+  }).join('');
+  var sk = '';
+  for (var i = 0; i < 5; i++) sk += '<div class="sk-row"><span class="skeleton" style="width:32px;height:32px;border-radius:50%"></span><span class="skeleton" style="width:24%;height:13px"></span><span style="flex:1"></span><span class="skeleton" style="width:70px;height:30px;border-radius:6px"></span></div>';
+  document.getElementById('adm-sk').innerHTML = sk;
+})();
+</script>
+</body>
+</html>

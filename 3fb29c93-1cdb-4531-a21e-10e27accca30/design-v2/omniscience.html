@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Omniscience · Flow v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+<style>
+  .omni-wrap { max-width: 720px; margin: 0 auto; height: 100%; display: flex; flex-direction: column; }
+  .omni-card { flex: 1; min-height: 0; display: flex; flex-direction: column; border-radius: var(--r-xl); overflow: hidden; }
+  .omni-head { display: flex; align-items: center; gap: 12px; padding: 14px 18px; border-bottom: 1px solid var(--border); }
+  .omni-ava { width: 44px; height: 44px; border-radius: 50%; background: var(--accent-grad); display: flex; align-items: center; justify-content: center; color: var(--c-white); font-weight: 800; font-size: 17px; box-shadow: var(--shadow-accent); }
+</style>
+</head>
+<body data-od-id="page" data-od-label="Omniscience">
+<main class="v2-main v2-main--flush" id="page">
+<div class="fill" style="padding:20px 28px">
+  <div class="omni-wrap">
+
+    <div data-view="loaded,fb-default,fb-saving,fb-comment,fb-comment-limit,fb-expired,fb-conflict,fb-error,fb-lineage,fb-regfail,fb-no-perm" data-od-id="omni-loaded" style="display:flex;flex-direction:column;flex:1;min-height:0">
+      <div class="card omni-card">
+        <div class="omni-head">
+          <span class="omni-ava">B</span>
+          <div style="flex:1">
+            <div class="strong" style="font-size:15px">Beloved 💖</div>
+            <div class="tiny muted">private chat · internal AI assistant · dev/stage</div>
+          </div>
+          <select class="select" style="width:190px;height:38px" data-demo aria-label="Model">
+            <option>GPT-4o mini</option><option>GPT-4o</option><option>Grok 4.1 Fast</option><option>Claude Sonnet</option>
+          </select>
+        </div>
+        <div class="convo__msgs" id="omni-msgs" style="flex:1">
+          <div class="day-sep"><span>Today</span></div>
+          <div class="msg-row"><div><div class="bubble">Summarize the RealLoves inbox for me — anything urgent?</div><div class="msg-meta"><span>09:58</span></div></div></div>
+          <div class="msg-row msg-row--out"><div><div class="bubble" style="text-align:left">You have <strong>6 unread</strong> on Anna S. — two are over 4h old: Andrey K. (waiting on a photo answer) and a new contact from overnight. Elena V.'s LiveBeam account is erroring; autoreplies are paused there.</div><div class="msg-meta"><span>09:58</span><span>Beloved</span></div><div data-fb-unit data-fb='{"mode":"ai","st":"up","vote":"up"}'></div></div></div>
+          <div class="msg-row"><div><div class="bubble">Draft a reply to Andrey about the garden photo.</div><div class="msg-meta"><span>09:59</span></div></div></div>
+          <div class="msg-row msg-row--out"><div><div class="bubble" style="text-align:left">“Of course! I'll send a fresh one this afternoon — the roses finally bloomed. What's your favourite flower, by the way?”<br><br>Warm tone, ends on a question. Want it shorter?</div><div class="msg-meta"><span>09:59</span><span>Beloved</span></div><div data-fb-unit data-fb='{"mode":"ai","st":"unrated"}'></div></div></div>
+          <div class="msg-row" id="omni-typing" hidden><div><div class="bubble"><span class="typing"><i></i><i></i><i></i></span></div></div></div>
+        </div>
+        <div class="convo__composer">
+          <div class="composer">
+            <textarea id="omni-input" placeholder="Type a message…" aria-label="Message Beloved"></textarea>
+            <div class="composer__bar">
+              <button type="button" class="icon-btn" style="border:0;width:34px;height:34px" aria-label="Attach context" data-toast="Attach context (prototype)"><span class="ic ic--media"></span></button>
+              <span class="cnt"></span>
+              <button type="button" class="btn btn--primary btn--sm" id="omni-send">Send</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div data-view="empty" hidden>
+      <div class="card omni-card">
+        <div class="omni-head"><span class="omni-ava">B</span><div><div class="strong" style="font-size:15px">Beloved 💖</div><div class="tiny muted">private chat · dev/stage</div></div></div>
+        <div class="state" style="flex:1">
+          <div class="state__icon"><span class="ic ic--omni ic--lg"></span></div>
+          <h2>Ask Beloved anything</h2>
+          <p>Summaries, drafts, translations, platform limits — Beloved knows the workspace and answers in context.</p>
+        </div>
+      </div>
+    </div>
+
+    <div data-view="loading" hidden>
+      <div class="card omni-card"><div class="omni-head"><span class="skeleton" style="width:44px;height:44px;border-radius:50%"></span><span class="skeleton" style="width:180px;height:14px"></span></div>
+        <div style="padding:22px;display:flex;flex-direction:column;gap:14px" role="status" aria-busy="true"><span class="skeleton" style="width:55%;height:44px;border-radius:18px"></span><span class="skeleton" style="width:65%;height:66px;border-radius:18px;align-self:flex-end"></span></div>
+      </div>
+    </div>
+
+    <div data-view="error" hidden>
+      <div class="card omni-card"><div class="state" style="flex:1">
+        <div class="state__icon state__icon--danger"><span class="ic ic--warn ic--lg"></span></div>
+        <h2>Beloved is unreachable</h2>
+        <p>The AI service did not respond. Check API quota in Alerts, then retry.</p>
+        <div class="row mt-2"><button type="button" class="btn btn--ghost" data-reload>Try again</button><a class="btn btn--quiet" href="alerts.html">Open alerts</a></div>
+      </div></div>
+    </div>
+
+    <!-- v1.1 — blind A/B compare: same prompt through two models, identities
+         revealed only after both outputs are rated. -->
+    <div data-view="ab" hidden>
+      <div class="card omni-card">
+        <div class="omni-head">
+          <span class="omni-ava">B</span>
+          <div style="flex:1">
+            <div class="strong" style="font-size:15px">Model compare</div>
+            <div class="tiny muted">blind A/B · same prompt, two models · dev/stage</div>
+          </div>
+          <span class="ab-tag">identities hidden</span>
+        </div>
+        <div class="convo__msgs" style="flex:1">
+          <div class="day-sep"><span>Prompt</span></div>
+          <div class="msg-row"><div><div class="bubble">Draft a reply to Andrey about the garden photo.</div><div class="msg-meta"><span>10:24</span></div></div></div>
+          <div class="ab-grid" id="ab-grid">
+            <div class="ab-col">
+              <span class="ab-tag">Output A</span>
+              <div class="bubble" style="text-align:left">“Of course! I'll send a fresh one this afternoon — the roses finally bloomed. What's your favourite flower, by the way?”</div>
+              <div data-fb-unit data-fb='{"mode":"ai","st":"unrated"}'></div>
+            </div>
+            <div class="ab-col">
+              <span class="ab-tag">Output B</span>
+              <div class="bubble" style="text-align:left">“I'll send you a new photo this afternoon, the roses finally came out! By the way — what's your favourite flower?”</div>
+              <div data-fb-unit data-fb='{"mode":"ai","st":"unrated"}'></div>
+            </div>
+          </div>
+          <div class="ab-reveal" id="ab-reveal" hidden><span class="ic ic--omni"></span><div><strong>A = GPT-4o</strong> · <strong>B = Grok 4.1 Fast</strong> — identities reveal only after both outputs are rated.</div></div>
+        </div>
+        <div class="omni-head" style="border-top:1px solid var(--border);border-bottom:0">
+          <span class="tiny muted">Blind rating keeps the comparison honest — rate both outputs before the model names show.</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</main>
+<script src="assets/fixtures.js"></script>
+<script src="assets/components.js"></script>
+<script src="assets/stateful.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/feedback.js"></script>
+<script>
+(function () {
+  FlowUI.mount({ nav: 'omniscience', zone: 'workspace', title: 'Omniscience', lady: false });
+  var msgs = document.getElementById('omni-msgs');
+  var input = document.getElementById('omni-input');
+  var typing = document.getElementById('omni-typing');
+  document.getElementById('omni-send').addEventListener('click', function () {
+    var v = input.value.trim();
+    if (!v) { flowToast('Type a message first'); return; }
+    var row = document.createElement('div');
+    row.className = 'msg-row';
+    row.innerHTML = '<div><div class="bubble"></div><div class="msg-meta"><span>now</span></div></div>';
+    row.querySelector('.bubble').textContent = v;
+    msgs.insertBefore(row, typing);
+    input.value = '';
+    typing.hidden = false;
+    msgs.scrollTop = msgs.scrollHeight;
+    setTimeout(function () {
+      typing.hidden = true;
+      var r2 = document.createElement('div');
+      r2.className = 'msg-row msg-row--out';
+      r2.innerHTML = '<div><div class="bubble" style="text-align:left">On it — give me a second to look at the thread. (Prototype answer)</div><div class="msg-meta"><span>now</span><span>Beloved</span></div>' +
+        (window.FlowFB ? FlowFB.render({ mode: 'ai', st: 'unrated' }) : '') + '</div>';
+      msgs.appendChild(r2);
+      if (window.FlowFB) FlowFB.hydrate(msgs);
+      msgs.scrollTop = msgs.scrollHeight;
+    }, 1400);
+  });
+
+  /* A/B compare — reveal model identities once both outputs carry a vote. */
+  var abUnits = document.querySelectorAll('#ab-grid [data-fb-unit]');
+  var abReveal = document.getElementById('ab-reveal');
+  function abCheck() {
+    var all = true;
+    abUnits.forEach(function (u) { if (!u._fb || !u._fb.vote) all = false; });
+    abReveal.hidden = !all;
+  }
+  abUnits.forEach(function (u) {
+    new MutationObserver(abCheck).observe(u, { childList: true, subtree: true });
+  });
+})();
+</script>
+</body>
+</html>

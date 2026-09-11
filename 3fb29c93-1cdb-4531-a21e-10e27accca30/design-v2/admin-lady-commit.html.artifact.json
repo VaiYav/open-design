@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "design-v2/admin-lady-commit.html",
+  "entry": "design-v2/admin-lady-commit.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-09-10T20:13:25.790Z",
+  "updatedAt": "2026-09-10T20:13:25.790Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

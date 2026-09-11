@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Message icebreakers · Anna S. — Flow (design copy)</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="assets/tokens.css">
+  <style>
+    .vtable { width: 100%; }
+    .vtable__head { display: grid; height: 31px; color: var(--c-ink-400); font: 700 12px/18px var(--font); align-items: center; }
+    .vtable__row {
+      display: grid; align-items: center;
+      background: var(--surface); border-radius: var(--radius);
+      padding: 8px 0; font: 600 14px/19px var(--font); color: var(--c-ink-500);
+      text-decoration: none;
+      transition: all var(--t-normal);
+    }
+    .vtable__row:nth-child(2n) { background: var(--c-white); }
+    a.vtable__row:hover { background: rgba(159, 99, 202, 0.2); color: var(--c-ink-500); }
+    .vtable .vc { padding: 0 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .vtable .vc--name { color: var(--c-lav-500); font-weight: 700; }
+    .vtable .vc .avatar { width: 40px; height: 40px; font-size: 13px; border-radius: var(--radius); vertical-align: middle; margin-right: 8px; }
+    .vtable .lady-cell { display: flex; align-items: center; gap: 8px; }
+    .vtable .progress { height: 6px; border-radius: 3px; background: var(--surface); overflow: hidden; }
+    .vtable .progress i { display: block; height: 100%; background: var(--c-lav-500); border-radius: 3px; }
+    .vtable .cell-actions { display: flex; gap: 4px; justify-content: flex-end; padding-right: 10px; }
+    .vtable .cell-actions .icon-btn:hover { color: var(--c-lav-500); }
+
+  </style>
+</head>
+<body data-theme="theme_purple" data-od-id="page" data-od-label="Icebreakers / Lady / Messages / on_moderation">
+  <header class="appheader" data-od-id="appheader">
+    <div class="appheader__left">
+      <img class="appheader__logo" src="assets/logos/flow.svg" alt="Flow">
+      <div class="account-info">
+        <span class="account-info__role">Account</span>
+        <span class="account-info__data">
+          <span class="account-info__name">Anna S.</span>
+          <span class="account-info__id">RL-88421</span>
+        </span>
+      </div>
+    </div>
+    <div class="appheader__right">
+      <ul class="appmenu">
+        <li><a href="omniscience.html" title="Omniscience" aria-label="Omniscience"><span class="ic ic--lightning"></span></a></li>
+        <li><a href="statistics.html" title="Statistics" aria-label="Statistics"><span class="ic ic--statistics"></span></a></li>
+        <li><a href="newsfeeds.html" title="Newsfeeds" aria-label="Newsfeeds"><span class="ic ic--newsfeed"></span></a></li>
+        <li><a href="mails.html" title="Mails" aria-label="Mails"><span class="ic ic--mail"></span></a></li>
+        <li><a href="chats.html" title="Accounts" aria-label="Accounts"><span class="ic ic--chat"></span></a></li>
+        <li><a href="auto-sendings.html" title="Auto Sendings" aria-label="Auto Sendings"><span class="ic ic--auto-sendings"></span></a></li>
+        <li><a class="is-active" href="icebreakers.html" title="Icebreakers" aria-label="Icebreakers" aria-current="page"><span class="ic ic--icebreakers"></span></a></li>
+        <li><a href="invites.html" title="Chat Invite" aria-label="Chat Invite"><span class="ic ic--chat-invite"></span></a></li>
+        <li><a href="tools.html" title="Tools" aria-label="Tools"><span class="ic ic--settings"></span></a></li>
+      </ul>
+      <div class="logout">
+        <button type="button" data-logout-toggle aria-expanded="false" aria-label="Account menu"><span class="ic ic--more"></span></button>
+        <div class="logout__menu" role="menu">
+          <button type="button" role="menuitem" onclick="flowToast('Logged out (prototype)')"><span class="ic ic--logout"></span><span>Log out</span></button>
+          <button type="button" role="menuitem" onclick="flowToast('Log out of all devices (prototype)')"><span class="ic ic--logout-all"></span><span>Log out of all devices</span></button>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main class="page" style="padding-top:10px" data-od-id="icebreakers-lady-main">
+    <div class="tools-shell">
+      <aside class="tsidebar" aria-label="Lady context">
+        <a class="back-btn" href="icebreakers.html"><img src="assets/icons/backToIndex.svg" alt=""><span class="nav-text">Back to index</span></a>
+        <div class="lady-card">
+          <div class="lady-avatar"><span class="avatar-fallback">AS</span></div>
+          <span class="lady-name">Anna S., 26</span>
+          <span class="lady-platform">
+            <span class="pf-ico"><img src="assets/logos/real-loves.svg" alt="RealLoves"></span>
+            <span class="platform-name">RealLoves</span>
+          </span>
+          <dl>
+            <dt>ID:</dt><dd>241</dd>
+            <dt>ID on site:</dt><dd>884217</dd>
+          </dl>
+        </div>
+        <nav class="nav" aria-label="Sections">
+          <ul>
+            <li><a href="icebreakers-lady-groups.html"><img src="assets/icons/groupsIco.svg" alt=""><span class="nav-text">Groups</span></a></li>
+            <li><a class="is-active" href="icebreakers-lady-messages.html" aria-current="page"><img src="assets/icons/messagesIco.svg" alt=""><span class="nav-text">Messages</span></a></li>
+            <li><a href="icebreakers-lady-mails.html"><img src="assets/icons/mailsIco.svg" alt=""><span class="nav-text">Mails</span></a></li>
+          </ul>
+        </nav>
+        <button type="button" class="collapse-btn" data-sidebar-toggle aria-label="Collapse sidebar">
+          <svg width="13" height="12" viewBox="0 0 13 12" fill="none" aria-hidden="true"><path d="M12 11L7 6L12 1M6 11L1 6L6 1" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </aside>
+      <section class="tools-content" data-od-id="icebreakers-lady-content" aria-label="Message icebreakers">
+        <div class="page-head"><h1>Message icebreakers</h1></div>
+        <div class="bl-tabs" role="tablist">
+          <a href="icebreakers-lady-messages.html">Message templates</a>
+          <a class="is-active" href="icebreakers-lady-messages-moderation.html" aria-current="page">On moderation</a>
+          <a href="icebreakers-lady-messages-moods.html">Suggested moods</a>
+          <a href="icebreakers-lady-messages-declined.html">Declined</a>
+          <a class="bl-add" href="icebreakers-lady-create.html">Create new template</a>
+        </div>
+        <div class="row" style="justify-content:space-between;margin:12px 0 16px">
+          <button class="btn btn--ghost" disabled>Deactivate selected</button>
+          <span class="limits muted">Icebreakers limit usage: <strong class="mono-id">14/20</strong></span>
+        </div>
+        <div class="vtable">
+          <div class="vtable__head" style="grid-template-columns:40px 1fr 130px 80px 90px">
+            <div class="vc"></div>
+            <div class="vc">Template text</div>
+            <div class="vc">Status</div>
+            <div class="vc">Off/On</div>
+            <div class="vc" style="text-align:right">Actions</div>
+          </div>
+          <div class="vtable__body">
+            <div class="vtable__row" style="grid-template-columns:40px 1fr 130px 80px 90px">
+              <div class="vc"><input type="checkbox" aria-label="Select template"></div>
+              <div class="vc">New here — nice to meet you!</div>
+              <div class="vc"><span class="badge badge--warning">On moderation</span></div>
+              <div class="vc"><label class="switch" style="min-height:24px"><input type="checkbox" ><span class="track"></span></label></div>
+              <div class="vc cell-actions"><button class="icon-btn" aria-label="Edit" onclick="location.href='icebreakers-lady-create.html'"><span class="ic ic--pencil"></span></button><button class="icon-btn" aria-label="Delete" data-confirm="Delete this template?"><span class="ic ic--bucket"></span></button></div>
+            </div>
+            <div class="vtable__row" style="grid-template-columns:40px 1fr 130px 80px 90px">
+              <div class="vc"><input type="checkbox" aria-label="Select template"></div>
+              <div class="vc">Your photo caught my eye</div>
+              <div class="vc"><span class="badge badge--warning">On moderation</span></div>
+              <div class="vc"><label class="switch" style="min-height:24px"><input type="checkbox" ><span class="track"></span></label></div>
+              <div class="vc cell-actions"><button class="icon-btn" aria-label="Edit" onclick="location.href='icebreakers-lady-create.html'"><span class="ic ic--pencil"></span></button><button class="icon-btn" aria-label="Delete" data-confirm="Delete this template?"><span class="ic ic--bucket"></span></button></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <script src="assets/app.js"></script>
+</body>
+</html>

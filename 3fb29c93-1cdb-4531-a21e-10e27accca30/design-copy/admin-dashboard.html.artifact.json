@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "design-copy/admin-dashboard.html",
+  "entry": "design-copy/admin-dashboard.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-09-10T18:01:52.521Z",
+  "updatedAt": "2026-09-10T18:01:52.521Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "design-copy/admin-lady-profile-edit.html",
+  "entry": "design-copy/admin-lady-profile-edit.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-09-10T18:04:19.775Z",
+  "updatedAt": "2026-09-10T18:04:19.775Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

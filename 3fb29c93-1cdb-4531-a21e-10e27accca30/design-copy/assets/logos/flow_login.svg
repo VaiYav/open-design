@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="42" height="57" viewBox="0 0 42 57">
+  <defs>
+    <linearGradient id="linear-gradient" x1="1.67" y1="0.184" x2="2.688" y2="0.184" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#3b42b8"/>
+      <stop offset="1" stop-color="#181b89"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="0.373" y1="1.404" x2="0.373" y2="0.169" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-3" x1="1.735" y1="1.023" x2="1.735" y2="-0.279" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#5862de"/>
+      <stop offset="1" stop-color="#9167ff"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-4" x1="1.835" y1="1.798" x2="1.835" y2="0.243" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#5862de"/>
+      <stop offset="1" stop-color="#ec50ff"/>
+    </linearGradient>
+  </defs>
+  <g id="flow_logo" transform="translate(-758.15 -179.611)">
+    <path id="Path_1" data-name="Path 1" d="M759.15,248.242l20,5v-16l-21-6v15C758.15,247.14,758.283,248.01,759.15,248.242Z" transform="translate(0 -16.631)" fill="url(#linear-gradient)"/>
+    <path id="Path_2" data-name="Path 2" d="M790.15,210.2v15l-31-10c-.83-.257-1-1.131-1-2v-14l30,9C788.98,208.458,790.15,209.332,790.15,210.2Z" transform="translate(0 -6.59)" fill="url(#linear-gradient-2)"/>
+    <path id="Path_3" data-name="Path 3" d="M790.15,215.915v14c0,.9-1.133,1.767-2,2l-30,8v-14c0-.9.133-1.768,1-2Z" transform="translate(0 -11.304)" fill="url(#linear-gradient-3)"/>
+    <path id="Path_4" data-name="Path 4" d="M800.15,179.611v14c0,.9-.133,1.767-1,2l-41,11v-14c0-.9.133-1.768,1-2Z" fill="url(#linear-gradient-4)"/>
+  </g>
+</svg>

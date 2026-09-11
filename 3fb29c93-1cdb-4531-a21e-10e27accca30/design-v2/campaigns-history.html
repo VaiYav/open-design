@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Send history · Flow v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+</head>
+<body data-od-id="page" data-od-label="Send history">
+<main class="v2-main" id="page">
+
+  <div data-view="populated">
+    <div class="page-head">
+      <div class="page-head__t"><h1>Send history</h1><p class="sub">Anna S. · RealLoves — every outbound send with delivery and reply outcomes.</p></div>
+      <div class="page-head__actions">
+        <select class="select" style="width:180px;height:40px" data-demo aria-label="Type filter"><option>All types</option><option>Chat invite</option><option>Welcome letter</option><option>Icebreaker</option><option>Newsfeed post</option></select>
+        <button type="button" class="btn btn--ghost" data-toast="CSV export started (prototype)"><span class="ic ic--download"></span>Export</button>
+      </div>
+    </div>
+    <div class="card tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>Sent</th><th>Type</th><th>Template</th><th>To</th><th>Delivered</th><th>Opened</th><th>Replied</th><th>Reply time</th></tr></thead>
+        <tbody id="hist-rows"></tbody>
+      </table>
+    </div>
+    <div class="row row--between mt-2"><span class="small muted">128 sends in the last 30 days</span>
+      <div class="pagination"><button type="button" disabled>‹</button><button type="button" class="is-active" aria-current="page">1</button><button type="button">2</button><button type="button">3</button><button type="button">›</button></div></div>
+  </div>
+
+  <div data-view="loading" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Send history</h1><p class="sub">Every outbound send with outcomes.</p></div></div>
+    <div class="card"><div id="hist-sk"></div></div>
+  </div>
+  <div data-view="empty" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Send history</h1><p class="sub">Every outbound send with outcomes.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon"><span class="ic ic--history ic--lg"></span></div><h2>No sends yet</h2><p>History fills in as soon as the first template goes out.</p><a class="btn btn--soft" href="campaigns-templates.html">Open templates</a></div></div>
+  </div>
+  <div data-view="error" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Send history</h1><p class="sub">Every outbound send with outcomes.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon state__icon--danger"><span class="ic ic--warn ic--lg"></span></div><h2>History failed to load</h2><p>Retry in a moment.</p><button type="button" class="btn btn--ghost" data-reload>Try again</button></div></div>
+  </div>
+
+</main>
+<script src="assets/fixtures.js"></script>
+<script src="assets/components.js"></script>
+<script src="assets/stateful.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  FlowUI.mount({ nav: 'campaigns', zone: 'campaigns', sub: 'campaigns-history.html', title: 'History', crumbs: ['Campaigns', 'Anna S.'], lady: true });
+  var rows = [
+    ['Today 12:41', 'Chat invite', 'Morning coffee opener', 'Dmitri M.', 'yes', 'yes', 'yes', '4 min'],
+    ['Today 11:58', 'Chat invite', 'Morning coffee opener', 'Andrey K.', 'yes', 'yes', 'yes', '22 min'],
+    ['Today 10:05', 'Welcome letter', 'Warm welcome', 'New contacts ×14', 'yes', '12/14', '3/14', '~1h'],
+    ['Yesterday 19:22', 'Icebreaker mail', 'Travel question', 'Sergey V.', 'yes', 'yes', 'no', '—'],
+    ['Yesterday 18:40', 'Icebreaker msg', 'Music match', 'Leonid T.', 'yes', 'yes', 'yes', '9 min'],
+    ['Yesterday 09:15', 'Chat invite', 'Weekend plans', 'Igor P.', 'no', '—', '—', '—'],
+    ['Mon 16:02', 'Newsfeed post', 'Sunday snapshot', 'Feed followers', 'yes', '—', '—', '—']
+  ];
+  var badge = { yes: '<span class="badge badge--success">Yes</span>', no: '<span class="badge badge--danger">No</span>', '—': '<span class="muted">—</span>' };
+  document.getElementById('hist-rows').innerHTML = rows.map(function (r) {
+    return '<tr><td class="num muted nowrap">' + r[0] + '</td><td><span class="badge badge--muted">' + r[1] + '</span></td><td class="strong">' + r[2] + '</td><td>' + r[3] + '</td>' +
+      '<td>' + (badge[r[4]] || '<span class="badge badge--muted">' + r[4] + '</span>') + '</td><td>' + (badge[r[5]] || '<span class="badge badge--accent">' + r[5] + '</span>') + '</td><td>' + (badge[r[6]] || '<span class="badge badge--accent">' + r[6] + '</span>') + '</td><td class="num">' + r[7] + '</td></tr>';
+  }).join('');
+  var sk = '';
+  for (var i = 0; i < 7; i++) sk += '<div class="sk-row"><span class="skeleton" style="width:12%;height:12px"></span><span class="skeleton" style="width:10%;height:22px;border-radius:999px"></span><span class="skeleton" style="width:22%;height:13px"></span><span style="flex:1"></span></div>';
+  document.getElementById('hist-sk').innerHTML = sk;
+})();
+</script>
+</body>
+</html>

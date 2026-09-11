@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flow v2 — screen atlas &amp; state machine</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+<style>
+  .atlas { display: grid; grid-template-columns: 300px minmax(0,1fr); height: 100vh; height: 100dvh; }
+  .atlas__side { border-right: 1px solid var(--border); background: var(--surface); display: flex; flex-direction: column; min-height: 0; }
+  .atlas__brand { display: flex; align-items: center; gap: 10px; padding: 16px 18px 12px; }
+  .atlas__brand img { height: 26px; }
+  .atlas__brand .v { font: 700 10px/1 var(--mono); letter-spacing: .14em; color: var(--accent-txt); background: var(--accent-soft); padding: 3px 7px; border-radius: var(--r-pill); text-transform: uppercase; }
+  .atlas__search { padding: 0 14px 12px; }
+  .atlas__tree { flex: 1; overflow-y: auto; padding: 0 10px 18px; }
+  .atlas__zone { font: 700 10px/1 var(--font); letter-spacing: .12em; text-transform: uppercase; color: var(--faint); padding: 16px 10px 7px; display: flex; justify-content: space-between; }
+  .atlas__zone .n { font-family: var(--mono); }
+  .atlas__item { display: flex; align-items: center; gap: 9px; width: 100%; padding: 8px 10px; border: 0; background: none; border-radius: var(--r-md); cursor: pointer; text-align: left; font-size: 13px; font-weight: 600; color: var(--fg-2); transition: background var(--t-fast), color var(--t-fast); }
+  .atlas__item:hover { background: var(--hover); color: var(--fg); }
+  .atlas__item.is-active { background: var(--accent-soft); color: var(--accent-txt); }
+  .atlas__item .st-n { margin-left: auto; font: 400 10px/1 var(--mono); color: var(--faint); }
+  .atlas__main { display: flex; flex-direction: column; min-width: 0; min-height: 0; background: var(--bg); }
+  .atlas__bar { display: flex; align-items: center; gap: 12px; padding: 10px 16px; border-bottom: 1px solid var(--border); background: var(--surface); flex-wrap: wrap; }
+  .atlas__title { font-size: 15px; font-weight: 700; }
+  .atlas__file { font: 400 11px/1 var(--mono); color: var(--muted); }
+  .atlas__file a { color: var(--muted); }
+  .atlas__states { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .atlas__states .lbl { font: 700 10px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--faint); margin-right: 2px; }
+  .atlas__view { flex: 1; min-height: 0; display: flex; align-items: stretch; justify-content: center; padding: 18px; }
+  .atlas__frame-wrap { flex: 1; min-height: 0; border-radius: var(--r-lg); overflow: hidden; border: 1px solid var(--border); box-shadow: var(--shadow-md); background: var(--surface); transition: max-width var(--t-med); margin: 0 auto; width: 100%; }
+  .atlas__frame-wrap iframe { width: 100%; height: 100%; border: 0; display: block; }
+  .atlas__hint { font: 400 10.5px/1.5 var(--mono); color: var(--faint); padding: 6px 16px; text-align: center; border-top: 1px solid var(--border); background: var(--surface); }
+  .atlas__hint code { color: var(--muted); }
+  .seg--vp button { padding: 6px 12px; font-family: var(--mono); font-size: 11px; }
+  @media (max-width: 900px) {
+    .atlas { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+    .atlas__side { max-height: 40vh; border-right: 0; border-bottom: 1px solid var(--border); }
+  }
+</style>
+</head>
+<body data-od-id="atlas">
+<div class="atlas">
+  <aside class="atlas__side" data-od-id="atlas-tree">
+    <div class="atlas__brand"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iNDIiIGhlaWdodD0iNTciPgogIDxkZWZzPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJhIiB4MT0iMS43IiB4Mj0iMi43IiB5MT0iLjIiIHkyPSIuMiIgZ3JhZGllbnRVbml0cz0ib2JqZWN0Qm91bmRpbmdCb3giPgogICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiMzYjQyYjgiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMTgxYjg5Ii8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGxpbmVhckdyYWRpZW50IHhsaW5rOmhyZWY9IiNhIiBpZD0iYiIgeDE9Ii40IiB4Mj0iLjQiIHkxPSIxLjQiIHkyPSIuMiIvPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJjIiB4MT0iMS43IiB4Mj0iMS43IiB5MT0iMSIgeTI9Ii0uMyIgZ3JhZGllbnRVbml0cz0ib2JqZWN0Qm91bmRpbmdCb3giPgogICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM1ODYyZGUiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjOTE2N2ZmIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJkIiB4MT0iMS44IiB4Mj0iMS44IiB5MT0iMS44IiB5Mj0iLjIiIGdyYWRpZW50VW5pdHM9Im9iamVjdEJvdW5kaW5nQm94Ij4KICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjNTg2MmRlIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2VjNTBmZiIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHBhdGggZmlsbD0idXJsKCNhKSIgZD0ibTc1OS4xIDI0OC4yIDIwIDV2LTE2bC0yMS02djE1YzAgMSAuMiAxLjggMSAyWiIgZGF0YS1uYW1lPSJQYXRoIDEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC03NTguMSAtMTk2LjIpIi8+CiAgPHBhdGggZmlsbD0idXJsKCNiKSIgZD0iTTc5MC4xIDIxMC4ydjE1bC0zMS0xMGMtLjgtLjMtMS0xLjEtMS0ydi0xNGwzMCA5Yy45LjMgMiAxLjEgMiAyWiIgZGF0YS1uYW1lPSJQYXRoIDIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC03NTguMSAtMTg2LjIpIi8+CiAgPHBhdGggZmlsbD0idXJsKCNjKSIgZD0iTTc5MC4xIDIxNnYxNGMwIC44LTEgMS43LTIgMmwtMzAgOHYtMTRjMC0xIC4yLTEuOSAxLTJaIiBkYXRhLW5hbWU9IlBhdGggMyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTc1OC4xIC0xOTEpIi8+CiAgPHBhdGggZmlsbD0idXJsKCNkKSIgZD0iTTgwMC4xIDE3OS42djE0YzAgMSAwIDEuOC0xIDJsLTQxIDExdi0xNGMwLS45LjItMS44IDEtMloiIGRhdGEtbmFtZT0iUGF0aCA0IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNzU4LjEgLTE3OS42KSIvPgo8L3N2Zz4=" alt="Flow"><span class="v">v2 atlas</span></div>
+    <div class="atlas__search"><div class="search"><span class="ic ic--search"></span><input class="input" id="atlas-q" type="search" placeholder="Filter screens" aria-label="Filter screens"></div></div>
+    <nav class="atlas__tree" id="atlas-tree" aria-label="Screens"></nav>
+  </aside>
+  <div class="atlas__main">
+    <div class="atlas__bar">
+      <div>
+        <div class="atlas__title" id="atlas-title">—</div>
+        <div class="atlas__file"><span id="atlas-file">—</span> · <a id="atlas-v1" href="#" target="_blank" rel="noopener" hidden>v1 copy ↗</a> · <a id="atlas-open" href="#" target="_blank" rel="noopener">open ↗</a></div>
+      </div>
+      <span style="flex:1"></span>
+      <div class="seg seg--vp" role="group" aria-label="Viewport width" id="atlas-vp">
+        <button type="button" data-vp="0" class="is-active">fill</button>
+        <button type="button" data-vp="1440">1440</button>
+        <button type="button" data-vp="1280">1280</button>
+        <button type="button" data-vp="768">768</button>
+        <button type="button" data-vp="390">390</button>
+      </div>
+      <button type="button" class="chip" id="atlas-theme" aria-label="Toggle theme">Dark</button>
+    </div>
+    <div class="atlas__bar" style="padding-top:8px;padding-bottom:8px">
+      <div class="atlas__states" id="atlas-states"><span class="lbl">State</span></div>
+    </div>
+    <div class="atlas__view">
+      <div class="atlas__frame-wrap" id="atlas-frame-wrap">
+        <iframe id="atlas-frame" title="Screen preview" src="about:blank"></iframe>
+      </div>
+    </div>
+    <div class="atlas__hint">deep-link: <code>?screen=&lt;id&gt;&amp;state=&lt;state&gt;&amp;theme=dark</code> · state matrix: every chip × light + dark</div>
+  </div>
+</div>
+<script src="assets/manifest.js"></script>
+<script>
+(function () {
+  'use strict';
+  var M = window.V2_MANIFEST;
+  var tree = document.getElementById('atlas-tree');
+  var frame = document.getElementById('atlas-frame');
+  var titleEl = document.getElementById('atlas-title');
+  var fileEl = document.getElementById('atlas-file');
+  var v1El = document.getElementById('atlas-v1');
+  var openEl = document.getElementById('atlas-open');
+  var statesEl = document.getElementById('atlas-states');
+  var themeBtn = document.getElementById('atlas-theme');
+  var wrap = document.getElementById('atlas-frame-wrap');
+  var q = document.getElementById('atlas-q');
+
+  var flat = [];
+  M.zones.forEach(function (z) { z.screens.forEach(function (s) { s.zone = z.label; flat.push(s); }); });
+
+  var params = new URLSearchParams(location.search);
+  var cur = { screen: params.get('screen') || 'home', state: params.get('state') || null, theme: params.get('theme') || 'light', vp: 0 };
+  try {
+    if (!params.get('screen')) {
+      var saved = JSON.parse(localStorage.getItem('v2-atlas') || 'null');
+      if (saved && saved.screen) { cur.screen = saved.screen; cur.state = saved.state || null; }
+    }
+    var savedTheme = localStorage.getItem('v2-theme');
+    if (!params.get('theme') && (savedTheme === 'dark' || savedTheme === 'light')) cur.theme = savedTheme;
+  } catch (_) {}
+  document.documentElement.setAttribute('data-theme', cur.theme);
+  themeBtn.textContent = cur.theme === 'dark' ? 'Light' : 'Dark';
+
+  function find(id) { for (var i = 0; i < flat.length; i++) if (flat[i].id === id) return flat[i]; return flat[0]; }
+
+  function buildTree(filter) {
+    var h = '';
+    M.zones.forEach(function (z) {
+      var items = z.screens.filter(function (s) {
+        if (!filter) return true;
+        return (s.title + ' ' + s.id + ' ' + z.label).toLowerCase().indexOf(filter) !== -1;
+      });
+      if (!items.length) return;
+      h += '<div class="atlas__zone"><span>' + z.label + '</span><span class="n">' + items.length + '</span></div>';
+      items.forEach(function (s) {
+        h += '<button type="button" class="atlas__item' + (s.id === cur.screen ? ' is-active' : '') + '" data-screen="' + s.id + '">' +
+          '<span>' + s.title + '</span>' +
+          (s.vision ? '<span class="od-new">new</span>' : '') +
+          '<span class="st-n">' + s.states.length + '</span></button>';
+      });
+    });
+    tree.innerHTML = h || '<div class="state" style="padding:32px 12px"><p>No screens match.</p></div>';
+  }
+
+  function load() {
+    var s = find(cur.screen);
+    if (cur.state && s.states.indexOf(cur.state) === -1) cur.state = null;
+    if (!cur.state) cur.state = s.states[0];
+    titleEl.textContent = s.title;
+    fileEl.textContent = s.file;
+    if (s.v1File) { v1El.hidden = false; v1El.href = (M.baseline || '../design-copy/') + s.v1File; } else v1El.hidden = true;
+    var src = s.file + '?chrome=0&theme=' + cur.theme + '&state=' + cur.state;
+    if (frame.getAttribute('src') !== src) frame.src = src;
+    openEl.href = s.file + '?state=' + cur.state + '&theme=' + cur.theme;
+    var h = '<span class="lbl">State</span>';
+    s.states.forEach(function (st) {
+      h += '<button type="button" class="chip' + (st === cur.state ? ' is-active' : '') + '" data-state="' + st + '">' + st + '</button>';
+    });
+    statesEl.innerHTML = h;
+    buildTree(q.value.trim().toLowerCase());
+    try {
+      localStorage.setItem('v2-atlas', JSON.stringify({ screen: cur.screen, state: cur.state }));
+      var u = new URL(location.href);
+      u.searchParams.set('screen', cur.screen);
+      u.searchParams.set('state', cur.state);
+      u.searchParams.set('theme', cur.theme);
+      history.replaceState(null, '', u);
+    } catch (_) {}
+  }
+
+  tree.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-screen]');
+    if (!b) return;
+    cur.screen = b.getAttribute('data-screen');
+    cur.state = null;
+    load();
+  });
+  statesEl.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-state]');
+    if (!b) return;
+    cur.state = b.getAttribute('data-state');
+    load();
+    try { frame.contentWindow.postMessage({ type: 'v2:set', state: cur.state }, '*'); } catch (_) {}
+  });
+  themeBtn.addEventListener('click', function () {
+    cur.theme = cur.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', cur.theme);
+    themeBtn.textContent = cur.theme === 'dark' ? 'Light' : 'Dark';
+    try { localStorage.setItem('v2-theme', cur.theme); } catch (_) {}
+    try { frame.contentWindow.postMessage({ type: 'v2:set', theme: cur.theme }, '*'); } catch (_) {}
+    load();
+  });
+  document.getElementById('atlas-vp').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-vp]');
+    if (!b) return;
+    this.querySelectorAll('button').forEach(function (x) { x.classList.toggle('is-active', x === b); });
+    var w = parseInt(b.getAttribute('data-vp'), 10);
+    wrap.style.maxWidth = w ? w + 'px' : 'none';
+  });
+  q.addEventListener('input', function () { buildTree(q.value.trim().toLowerCase()); });
+  window.addEventListener('message', function (e) {
+    var d = e && e.data;
+    if (!d || d.type !== 'v2:state') return;
+    if (d.state && d.state !== cur.state) {
+      cur.state = d.state;
+      load();
+    }
+  });
+
+  load();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "design-v2/history.html",
+  "entry": "design-v2/history.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-09-10T20:19:40.602Z",
+  "updatedAt": "2026-09-10T20:19:40.602Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Newsfeed posts · Flow v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+</head>
+<body data-od-id="page" data-od-label="Newsfeed posts">
+<main class="v2-main" id="page">
+
+  <div data-view="moderation,approved,declined,sent">
+    <div class="page-head">
+      <div class="page-head__t"><h1>Newsfeed posts</h1><p class="sub">Anna S. · RealLoves — story posts on the lady's public feed, reviewed before they go live.</p></div>
+      <div class="page-head__actions"><button type="button" class="btn btn--primary" data-modal-open="post-modal"><span class="ic ic--plus"></span>New post</button></div>
+    </div>
+
+    <div class="card" data-tab-scope>
+      <div class="tabs tabs--card" role="tablist">
+        <button type="button" data-tab="moderation" class="is-active" role="tab" aria-selected="true" data-state-link-tab="moderation">On moderation <span class="cnt">2</span></button>
+        <button type="button" data-tab="approved" role="tab" aria-selected="false" data-state-link-tab="approved">Approved <span class="cnt">7</span></button>
+        <button type="button" data-tab="declined" role="tab" aria-selected="false" data-state-link-tab="declined">Declined <span class="cnt">1</span></button>
+        <button type="button" data-tab="sent" role="tab" aria-selected="false" data-state-link-tab="sent">Sent <span class="cnt">24</span></button>
+      </div>
+
+      <div data-tab-panel="moderation" data-view="moderation">
+        <div class="lrow"><div class="media-tile" style="width:96px;height:72px;flex:0 0 auto"><span class="ic ic--media"></span><span class="badge badge--warning">Review</span></div>
+          <div class="main"><div class="t1">“Sunday snapshot”</div><div class="t2">Lazy Sunday with my cat and a good book. What does your perfect Sunday look like?</div><div class="tiny mono faint mt-1">Submitted 40 min ago · est. review ~3h</div></div>
+          <div class="row"><button type="button" class="icon-btn" title="Withdraw" data-toast="Withdrawn from review"><span class="ic ic--close"></span></button><button type="button" class="icon-btn" title="Edit" data-toast="Editor opened (prototype)"><span class="ic ic--pencil"></span></button></div></div>
+        <div class="lrow"><div class="media-tile" style="width:96px;height:72px;flex:0 0 auto"><span class="ic ic--media"></span><span class="badge badge--warning">Review</span></div>
+          <div class="main"><div class="t1">“Morning run”</div><div class="t2">5k before sunrise — the city is completely different when it's quiet.</div><div class="tiny mono faint mt-1">Submitted 3h ago</div></div>
+          <div class="row"><button type="button" class="icon-btn" title="Withdraw" data-toast="Withdrawn from review"><span class="ic ic--close"></span></button><button type="button" class="icon-btn" title="Edit" data-toast="Editor opened (prototype)"><span class="ic ic--pencil"></span></button></div></div>
+      </div>
+
+      <div data-tab-panel="approved" data-view="approved" hidden>
+        <div class="lrow"><div class="media-tile" style="width:96px;height:72px;flex:0 0 auto"><span class="ic ic--media"></span><span class="badge badge--success">Live</span></div>
+          <div class="main"><div class="t1">“City lights”</div><div class="t2">Evening walk downtown — my favourite building lit up.</div><div class="tiny mono faint mt-1">Live since yesterday · 41 likes · 6 comments</div></div>
+          <div class="row"><span class="badge badge--accent"><span class="ic ic--heart"></span>41</span></div></div>
+        <div class="lrow"><div class="media-tile" style="width:96px;height:72px;flex:0 0 auto"><span class="ic ic--media"></span><span class="badge badge--success">Live</span></div>
+          <div class="main"><div class="t1">“Recipe Sunday”</div><div class="t2">Tried my grandmother's borscht recipe — verdict: she still wins.</div><div class="tiny mono faint mt-1">Live since Monday · 33 likes · 4 comments</div></div>
+          <div class="row"><span class="badge badge--accent"><span class="ic ic--heart"></span>33</span></div></div>
+      </div>
+
+      <div data-tab-panel="declined" data-view="declined" hidden>
+        <div class="notice notice--danger" style="margin:16px 20px 0"><span class="ic ic--warn"></span><div>Declined posts can't be resubmitted as-is — edit the copy, then send for review again.</div></div>
+        <div class="lrow"><div class="media-tile" style="width:96px;height:72px;flex:0 0 auto"><span class="ic ic--media"></span><span class="badge badge--danger">Declined</span></div>
+          <div class="main"><div class="t1">“Pool day”</div><div class="t2">Swim day at the sports club — water was perfect.</div><div class="tiny mt-1" style="color:var(--danger)">Reason: swimwear photo outside platform rules</div></div>
+          <div class="row"><button type="button" class="icon-btn" title="Edit" data-toast="Editor opened (prototype)"><span class="ic ic--pencil"></span></button><button type="button" class="icon-btn" title="Delete" data-toast="Post deleted"><span class="ic ic--trash"></span></button></div></div>
+      </div>
+
+      <div data-tab-panel="sent" data-view="sent" hidden>
+        <div class="lrow"><div class="media-tile" style="width:96px;height:72px;flex:0 0 auto"><span class="ic ic--media"></span></div>
+          <div class="main"><div class="t1">“Garden week”</div><div class="t2">Roses finally bloomed — proof attached.</div><div class="tiny mono faint mt-1">Sent Aug 24 · rotated out Aug 31</div></div>
+          <span class="badge badge--muted">Archived</span></div>
+        <div class="lrow"><div class="media-tile" style="width:96px;height:72px;flex:0 0 auto"><span class="ic ic--media"></span></div>
+          <div class="main"><div class="t1">“Coffee art”</div><div class="t2">Barista outdid himself today.</div><div class="tiny mono faint mt-1">Sent Aug 17 · rotated out Aug 24</div></div>
+          <span class="badge badge--muted">Archived</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div data-view="loading" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Newsfeed posts</h1><p class="sub">Story posts on the lady's public feed.</p></div></div>
+    <div class="card"><div id="post-sk"></div></div>
+  </div>
+  <div data-view="empty" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Newsfeed posts</h1><p class="sub">Story posts on the lady's public feed.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon"><span class="ic ic--newsfeed ic--lg"></span></div><h2>No posts yet</h2><p>Newsfeed posts keep the profile alive between chats — a photo plus one line of copy is enough.</p><button type="button" class="btn btn--primary" data-modal-open="post-modal">New post</button></div></div>
+  </div>
+  <div data-view="error" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Newsfeed posts</h1><p class="sub">Story posts on the lady's public feed.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon state__icon--danger"><span class="ic ic--warn ic--lg"></span></div><h2>Posts failed to load</h2><p>Retry in a moment.</p><button type="button" class="btn btn--ghost" data-reload>Try again</button></div></div>
+  </div>
+
+  <div class="modal-backdrop" id="post-modal" role="dialog" aria-modal="true" aria-labelledby="post-modal-t">
+    <div class="modal">
+      <div class="modal__head"><h3 id="post-modal-t">New post</h3><button type="button" class="icon-btn" data-modal-close aria-label="Close"><span class="ic ic--close"></span></button></div>
+      <div class="modal__body">
+        <form class="form-grid" data-form="validate" data-success="Post sent for moderation" novalidate>
+          <div class="field span-2"><label>Photo</label><div class="media-tile" style="aspect-ratio:16/9"><div style="text-align:center"><span class="ic ic--upload ic--lg"></span><p class="tiny muted mt-1">Drop a photo or click to upload</p></div></div></div>
+          <div class="field span-2"><label for="p-text">Caption</label><textarea class="textarea" id="p-text" required maxlength="300" placeholder="One or two lines — keep it personal."></textarea><span class="err"><span class="ic ic--warn ic--sm"></span>Caption is required</span></div>
+          <div class="field span-2"><label for="p-when">Publish</label><select class="select" id="p-when" data-demo><option>After moderation, immediately</option><option>Schedule — pick time</option></select></div>
+          <div class="span-2 row" style="justify-content:flex-end"><button type="button" class="btn btn--quiet" data-modal-close>Cancel</button><button type="submit" class="btn btn--primary">Send for review</button></div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</main>
+<script src="assets/fixtures.js"></script>
+<script src="assets/components.js"></script>
+<script src="assets/stateful.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  FlowUI.mount({ nav: 'campaigns', zone: 'campaigns', sub: 'campaigns-posts.html', title: 'Posts', crumbs: ['Campaigns', 'Anna S.'], lady: true });
+  document.querySelectorAll('[data-state-link-tab]').forEach(function (b) {
+    b.addEventListener('click', function () { if (window.FlowState) FlowState.set(b.getAttribute('data-state-link-tab')); });
+  });
+  var sk = '';
+  for (var i = 0; i < 4; i++) sk += '<div class="sk-row"><span class="skeleton" style="width:96px;height:72px;border-radius:14px"></span><span style="flex:1"><span class="skeleton" style="display:block;width:40%;height:13px"></span><span class="skeleton" style="display:block;width:70%;height:11px;margin-top:7px"></span></span></div>';
+  document.getElementById('post-sk').innerHTML = sk;
+})();
+</script>
+</body>
+</html>

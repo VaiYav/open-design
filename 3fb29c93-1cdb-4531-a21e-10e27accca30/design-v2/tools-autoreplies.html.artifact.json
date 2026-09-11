@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "design-v2/tools-autoreplies.html",
+  "entry": "design-v2/tools-autoreplies.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-09-10T20:08:01.138Z",
+  "updatedAt": "2026-09-10T20:08:01.138Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

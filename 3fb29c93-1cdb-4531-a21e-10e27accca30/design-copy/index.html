@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flow design copy — screen index</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="assets/tokens.css">
+  <style>
+    .idx { max-width: 1120px; margin: 0 auto; padding: 40px 24px 80px; }
+    .idx__head { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; }
+    .idx__head img { height: 28px; }
+    .idx__sub { color: var(--muted); font-size: 13px; margin: 0 0 32px; }
+    .idx__sub code { font-family: var(--mono); background: var(--surface); padding: 1px 6px; border-radius: var(--radius); }
+    .idx__zone { margin-bottom: 28px; }
+    .idx__zone h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 0 0 10px; }
+    .idx__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 8px; }
+    .idx__item {
+      display: block; padding: 10px 14px; border: 1px solid var(--border);
+      border-radius: var(--radius); background: var(--c-white); text-decoration: none;
+      color: var(--fg); transition: all var(--t-fast);
+    }
+    .idx__item:hover { border-color: var(--c-lav-500); box-shadow: var(--shadow-sm); }
+    .idx__item .t { font-weight: 600; font-size: 14px; display: block; }
+    .idx__item .r { font: 400 11px/16px var(--mono); color: var(--muted); display: block; margin-top: 2px; }
+  </style>
+</head>
+<body data-od-id="page" data-od-label="Design copy index">
+  <div class="idx">
+    <div class="idx__head">
+      <img src="assets/logos/flow.svg" alt="Flow">
+      <h1 style="font-size:22px;margin:0">Design copy — screen index</h1>
+    </div>
+    <p class="idx__sub">Static HTML copy of <code>flow-webapp-frontend</code> routes. Route → file map: <code>manifest.json</code>. Parameterized routes (<code>:lady_id</code>, <code>:account_id</code>, …) are rendered with sample data.</p>
+
+    <section class="idx__zone">
+      <h2>Public</h2>
+      <div class="idx__grid">
+        <a class="idx__item" href="login.html"><span class="t">Login</span><span class="r">/login</span></a>
+      </div>
+    </section>
+
+    <section class="idx__zone">
+      <h2>Workspace</h2>
+      <div class="idx__grid">
+        <a class="idx__item" href="chats.html"><span class="t">Chats (3-pane)</span><span class="r">/account/:lady_id/:male_id</span></a>
+        <a class="idx__item" href="mails.html"><span class="t">Mails (3-pane)</span><span class="r">/mails/:lady_id/:male_id</span></a>
+        <a class="idx__item" href="history.html"><span class="t">History</span><span class="r">/account/:lady_id/:male_id/history</span></a>
+        <a class="idx__item" href="omniscience.html"><span class="t">Omniscience (AI chat)</span><span class="r">/omniscience</span></a>
+      </div>
+    </section>
+
+    <section class="idx__zone">
+      <h2>Administrator</h2>
+      <div class="idx__grid">
+        <a class="idx__item" href="admin-dashboard.html"><span class="t">Dashboard</span><span class="r">/administrator</span></a>
+        <a class="idx__item" href="admin-administrators.html"><span class="t">Administrators</span><span class="r">/administrator/administrators</span></a>
+        <a class="idx__item" href="admin-administrator-new.html"><span class="t">Create administrator</span><span class="r">/administrator/administrators/new</span></a>
+        <a class="idx__item" href="admin-accounts.html"><span class="t">Accounts</span><span class="r">/administrator/accounts</span></a>
+        <a class="idx__item" href="admin-account-new.html"><span class="t">Create account</span><span class="r">/administrator/accounts/new</span></a>
+        <a class="idx__item" href="admin-account-edit.html"><span class="t">Edit account</span><span class="r">/administrator/accounts/:account_id/edit</span></a>
+        <a class="idx__item" href="admin-lady-profiles.html"><span class="t">Lady profiles</span><span class="r">/administrator/lady_profiles</span></a>
+        <a class="idx__item" href="admin-lady-profile-new.html"><span class="t">Create lady profile — verify</span><span class="r">/administrator/lady_profiles/new</span></a>
+        <a class="idx__item" href="admin-lady-profile-create.html"><span class="t">Create lady profile — commit</span><span class="r">/administrator/lady_profiles/new</span></a>
+        <a class="idx__item" href="admin-lady-profile-edit.html"><span class="t">Edit lady profile</span><span class="r">/administrator/lady_profiles/:lady_id/edit</span></a>
+        <a class="idx__item" href="admin-lady-group-edit.html"><span class="t">Edit lady group</span><span class="r">/administrator/lady_profiles/:group_id/edit_lady_group</span></a>
+        <a class="idx__item" href="admin-schedules.html"><span class="t">Schedules</span><span class="r">/administrator/schedules</span></a>
+        <a class="idx__item" href="admin-schedule-new.html"><span class="t">Create schedule</span><span class="r">/administrator/schedules/new</span></a>
+      </div>
+    </section>
+
+    <section class="idx__zone">
+      <h2>Tools</h2>
+      <div class="idx__grid">
+        <a class="idx__item" href="tools.html"><span class="t">Tools — lady index</span><span class="r">/tools</span></a>
+        <a class="idx__item" href="tools-lady-autoreplies.html"><span class="t">Autoreplies</span><span class="r">/tools/:lady_id/autoreplies</span></a>
+        <a class="idx__item" href="tools-lady-presets.html"><span class="t">Presets</span><span class="r">/tools/:lady_id/presets</span></a>
+        <a class="idx__item" href="tools-lady-blacklists.html"><span class="t">Blacklist (RealLoves tabs)</span><span class="r">/tools/:lady_id/blacklists</span></a>
+        <a class="idx__item" href="tools-lady-blacklists-fb.html"><span class="t">Blacklist (FindBride tabs)</span><span class="r">/tools/:lady_id/blacklists</span></a>
+        <a class="idx__item" href="tools-lady-blacklists-lb.html"><span class="t">Blacklist (generic tabs)</span><span class="r">/tools/:lady_id/blacklists</span></a>
+        <a class="idx__item" href="tools-lady-blacklist-new.html"><span class="t">Add to blacklist</span><span class="r">/tools/:lady_id/blacklists/new</span></a>
+        <a class="idx__item" href="tools-lady-blacklists-bookmarked.html"><span class="t">Bookmarked blacklist</span><span class="r">/tools/:lady_id/bookmarked_blacklists</span></a>
+        <a class="idx__item" href="tools-lady-blacklists-mail.html"><span class="t">Mail blacklist</span><span class="r">/tools/:lady_id/mail_blacklists</span></a>
+        <a class="idx__item" href="tools-lady-blacklists-posts.html"><span class="t">Posts blacklist</span><span class="r">/tools/:lady_id/chat_post_blacklists</span></a>
+        <a class="idx__item" href="tools-lady-blacklists-credit.html"><span class="t">Credit history blacklist</span><span class="r">/tools/:lady_id/male_credit_history_blacklists</span></a>
+      </div>
+    </section>
+
+    <section class="idx__zone">
+      <h2>Auto sendings</h2>
+      <div class="idx__grid">
+        <a class="idx__item" href="auto-sendings.html"><span class="t">Autosendings pivot</span><span class="r">/auto_sendings</span></a>
+        <a class="idx__item" href="auto-sendings-lady.html"><span class="t">Chat invites templates</span><span class="r">/auto_sendings/:lady_id/chat_invites</span></a>
+        <a class="idx__item" href="auto-sendings-lady-welcome.html"><span class="t">Welcome letters</span><span class="r">/auto_sendings/:lady_id/welcome_letters</span></a>
+      </div>
+    </section>
+
+    <section class="idx__zone">
+      <h2>Icebreakers</h2>
+      <div class="idx__grid">
+        <a class="idx__item" href="icebreakers.html"><span class="t">Pivot — Messages</span><span class="r">/icebreakers/messages</span></a>
+        <a class="idx__item" href="icebreakers-mails.html"><span class="t">Pivot — Mails</span><span class="r">/icebreakers/mails</span></a>
+        <a class="idx__item" href="icebreakers-lady-groups.html"><span class="t">Message groups</span><span class="r">/icebreakers/:lady_id/groups</span></a>
+        <a class="idx__item" href="icebreakers-lady-group-create.html"><span class="t">Create group</span><span class="r">/icebreakers/:lady_id/groups/create</span></a>
+        <a class="idx__item" href="icebreakers-lady-messages.html"><span class="t">Message templates</span><span class="r">/icebreakers/:lady_id/messages/templates</span></a>
+        <a class="idx__item" href="icebreakers-lady-messages-moderation.html"><span class="t">Messages on moderation</span><span class="r">/icebreakers/:lady_id/messages/on_moderation</span></a>
+        <a class="idx__item" href="icebreakers-lady-messages-moods.html"><span class="t">Suggested moods</span><span class="r">/icebreakers/:lady_id/messages/suggested_moods</span></a>
+        <a class="idx__item" href="icebreakers-lady-messages-declined.html"><span class="t">Declined messages</span><span class="r">/icebreakers/:lady_id/messages/declined</span></a>
+        <a class="idx__item" href="icebreakers-lady-create.html"><span class="t">Create template</span><span class="r">/icebreakers/:lady_id/messages/create</span></a>
+        <a class="idx__item" href="icebreakers-lady-mails.html"><span class="t">Mails templates</span><span class="r">/icebreakers/:lady_id/mails/templates</span></a>
+        <a class="idx__item" href="icebreakers-lady-mails-moderation.html"><span class="t">Mails on moderation</span><span class="r">/icebreakers/:lady_id/mails/on_moderation</span></a>
+        <a class="idx__item" href="icebreakers-lady-mails-declined.html"><span class="t">Declined mails</span><span class="r">/icebreakers/:lady_id/mails/declined</span></a>
+      </div>
+    </section>
+
+    <section class="idx__zone">
+      <h2>Invites</h2>
+      <div class="idx__grid">
+        <a class="idx__item" href="invites.html"><span class="t">Chat invite pivot</span><span class="r">/invites/chat_invite</span></a>
+        <a class="idx__item" href="invites-mail.html"><span class="t">Mail invite pivot</span><span class="r">/invites/mail_invite</span></a>
+        <a class="idx__item" href="invites-post.html"><span class="t">Chat post invite pivot</span><span class="r">/invites/chat_post_invite</span></a>
+        <a class="idx__item" href="invites-lady.html"><span class="t">Invite templates</span><span class="r">/invites/chat_invite/:lady_id/templates</span></a>
+        <a class="idx__item" href="invites-lady-history.html"><span class="t">Invite history</span><span class="r">/invites/…/history</span></a>
+        <a class="idx__item" href="invites-lady-create.html"><span class="t">Create template</span><span class="r">/invites/…/templates/create</span></a>
+        <a class="idx__item" href="invites-lady-edit.html"><span class="t">Edit template</span><span class="r">/invites/…/templates/:id/edit</span></a>
+      </div>
+    </section>
+
+    <section class="idx__zone">
+      <h2>Newsfeeds</h2>
+      <div class="idx__grid">
+        <a class="idx__item" href="newsfeeds.html"><span class="t">Newsfeeds pivot</span><span class="r">/newsfeeds</span></a>
+        <a class="idx__item" href="newsfeeds-lady.html"><span class="t">On moderation</span><span class="r">/newsfeeds/:lady_id/on_moderation</span></a>
+        <a class="idx__item" href="newsfeeds-lady-approved.html"><span class="t">Approved</span><span class="r">/newsfeeds/:lady_id/approved</span></a>
+        <a class="idx__item" href="newsfeeds-lady-declined.html"><span class="t">Declined</span><span class="r">/newsfeeds/:lady_id/declined</span></a>
+        <a class="idx__item" href="newsfeeds-lady-sent.html"><span class="t">Sent</span><span class="r">/newsfeeds/:lady_id/sent</span></a>
+        <a class="idx__item" href="newsfeeds-lady-create.html"><span class="t">Create post</span><span class="r">/newsfeeds/:lady_id/create</span></a>
+      </div>
+    </section>
+
+    <section class="idx__zone">
+      <h2>Statistics</h2>
+      <div class="idx__grid">
+        <a class="idx__item" href="statistics.html"><span class="t">Autoreply stats</span><span class="r">/statistics</span></a>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

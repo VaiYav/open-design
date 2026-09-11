@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "design-copy/tools-lady-presets.html",
+  "entry": "design-copy/tools-lady-presets.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-09-10T18:13:11.259Z",
+  "updatedAt": "2026-09-10T18:13:11.259Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

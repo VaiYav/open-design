@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tools — Blacklist · Marina K. — Flow (design copy)</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="assets/tokens.css">
+  <style>
+    .btable { width: 100%; }
+    .btable__head, .btable__row { display: grid; grid-template-columns: 64px 1fr 110px 110px 150px 70px; align-items: center; }
+    .btable__head { height: 31px; color: var(--c-ink-400); font: 700 12px/18px var(--font); }
+    .btable__row {
+      background: var(--surface); border-radius: var(--radius);
+      padding: 8px 0; font: 600 14px/19px var(--font); color: var(--c-ink-500);
+    }
+    .btable__row:nth-child(2n) { background: var(--c-white); }
+    .btable .bc { padding: 0 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .btable .bc--photo .avatar { width: 48px; height: 48px; font-size: 15px; border-radius: var(--radius); }
+    .btable .bc--actions { display: flex; justify-content: flex-end; padding-right: 10px; }
+    .btable .del { color: var(--c-ink-400); }
+    .btable .del:hover { color: var(--c-red-500); }
+  </style>
+</head>
+<body data-theme="theme_purple" data-od-id="page" data-od-label="Tools / Lady / Blacklists / Index (FindBride)">
+  <header class="appheader" data-od-id="appheader">
+    <div class="appheader__left">
+      <img class="appheader__logo" src="assets/logos/flow.svg" alt="Flow">
+      <div class="account-info">
+        <span class="account-info__role">Account</span>
+        <span class="account-info__data">
+          <span class="account-info__name">Marina K.</span>
+          <span class="account-info__id">FB-77190</span>
+        </span>
+      </div>
+    </div>
+    <div class="appheader__right">
+      <ul class="appmenu">
+        <li><a href="omniscience.html" title="Omniscience" aria-label="Omniscience"><span class="ic ic--lightning"></span></a></li>
+        <li><a href="statistics.html" title="Statistics" aria-label="Statistics"><span class="ic ic--statistics"></span></a></li>
+        <li><a href="newsfeeds.html" title="Newsfeeds" aria-label="Newsfeeds"><span class="ic ic--newsfeed"></span></a></li>
+        <li><a href="mails.html" title="Mails" aria-label="Mails"><span class="ic ic--mail"></span></a></li>
+        <li><a href="chats.html" title="Accounts" aria-label="Accounts"><span class="ic ic--chat"></span></a></li>
+        <li><a href="auto-sendings.html" title="Auto Sendings" aria-label="Auto Sendings"><span class="ic ic--auto-sendings"></span></a></li>
+        <li><a href="icebreakers.html" title="Icebreakers" aria-label="Icebreakers"><span class="ic ic--icebreakers"></span></a></li>
+        <li><a href="invites.html" title="Chat Invite" aria-label="Chat Invite"><span class="ic ic--chat-invite"></span></a></li>
+        <li><a class="is-active" href="tools.html" title="Tools" aria-label="Tools" aria-current="page"><span class="ic ic--settings"></span></a></li>
+      </ul>
+      <div class="logout">
+        <button type="button" data-logout-toggle aria-expanded="false" aria-label="Account menu"><span class="ic ic--more"></span></button>
+        <div class="logout__menu" role="menu">
+          <button type="button" role="menuitem" onclick="flowToast('Logged out (prototype)')"><span class="ic ic--logout"></span><span>Log out</span></button>
+          <button type="button" role="menuitem" onclick="flowToast('Log out of all devices (prototype)')"><span class="ic ic--logout-all"></span><span>Log out of all devices</span></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="page" style="padding-top:10px" data-od-id="blacklists-fb-main">
+    <div class="tools-shell">
+      <aside class="tsidebar" aria-label="Lady tools">
+        <a class="back-btn" href="tools.html"><img src="assets/icons/backToIndex.svg" alt=""><span class="nav-text">Back to index</span></a>
+        <div class="lady-card">
+          <div class="lady-avatar"><span class="avatar-fallback">MK</span></div>
+          <span class="lady-name">Marina K., 29</span>
+          <span class="lady-platform">
+            <span class="pf-ico"><img src="assets/logos/find-bride.svg" alt="FindBride"></span>
+            <span class="platform-name">FindBride</span>
+          </span>
+          <dl>
+            <dt>ID:</dt><dd>247</dd>
+            <dt>ID on site:</dt><dd>771903</dd>
+          </dl>
+        </div>
+        <nav class="nav" aria-label="Tools sections">
+          <ul>
+            <li><a href="tools-lady-autoreplies.html"><img src="assets/icons/autorepliesIco.svg" alt=""><span class="nav-text">Autoreplies</span></a></li>
+            <li><a href="tools-lady-presets.html"><span class="ic ic--list"></span><span class="nav-text">Presets</span></a></li>
+            <li><a class="is-active" href="tools-lady-blacklists-fb.html"><img src="assets/icons/blacklistsIco.svg" alt=""><span class="nav-text">Blacklists</span></a></li>
+          </ul>
+        </nav>
+        <button type="button" class="collapse-btn" data-sidebar-toggle aria-label="Collapse sidebar">
+          <svg width="13" height="12" viewBox="0 0 13 12" fill="none" aria-hidden="true"><path d="M12 11L7 6L12 1M6 11L1 6L6 1" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </aside>
+
+      <section class="tools-content" data-od-id="blacklists-fb-content" aria-label="Blacklist">
+        <div class="bl-tabs" role="tablist">
+          <!-- FindBride tab set: source FB_NAV_TABS -->
+          <a class="is-active" href="tools-lady-blacklists-fb.html" aria-current="page">Blacklist</a>
+          <a href="tools-lady-blacklists-bookmarked.html">Bookmarked blacklist</a>
+          <a href="tools-lady-blacklists-mail.html">Mail blacklist</a>
+          <a class="bl-add" href="tools-lady-blacklist-new.html">Add to list</a>
+        </div>
+        <div class="bl-filter">
+          <select class="select" aria-label="Source filter">
+            <option>All sources</option>
+            <option>Manually added</option>
+          </select>
+        </div>
+
+        <div class="btable">
+          <div class="btable__head">
+            <div class="bc">Photo</div>
+            <div class="bc">Name</div>
+            <div class="bc">ID on Site</div>
+            <div class="bc">Added by</div>
+            <div class="bc">Date added</div>
+            <div class="bc" style="text-align:right">Actions</div>
+          </div>
+          <div class="btable__body">
+            <div class="btable__row">
+              <div class="bc bc--photo"><span class="avatar">RP</span></div>
+              <div class="bc">Roman P.</div>
+              <div class="bc">771904</div>
+              <div class="bc">Marina K.</div>
+              <div class="bc">5 Sep 2026 - 16:12</div>
+              <div class="bc bc--actions"><button class="icon-btn del" aria-label="Delete" data-confirm="Are you sure want to delete this item?"><span class="ic ic--bucket"></span></button></div>
+            </div>
+            <div class="btable__row">
+              <div class="bc bc--photo"><span class="avatar">TL</span></div>
+              <div class="bc">Timur L.</div>
+              <div class="bc">660381</div>
+              <div class="bc">Marina K.</div>
+              <div class="bc">1 Sep 2026 - 10:05</div>
+              <div class="bc bc--actions"><button class="icon-btn del" aria-label="Delete" data-confirm="Are you sure want to delete this item?"><span class="ic ic--bucket"></span></button></div>
+            </div>
+          </div>
+          <nav class="pagination" aria-label="Pages" style="margin-top:16px">
+            <button type="button" data-page-prev disabled aria-label="Previous page">‹</button>
+            <button type="button" data-page-num="1" aria-current="page">1</button>
+            <button type="button" data-page-next disabled aria-label="Next page">›</button>
+          </nav>
+        </div>
+      </section>
+    </div>
+  </main>
+  <script src="assets/app.js"></script>
+</body>
+</html>

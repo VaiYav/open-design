@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lady 360 · Flow v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+<style>
+  .l360-head { display: flex; align-items: center; gap: 16px; }
+  .l360-head .avatar { width: 56px; height: 56px; font-size: 19px; }
+  .l360-id { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .l360-id h1 { font-size: 20px; }
+  .cov-row { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border); }
+  .cov-row:last-child { border-bottom: 0; }
+  .cov-row .nm { flex: 1; font-weight: 600; font-size: 13px; }
+  .cov-row .nt { flex: 0 0 92px; text-align: right; font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .cov-bar { width: 110px; height: 7px; border-radius: 4px; background: var(--surface-3); overflow: hidden; flex: 0 0 auto; }
+  .cov-bar i { display: block; height: 100%; border-radius: 4px; background: var(--accent); }
+  .cov-bar i.warn { background: var(--warning); }
+</style>
+</head>
+<body data-od-id="page" data-od-label="Lady 360">
+<main class="v2-main" id="page">
+
+  <div data-view="populated">
+    <div class="page-head" data-od-id="l360-head">
+      <div class="l360-head">
+        <span class="avatar avatar--lg">AS</span>
+        <div>
+          <div class="l360-id"><h1>Anna S.</h1><span class="dot dot--on" title="Online"></span><span class="badge badge--accent mono" style="font-size:11px">RL-884217</span></div>
+          <p class="sub" style="margin-top:4px">Group A — Eastern Europe · joined Mar 2025 · operator <strong>Katerina V.</strong></p>
+        </div>
+      </div>
+      <div class="page-head__actions">
+        <a class="btn btn--ghost" href="tools-autoreplies.html"><span class="ic ic--autoreply"></span>Autoreplies</a>
+        <a class="btn btn--primary" href="chats.html"><span class="ic ic--chat"></span>Open chats</a>
+      </div>
+    </div>
+
+    <div class="grid cols-5 mb-3" data-od-id="l360-kpis">
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--chat ic--sm"></span>Open chats</div><div class="kpi__num">14</div><div class="kpi__delta" style="color:var(--muted)">6 unread</div></div>
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--reply ic--sm"></span>Reply rate 24h</div><div class="kpi__num">74%</div><div class="kpi__delta kpi__delta--up">+5pp WoW</div></div>
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--campaigns ic--sm"></span>Active campaigns</div><div class="kpi__num">4</div><div class="kpi__delta" style="color:var(--muted)">2 paused</div></div>
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--blacklist ic--sm"></span>Blacklist hits</div><div class="kpi__num">3</div><div class="kpi__delta kpi__delta--down">1 this week</div></div>
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--thumb-up ic--sm"></span>Message feedback</div><div class="kpi__num">79%</div><div class="kpi__delta" style="color:var(--muted)">58 votes · 30d</div></div>
+    </div>
+
+    <div class="grid" style="grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);align-items:start">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card" data-od-id="l360-accounts">
+          <div class="card__head"><h2>Platform accounts</h2><a class="btn btn--quiet btn--sm" href="admin-accounts.html">All accounts</a></div>
+          <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Platform</th><th>Login</th><th>Site ID</th><th>Status</th><th>Operator</th></tr></thead><tbody id="l360-acc"></tbody></table></div>
+        </div>
+        <div class="card" data-od-id="l360-activity">
+          <div class="card__head"><h2>Recent activity</h2><a class="btn btn--quiet btn--sm" href="history.html">History</a></div>
+          <div id="l360-act"></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card" data-od-id="l360-schedule">
+          <div class="card__head"><h2>Schedule</h2><a class="btn btn--quiet btn--sm" href="admin-schedules.html">Schedules</a></div>
+          <div class="card__body">
+            <dl class="deflist">
+              <dt>Window</dt><dd class="mono">08:00–16:00</dd>
+              <dt>Days</dt><dd>Mon–Fri</dd>
+              <dt>Timezone</dt><dd>Kyiv · UTC+3</dd>
+              <dt>Cover</dt><dd>Roman T. (nights)</dd>
+            </dl>
+          </div>
+        </div>
+        <div class="card" data-od-id="l360-campaigns">
+          <div class="card__head"><h2>Campaign coverage</h2><a class="btn btn--quiet btn--sm" href="campaigns-templates.html">Templates</a></div>
+          <div class="card__body" style="padding-top:6px" id="l360-cov"></div>
+        </div>
+        <div class="card" data-od-id="l360-blacklists">
+          <div class="card__head"><h2>Blacklists</h2><a class="btn btn--quiet btn--sm" href="tools-blacklists.html">Manage</a></div>
+          <div id="l360-bl"></div>
+        </div>
+        <div class="card" data-od-id="l360-fb">
+          <div class="card__head"><h2>Latest feedback</h2><a class="btn btn--quiet btn--sm" href="admin-message-feedback.html">Feedback</a></div>
+          <div id="l360-fb"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div data-view="loading" hidden>
+    <div class="page-head"><div class="l360-head"><span class="skeleton" style="width:56px;height:56px;border-radius:50%"></span><span style="flex:1"><span class="skeleton" style="display:block;width:180px;height:18px"></span><span class="skeleton" style="display:block;width:280px;height:12px;margin-top:8px"></span></span></div></div>
+    <div class="grid cols-5 mb-3"><div class="skeleton" style="height:110px;border-radius:16px"></div><div class="skeleton" style="height:110px;border-radius:16px"></div><div class="skeleton" style="height:110px;border-radius:16px"></div><div class="skeleton" style="height:110px;border-radius:16px"></div><div class="skeleton" style="height:110px;border-radius:16px"></div></div>
+    <div class="card"><div id="l360-sk"></div></div>
+  </div>
+  <div data-view="empty" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Lady 360</h1><p class="sub">Everything about a lady in one place.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon"><span class="ic ic--lady ic--lg"></span></div><h2>No lady selected</h2><p>Pick a lady from Tools or the context switcher to see her unified profile.</p><a class="btn btn--soft" href="tools.html">Open tools</a></div></div>
+  </div>
+  <div data-view="error" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Lady 360</h1><p class="sub">Everything about a lady in one place.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon state__icon--danger"><span class="ic ic--warn ic--lg"></span></div><h2>Profile failed to load</h2><p>Accounts, campaigns and feedback could not be fetched.</p><button type="button" class="btn btn--ghost" data-reload>Try again</button></div></div>
+  </div>
+
+</main>
+<script src="assets/fixtures.js"></script>
+<script src="assets/components.js"></script>
+<script src="assets/stateful.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  FlowUI.mount({ nav: 'tools', zone: 'tools', sub: 'lady-360', title: 'Lady 360', lady: true, crumbs: ['Tools'] });
+  var F = window.Fixtures;
+
+  document.getElementById('l360-acc').innerHTML = [
+    { p: 'realloves', login: 'anna_s_rl', site: 'RL-884217', status: 'ok', op: 'Katerina V.' },
+    { p: 'findbride', login: 'anna_s_fb', site: 'FB-901233', status: 'paused', op: 'Igor B.' }
+  ].map(function (a) {
+    var st = a.status === 'ok' ? '<span class="badge badge--success">Active</span>' : '<span class="badge badge--warning">Paused</span>';
+    return '<tr><td>' + FlowUI.platformTag(a.p) + '</td><td class="mono">' + a.login + '</td><td class="mono">' + a.site + '</td><td>' + st + '</td><td>' + a.op + '</td></tr>';
+  }).join('');
+
+  document.getElementById('l360-act').innerHTML = [
+    { icon: 'chat', t1: 'Replied to Dmitri M.', t2: 'Chat · 12:41', c: 'var(--accent)' },
+    { icon: 'mail', t1: 'Welcome letter sent to 3 new contacts', t2: 'Campaign · 11:20', c: 'var(--muted)' },
+    { icon: 'blacklist', t1: 'Blacklist match: male 771265', t2: 'Chat blacklist · 10:31', c: 'var(--warning)' },
+    { icon: 'check', t1: 'Icebreaker “Rainy day” approved', t2: 'Moderation · 09:55', c: 'var(--success)' }
+  ].map(function (a) {
+    return '<div class="lrow"><span class="ic ic--' + a.icon + '" style="color:' + a.c + '"></span><div class="main"><div class="t1">' + a.t1 + '</div><div class="t2">' + a.t2 + '</div></div></div>';
+  }).join('');
+
+  document.getElementById('l360-cov').innerHTML = [
+    { nm: 'Chat invites', v: 92, note: '12 templates' },
+    { nm: 'Welcome letters', v: 68, note: '5 templates' },
+    { nm: 'Icebreakers', v: 45, note: '3 active' },
+    { nm: 'Newsfeed posts', v: 30, note: 'weekly' }
+  ].map(function (c) {
+    return '<div class="cov-row"><span class="nm">' + c.nm + '</span><span class="cov-bar"><i style="width:' + c.v + '%"' + (c.v < 50 ? ' class="warn"' : '') + '></i></span><span class="nt mono">' + c.note + '</span></div>';
+  }).join('');
+
+  document.getElementById('l360-bl').innerHTML = [
+    { nm: 'Chat blacklist', n: 14 },
+    { nm: 'Mail blacklist', n: 6 },
+    { nm: 'Credit history', n: 2 }
+  ].map(function (b) {
+    return '<div class="lrow"><span class="ic ic--blacklist" style="color:var(--muted)"></span><div class="main"><div class="t1">' + b.nm + '</div></div><span class="badge badge--muted mono">' + b.n + '</span></div>';
+  }).join('');
+
+  document.getElementById('l360-fb').innerHTML = [
+    { dir: 'up', txt: '“I know a quiet spot by the river — Thursday, 7 pm?”', meta: 'AI output · Sep 10' },
+    { dir: 'down', txt: '“Sounds great, what time works for you?”', meta: 'AI output · “too generic”' },
+    { dir: 'up', txt: '“Pretty good — spent it hiking. Yours?”', meta: 'Message review · Sep 8' }
+  ].map(function (f) {
+    var up = f.dir === 'up';
+    return '<div class="lrow"><span class="ic ic--thumb-up" style="color:var(--' + (up ? 'success' : 'danger') + ');' + (up ? '' : 'transform:scaleY(-1)') + '"></span><div class="main"><div class="t1" style="white-space:normal">' + f.txt + '</div><div class="t2">' + f.meta + '</div></div></div>';
+  }).join('');
+
+  var sk = '';
+  for (var i = 0; i < 4; i++) sk += '<div class="sk-row"><span class="skeleton" style="width:30px;height:30px;border-radius:8px"></span><span style="flex:1"><span class="skeleton" style="display:block;width:50%;height:12px"></span><span class="skeleton" style="display:block;width:70%;height:10px;margin-top:6px"></span></span></div>';
+  document.getElementById('l360-sk').innerHTML = sk;
+})();
+</script>
+</body>
+</html>

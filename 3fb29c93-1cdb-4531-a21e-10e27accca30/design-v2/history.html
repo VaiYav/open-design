@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>History · Flow v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+</head>
+<body data-od-id="page" data-od-label="History">
+<main class="v2-main" id="page">
+
+  <div data-view="populated,conversation">
+    <div class="page-head">
+      <div class="page-head__t"><h1>History</h1><p class="sub">Closed and archived threads — full read access, replies disabled.</p></div>
+      <div class="page-head__actions">
+        <div class="search"><span class="ic ic--search"></span><input class="input" type="search" placeholder="Search threads" id="h-q" aria-label="Search threads"></div>
+        <div class="seg" data-chip-group><button type="button" class="is-active" data-chip>All</button><button type="button" data-chip>Chats</button><button type="button" data-chip>Mails</button></div>
+      </div>
+    </div>
+
+    <div class="grid" style="grid-template-columns:minmax(320px,420px) minmax(0,1fr);align-items:stretch;height:calc(100vh - 210px)">
+      <div class="card" data-od-id="history-list" style="display:flex;flex-direction:column;overflow:hidden">
+        <div id="h-rows" style="flex:1;overflow-y:auto"></div>
+      </div>
+      <div class="card" data-od-id="history-view" data-view="conversation" hidden>
+        <div class="card__head">
+          <span class="avatar avatar--sm">AS</span><span class="strong">Anna S.</span><span class="muted">↔</span><span class="avatar avatar--sm avatar--lav">DM</span><span class="strong">Dmitri M.</span>
+          <span style="flex:1"></span>
+          <span class="platform-tag"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE4MCAxODAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik00MC40MzIzIDE0LjYyMDFDMzkuOTIzNSAxNC44NzUgMzguMDg2NSAxNS43NjQ4IDM2LjMxIDE2LjU4OThDMjUuOTEzOSAyMS40NzkzIDE5LjM4NTYgMzQuMzA3NiAyMS4zNDc1IDQ1Ljk5MTVDMjUuMTUwNyA2OC4wODkyIDQzLjU5NzIgOTAuMzc3MSA2NC44MzggOTguNDQ1NkM2OC43NzA1IDk5LjkwNTYgNzYuMTIyMyAxMDAuNDE1IDc3LjI2NSA5OS4yNzA2Qzc3LjU4NDEgOTguOTU1MyA3Ny4zMjk3IDk3Ljg3NTQgNzYuNTY2NSA5Ni41NDA3QzcxLjQzMDkgODcuMzk2NyA2OC40NTE0IDc5LjMzMjUgNjcuOTQyNiA3My4wNDM2QzY3LjE4MzYgNjMuNjQ0NyA2OS43ODM4IDU2LjIxNTQgNzYuMTgyOCA0OS44NjZDODEuNjk3OCA0NC4zNDE2IDg3LjIxMjcgNDEuOTI3IDkzLjkzNTEgNDEuOTI3QzEwMC42NTcgNDEuOTI3IDEwNS43MjggNDMuODMxOCAxMTIuMjU3IDQ5LjIzMUwxMTYuMjQ5IDUyLjUzMUwxMjAuMDU3IDQ5LjIzMUwxMjMuNzk1IDQ1Ljg2NjNMMTIzLjY3IDQwLjU5NjZDMTIzLjM1NiAyOS41NDc3IDExNy4zOTYgMjAuMjc0MSAxMDcuOTQ5IDE2LjIwOTZDMTA2LjU1MiAxNS41NzQ3IDEwNC45MDUgMTQuODc1IDEwNC4zMzYgMTQuNTU5N0MxMDIuNzQ5IDEzLjczNDcgOTQuMDY0NSAxMy44NTk5IDkxLjk3MzIgMTQuNjg0OUM4Ny4yODE3IDE2LjY1NDUgODUuODg4OSAxNy4zNTQzIDgzLjA5OTEgMTkuNTE0Qzc5LjgwMDUgMjEuOTg5IDc2LjM3NjggMjUuMjkzMyA3NC4yMjUxIDI4LjE0ODNMNzIuODI4IDI5Ljk5MjdMNjcuMjQ4MyAyNC4zMzg2QzYyLjA0ODEgMTkuMTMzOCA2MC43ODA0IDE4LjMwNDUgNTIuOTg0NCAxNC40OTQ5QzUxLjUyNjkgMTMuODU5OSA0MS43IDEzLjkyNDcgNDAuNDMyMyAxNC42MjAxWk00NS42OTI4IDI5LjczMzVDNTAuMzE5NiAzMy45MjMzIDQ5LjM3MSA0MC41MzE5IDQzLjczMDkgNDMuMjYxN0M0MS4wNjYxIDQ0LjU5NjQgNDAuOTQxMSA0NC41OTYzIDM4LjE1MTIgNDMuNTE2NUMzMi43MDA5IDQxLjQyMTYgMzAuOTg5IDM1LjEzMjYgMzQuNzI3NSAzMC44NzgxQzM1LjgwNTUgMjkuNjczIDM3LjMyNzYgMjguNTI4NCAzOC4wODY1IDI4LjQwMzFDNDAuNDMyMiAyNy44OTM0IDQ0LjQyNTEgMjguNTkzMiA0NS42OTI4IDI5LjczNzhWMjkuNzMzNVoiIGZpbGw9IiMzNTdDQjkiLz4KPHBhdGggZD0iTTkwLjczNDQgNDYuNjc5MUM4Ni43NTM4IDQ3LjM3NTMgODEuMjUxNCA1MC4zNDQ2IDc4LjcyODEgNTMuMjQ5NkM3My41NDgyIDU5LjI1MjkgNzEuNDU5IDY2LjcwODggNzIuNzg3MyA3NC4xMDAxQzc0LjE3NTggODEuNTU1OSA3OC4zNDk4IDkwLjU4ODkgODMuNTI5OCA5Ny42MDIxQzg4LjQ2MDQgMTA0LjIzNyA5OC42OTk5IDExMi44OTIgMTA1LjAxOSAxMTUuNzM3QzExNC41NjIgMTIwLjA5OCAxMTguNDE4IDExOS45NyAxMjcuODM3IDExNS4yOTRDMTQyLjk0MiAxMDcuNzA5IDE1Ni41OTUgODkuODMyNiAxNTkuMzEyIDczLjk3NTZDMTYxLjIwNyA2My4zNjEyIDE1Ni4wODggNTIuOTM2IDE0Ni44NTggNDguNTE0MUMxNDMuMjU2IDQ2LjgwOCAxNDIuMDU3IDQ2LjU1NDQgMTM3LjYzMyA0Ni42MTg5QzEzMC44NzEgNDYuNjE4OSAxMjYuNzAyIDQ4LjcwMzEgMTIwLjUwNyA1NS4wODQ2TDExNi4wODQgNTkuNjk1NkwxMTEuMjE4IDU0Ljc3MDlDMTA0LjM5MSA0Ny44ODIzIDk4LjE5NyA0NS40ODQ1IDkwLjczODcgNDYuNjgzNEw5MC43MzQ0IDQ2LjY3OTFaTTkxLjkzMzggNTguODEwNEM5NC4zOTY5IDYwLjA3MzggOTUuNTM2MSA2Mi4wMzMzIDk1LjUzNjEgNjUuMTI3NEM5NS41MzYxIDY5LjIzNTYgOTMuMzg2NyA3MS4zOCA4OS4yMTcgNzEuMzhDODQuNjA0NCA3MS4zOCA4MS42OTQyIDY3Ljk2NzkgODIuNTE5NiA2My41NDZDODMuMzQwNiA1OS4zNzc2IDg4LjIwNjcgNTYuOTExIDkxLjkzOCA1OC44MTA0SDkxLjkzMzhaIiBmaWxsPSIjRkY1OTY2Ii8+CjxwYXRoIGQ9Ik03Ny4xMTU5IDEwMy44ODhDNzYuMjE1MSAxMDQuMjU0IDczLjMyMDUgMTA0LjQzNyA3MC40OTU4IDEwNC4yNTRMNjUuNDE1IDEwMy45NTFMNjQuNTE0MiAxMDUuOTY3QzYyLjc3ODMgMTA5Ljk5OSA2NC44Mzc3IDExMS4xNjMgNzMuNTEyOSAxMTEuMTYzQzc4LjQ2MjYgMTExLjE2MyA3OS44MTM3IDExMC45OCA4MS4wMzM3IDExMC4wMDNDODIuNTExNiAxMDguODQzIDgyLjU3NzIgMTA4Ljc4MSA4MS42MTA4IDEwNi4xNTRDODAuNTgzMyAxMDMuMzQ0IDc5LjY4MjYgMTAyLjkxNSA3Ny4xMTE1IDEwMy44OTJMNzcuMTE1OSAxMDMuODg4WiIgZmlsbD0iIzM1N0NCOSIvPgo8cGF0aCBkPSJNNzAuOTg5NSAxMjEuNDk3QzcwLjk4OTUgMTI0LjA3IDcxLjY5MzYgMTI4Ljc2NSA3MS42OTM2IDEyOC43NjVDNzEuNjkzNiAxMjguNzY1IDcyLjQzNzMgMTM0LjE2OSA3Mi44Nzg1IDEzNi42MTRDNzMuNjk2NyAxNDEuMzIgNzMuNTQwMSAxNDEuNjQ3IDc0LjE1NzkgMTQzLjU1Qzc0Ljk5MzggMTQ2LjEyNiA3Ni4wNDc5IDE0OC45NjQgNzguMzgyNCAxNTIuMzUxQzgyLjk3ODQgMTU5LjA2MyA4NS43NDk4IDE2MS4wNzIgODcuNTc4OCAxNTkuMjVDODguNzEzOSAxNTguMTI0IDg4LjUyNTQgMTU3LjM2OSA4Ni4zODM3IDE1NC45ODRDNzkuNzkwNSAxNDguMTI3IDc3Ljg1NTggMTQ0LjM5MiA3NS41ODk5IDEyMS44NzNMNzUuMDg0NSAxMTcuMTcxTDczLjA3MTMgMTE2Ljk4M0w3MC45OTM4IDExNi43OTVWMTIxLjUwMkw3MC45ODk1IDEyMS40OTdaIiBmaWxsPSIjMzU3Q0I5Ii8+CjxwYXRoIGQ9Ik0xMjAuMjUyIDEyMy43OTNDMTE5LjA1NyAxMjQuMTUyIDExNi4yODYgMTI0LjI3NCAxMTQuMDgxIDEyNC4wMzNDMTEwLjM2NCAxMjMuNzMyIDExMC4xMTUgMTIzLjc5MyAxMDkuNDIxIDEyNS4xNzZDMTA4LjQxNSAxMjcuMzM0IDEwOS4xNjkgMTI4LjIzNSAxMTIuNjMzIDEyOS4wNzJDMTE2LjQ3NSAxMjkuOTEyIDEyMS41NzUgMTI5LjM2OSAxMjMuNDY0IDEyNy45MzNDMTI0Ljc4NyAxMjYuOTE0IDEyNC43ODcgMTI2Ljg1MiAxMjMuNzc3IDEyNC45OTZDMTIzLjIxMSAxMjMuOTE1IDEyMi42NDIgMTIzLjA3NSAxMjIuNTgyIDEyMy4xMzZDMTIyLjUxOCAxMjMuMTM2IDEyMS40NDcgMTIzLjQzNCAxMjAuMjUyIDEyMy43OTdWMTIzLjc5M1oiIGZpbGw9IiNGRjU5NjYiLz4KPHBhdGggZD0iTTExMy44OTIgMTM0Ljg1MkMxMTMuNzAxIDEzNS4xNjkgMTEzLjM4MSAxMzcuNjI1IDExMy4xMjYgMTQwLjM5OUMxMTIuNzQ1IDE0NS4xMjIgMTEyLjQyNSAxNDcuMDE3IDExMC43NzMgMTUzLjk0N0MxMDkuODk0IDE1Ny42MzIgMTA4Ljk5IDE1OC4xNiAxMDguOTkgMTU4LjE2QzEwNy42MDIgMTYwLjQ0OCAxMDUuOTQgMTYyLjMxNyAxMDYuMTkxIDE2My41MThDMTA2Ljc2MiAxNjUuNTk2IDEwOC44IDE2NS40NjggMTEwLjc3MyAxNjMuMjY1QzExMi4xNzggMTYxLjY5NSAxMTQuMzQ5IDE1OS4wNCAxMTUuNDE5IDE1NC44OUMxMTYuODE2IDE0OS40NzMgMTE4LjUzNCAxMzYuNDg5IDExOC4wOTIgMTM1LjE2NUMxMTcuNzcyIDEzNC4zNDYgMTE0LjMzNyAxMzQuMDkzIDExMy44OTYgMTM0Ljg0OEwxMTMuODkyIDEzNC44NTJaIiBmaWxsPSIjRkY1OTY2Ii8+Cjwvc3ZnPgo=" alt="RealLoves">RealLoves</span>
+          <span class="badge badge--muted">Archived</span>
+        </div>
+        <div class="card__body" style="max-height:56vh;overflow-y:auto">
+          <div class="day-sep"><span>Aug 28</span></div>
+          <div class="msg-row"><div><div class="bubble">Do you still want to try that café?</div><div class="msg-meta"><span>18:02</span></div></div></div>
+          <div class="msg-row msg-row--out"><div><div class="bubble">I do! Next week is perfect — Thursday?</div><div class="msg-meta"><span>18:20</span><span class="ic ic--double-check"></span><span>Read</span></div></div></div>
+          <div class="msg-row"><div><div class="bubble">Thursday it is. 7 pm, don't be late.</div><div class="msg-meta"><span>18:31</span></div></div></div>
+        </div>
+        <div class="card__foot" style="justify-content:space-between">
+          <span class="small muted">214 messages · archived Aug 30 · reason: 30d inactive</span>
+          <button type="button" class="btn btn--ghost btn--sm" data-toast="Export requested — check downloads (prototype)"><span class="ic ic--download"></span>Export</button>
+        </div>
+      </div>
+      <div class="card" data-view="populated" hidden style="display:flex;align-items:center;justify-content:center">
+        <div class="state"><div class="state__icon state__icon--muted"><span class="ic ic--history ic--lg"></span></div><h2>Select a thread</h2><p>Pick an archived conversation on the left to read it.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div data-view="loading" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>History</h1><p class="sub">Closed and archived threads.</p></div></div>
+    <div class="card"><div id="h-sk"></div></div>
+  </div>
+
+  <div data-view="empty" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>History</h1><p class="sub">Closed and archived threads.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon"><span class="ic ic--history ic--lg"></span></div><h2>No archived threads</h2><p>When a conversation closes or a profile goes inactive for 30 days, the thread lands here.</p></div></div>
+  </div>
+
+  <div data-view="error" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>History</h1><p class="sub">Closed and archived threads.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon state__icon--danger"><span class="ic ic--warn ic--lg"></span></div><h2>History failed to load</h2><p>Could not fetch archived threads. Retry in a moment.</p><button type="button" class="btn btn--ghost" data-reload>Try again</button></div></div>
+  </div>
+
+</main>
+<script src="assets/fixtures.js"></script>
+<script src="assets/components.js"></script>
+<script src="assets/stateful.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  FlowUI.mount({ nav: 'history', zone: 'workspace', title: 'History', lady: true });
+  var F = window.Fixtures;
+  var rows = document.getElementById('h-rows');
+  rows.innerHTML = F.HISTORY.map(function (h, i) {
+    return '<button type="button" class="lrow" style="width:100%;border:0;border-bottom:1px solid var(--border);background:none;text-align:left;cursor:pointer" data-hrow="' + i + '">' +
+      '<span class="avatar avatar--sm">' + h.maleInit + '</span>' +
+      '<span class="main"><span class="t1">' + h.male + ' <span class="muted" style="font-weight:400">↔ ' + h.lady + '</span></span>' +
+      '<span class="t2">' + h.reason + '</span></span>' +
+      '<span style="text-align:right"><span class="badge badge--muted">' + (h.kind === 'chat' ? 'Chat' : 'Mail') + '</span><br><span class="tiny mono faint">' + h.last + '</span></span></button>';
+  }).join('');
+  rows.addEventListener('click', function (e) {
+    var r = e.target.closest('[data-hrow]');
+    if (r && window.FlowState) FlowState.set('conversation');
+  });
+  document.getElementById('h-q').addEventListener('input', function (e) {
+    var qv = e.target.value.trim().toLowerCase();
+    rows.querySelectorAll('.lrow').forEach(function (it) { it.style.display = it.textContent.toLowerCase().indexOf(qv) !== -1 ? '' : 'none'; });
+  });
+  var sk = '';
+  for (var i = 0; i < 6; i++) sk += '<div class="sk-row"><span class="skeleton" style="width:32px;height:32px;border-radius:50%"></span><span style="flex:1"><span class="skeleton" style="display:block;width:55%;height:12px"></span><span class="skeleton" style="display:block;width:75%;height:10px;margin-top:6px"></span></span></div>';
+  document.getElementById('h-sk').innerHTML = sk;
+})();
+</script>
+</body>
+</html>

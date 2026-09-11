@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Message groups · Flow v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+</head>
+<body data-od-id="page" data-od-label="Message groups">
+<main class="v2-main" id="page">
+
+  <div data-view="populated,create">
+    <div class="page-head">
+      <div class="page-head__t"><h1>Message groups</h1><p class="sub">Anna S. · RealLoves — ordered icebreaker sets. The sender walks a group top to bottom.</p></div>
+      <div class="page-head__actions"><button type="button" class="btn btn--primary" data-state-link="create"><span class="ic ic--plus"></span>New group</button></div>
+    </div>
+    <div class="card tbl-wrap" data-view="populated">
+      <table class="tbl">
+        <thead><tr><th style="width:56px">Pos</th><th>Group</th><th>Items</th><th>Status</th><th>Last sent</th><th style="text-align:right">Actions</th></tr></thead>
+        <tbody id="grp-rows"></tbody>
+      </table>
+    </div>
+    <div class="card" data-view="create" hidden data-od-id="group-create">
+      <div class="card__head"><h3>New message group</h3></div>
+      <div class="card__body">
+        <form class="form-grid" data-form="validate" data-success="Group created" novalidate>
+          <div class="field"><label for="g-name">Group name</label><input class="input" id="g-name" required placeholder="e.g. Re-engagement week 2"><span class="err"><span class="ic ic--warn ic--sm"></span>Name is required</span></div>
+          <div class="field"><label for="g-order">Send order</label><select class="select" id="g-order" data-demo><option>Top to bottom</option><option>Random per contact</option></select></div>
+          <div class="field span-2"><label for="g-items">Templates in this group</label>
+            <div class="card" style="border-style:dashed;box-shadow:none">
+              <div class="lrow"><span class="badge badge--accent">1</span><div class="main"><div class="t1">Morning coffee opener</div><div class="t2">Chat invite · active</div></div><button type="button" class="icon-btn" data-toast="Removed (prototype)"><span class="ic ic--close"></span></button></div>
+              <div class="lrow"><span class="badge badge--accent">2</span><div class="main"><div class="t1">Weekend plans</div><div class="t2">Chat invite · active</div></div><button type="button" class="icon-btn" data-toast="Removed (prototype)"><span class="ic ic--close"></span></button></div>
+              <div class="lrow"><button type="button" class="btn btn--ghost btn--sm" data-toast="Template picker opened (prototype)"><span class="ic ic--plus"></span>Add template</button></div>
+            </div>
+          </div>
+          <div class="span-2 row" style="justify-content:flex-end">
+            <button type="button" class="btn btn--quiet" data-state-link="populated">Cancel</button>
+            <button type="submit" class="btn btn--primary">Create group</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div data-view="loading" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Message groups</h1><p class="sub">Ordered icebreaker sets.</p></div></div>
+    <div class="card"><div id="grp-sk"></div></div>
+  </div>
+  <div data-view="empty" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Message groups</h1><p class="sub">Ordered icebreaker sets.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon"><span class="ic ic--groups ic--lg"></span></div><h2>No groups yet</h2><p>Groups sequence your icebreakers — first contact, follow-up, re-engagement — in the order you set.</p><button type="button" class="btn btn--primary" data-state-link="create">New group</button></div></div>
+  </div>
+  <div data-view="error" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Message groups</h1><p class="sub">Ordered icebreaker sets.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon state__icon--danger"><span class="ic ic--warn ic--lg"></span></div><h2>Groups failed to load</h2><p>Retry in a moment.</p><button type="button" class="btn btn--ghost" data-reload>Try again</button></div></div>
+  </div>
+
+</main>
+<script src="assets/fixtures.js"></script>
+<script src="assets/components.js"></script>
+<script src="assets/stateful.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  FlowUI.mount({ nav: 'campaigns', zone: 'campaigns', sub: 'campaigns-groups.html', title: 'Groups', crumbs: ['Campaigns', 'Anna S.'], lady: true });
+  var F = window.Fixtures;
+  var badge = { active: '<span class="badge badge--success">Active</span>', paused: '<span class="badge badge--muted">Paused</span>' };
+  document.getElementById('grp-rows').innerHTML = F.GROUPS.map(function (g, i) {
+    return '<tr><td class="num muted">' + (i + 1) + '</td><td class="strong">' + g.name + '<br><span class="tiny muted mono">' + g.id + '</span></td>' +
+      '<td class="num">' + g.items + '</td><td>' + badge[g.status] + '</td><td class="num muted">Today 10:12</td>' +
+      '<td class="t-actions"><button type="button" class="icon-btn" title="Move up" data-toast="Moved up"><span class="ic ic--chev-u"></span></button><button type="button" class="icon-btn" title="Move down" data-toast="Moved down"><span class="ic ic--chev-d"></span></button><button type="button" class="icon-btn" title="Edit" data-state-link="create"><span class="ic ic--pencil"></span></button><button type="button" class="icon-btn" title="Delete" data-toast="Group deleted"><span class="ic ic--trash"></span></button></td></tr>';
+  }).join('');
+  var sk = '';
+  for (var i = 0; i < 4; i++) sk += '<div class="sk-row"><span class="skeleton" style="width:30px;height:13px"></span><span class="skeleton" style="width:30%;height:13px"></span><span style="flex:1"></span><span class="skeleton" style="width:120px;height:30px;border-radius:6px"></span></div>';
+  document.getElementById('grp-sk').innerHTML = sk;
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-state-link]');
+    if (b && window.FlowState) FlowState.set(b.getAttribute('data-state-link'));
+  });
+})();
+</script>
+</body>
+</html>

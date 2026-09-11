@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "design-copy/admin-lady-group-edit.html",
+  "entry": "design-copy/admin-lady-group-edit.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-09-10T18:04:20.613Z",
+  "updatedAt": "2026-09-10T18:04:20.613Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

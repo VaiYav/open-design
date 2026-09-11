@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit person · Flow v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+</head>
+<body data-od-id="page" data-od-label="Edit person">
+<main class="v2-main" id="page">
+
+  <div class="page-head"><div class="page-head__t"><h1>Edit — Katerina V.</h1><p class="sub">Operator · signed in 12 min ago · 4 lady profiles assigned.</p></div>
+    <div class="page-head__actions"><button type="button" class="btn btn--danger btn--soft" style="background:var(--danger-soft);color:var(--danger)" data-toast="Person deactivated (prototype)">Deactivate</button></div>
+  </div>
+
+  <div data-view="default">
+    <div class="card" style="max-width:680px">
+      <div class="card__body">
+        <form class="form-grid" data-form="validate" data-success="Changes saved" novalidate>
+          <div class="field"><label for="e-name">Full name</label><input class="input" id="e-name" required value="Katerina V."><span class="err"><span class="ic ic--warn ic--sm"></span>Name is required</span></div>
+          <div class="field"><label for="e-email">Email</label><input class="input" id="e-email" type="email" required value="katerina@agency.com"><span class="err"><span class="ic ic--warn ic--sm"></span>Valid email is required</span></div>
+          <div class="field"><label for="e-role">Role</label><select class="select" id="e-role"><option selected>Operator</option><option>Administrator</option><option>Dev</option></select></div>
+          <div class="field"><label for="e-pass">New password <span class="muted" style="font-weight:400">(leave blank to keep)</span></label><input class="input" id="e-pass" type="password" minlength="8" placeholder="min 8 characters"></div>
+          <div class="field span-2"><label>Lady profiles</label>
+            <div class="row wrap" data-chip-group style="gap:6px">
+              <button type="button" class="chip is-active" data-chip>Anna S.</button><button type="button" class="chip is-active" data-chip>Elena V.</button><button type="button" class="chip is-active" data-chip>Irina K.</button><button type="button" class="chip" data-chip>Maria D.</button><button type="button" class="chip is-active" data-chip>Olga P.</button><button type="button" class="chip" data-chip>Svetlana R.</button>
+            </div>
+          </div>
+          <div class="span-2 row" style="justify-content:flex-end">
+            <a class="btn btn--quiet" href="admin-administrators.html">Cancel</a>
+            <button type="submit" class="btn btn--primary">Save changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div data-view="success" hidden>
+    <div class="card" style="max-width:640px;margin:40px auto"><div class="state">
+      <div class="state__icon" style="background:var(--success-soft);color:var(--success)"><span class="ic ic--check ic--lg"></span></div>
+      <h2>Changes saved</h2>
+      <p>Katerina V.'s profile was updated — new assignments apply on her next refresh.</p>
+      <div class="row mt-2"><a class="btn btn--primary" href="admin-administrators.html">All people</a></div>
+    </div></div>
+  </div>
+
+</main>
+<script src="assets/fixtures.js"></script>
+<script src="assets/components.js"></script>
+<script src="assets/stateful.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () { FlowUI.mount({ nav: 'admin', zone: 'admin', sub: 'admin-administrators.html', title: 'Edit person', crumbs: ['Admin', 'Administrators'], role: 'admin' }); })();
+</script>
+</body>
+</html>

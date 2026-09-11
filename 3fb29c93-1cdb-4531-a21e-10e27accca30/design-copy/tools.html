@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tools — Flow (design copy)</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="assets/tokens.css">
+</head>
+<body data-theme="theme_purple" data-od-id="page" data-od-label="Tools / Index">
+  <header class="appheader" data-od-id="appheader">
+    <div class="appheader__left">
+      <img class="appheader__logo" src="assets/logos/flow.svg" alt="Flow">
+      <div class="account-info">
+        <span class="account-info__role">Account</span>
+        <span class="account-info__data">
+          <span class="account-info__name">Anna S.</span>
+          <span class="account-info__id">RL-88421</span>
+        </span>
+      </div>
+    </div>
+    <div class="appheader__right">
+      <ul class="appmenu">
+        <li><a href="omniscience.html" title="Omniscience" aria-label="Omniscience"><span class="ic ic--lightning"></span></a></li>
+        <li><a href="statistics.html" title="Statistics" aria-label="Statistics"><span class="ic ic--statistics"></span></a></li>
+        <li><a href="newsfeeds.html" title="Newsfeeds" aria-label="Newsfeeds"><span class="ic ic--newsfeed"></span></a></li>
+        <li><a href="mails.html" title="Mails" aria-label="Mails"><span class="ic ic--mail"></span></a></li>
+        <li><a href="chats.html" title="Accounts" aria-label="Accounts"><span class="ic ic--chat"></span></a></li>
+        <li><a href="auto-sendings.html" title="Auto Sendings" aria-label="Auto Sendings"><span class="ic ic--auto-sendings"></span></a></li>
+        <li><a href="icebreakers.html" title="Icebreakers" aria-label="Icebreakers"><span class="ic ic--icebreakers"></span></a></li>
+        <li><a href="invites.html" title="Chat Invite" aria-label="Chat Invite"><span class="ic ic--chat-invite"></span></a></li>
+        <li><a class="is-active" href="tools.html" title="Tools" aria-label="Tools" aria-current="page"><span class="ic ic--settings"></span></a></li>
+      </ul>
+      <div class="logout">
+        <button type="button" data-logout-toggle aria-expanded="false" aria-label="Account menu"><span class="ic ic--more"></span></button>
+        <div class="logout__menu" role="menu">
+          <button type="button" role="menuitem" onclick="flowToast('Logged out (prototype)')"><span class="ic ic--logout"></span><span>Log out</span></button>
+          <button type="button" role="menuitem" onclick="flowToast('Log out of all devices (prototype)')"><span class="ic ic--logout-all"></span><span>Log out of all devices</span></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="page" style="padding-top:10px" data-od-id="tools-main">
+    <div class="tools-content" style="border-radius:var(--radius)">
+      <div class="page-head">
+        <h1>Tools</h1>
+        <div class="search-box" style="width:220px">
+          <span class="ic ic--search"></span>
+          <input class="input input--fill" id="tools-search" type="search" placeholder="Search" aria-label="Search lady profiles">
+        </div>
+      </div>
+
+      <div class="ttable" id="tools-table">
+        <div class="ttable__head">
+          <div class="tc tc--id">ID</div>
+          <div class="tc tc--status">Status</div>
+          <div class="tc tc--photo">Photo</div>
+          <div class="tc tc--name">Name</div>
+          <div class="tc tc--age">Age</div>
+          <div class="tc tc--site">Site</div>
+          <div class="tc tc--site-id">ID on Site</div>
+          <div class="tc tc--schedule">Schedule</div>
+          <div class="tc tc--actions" style="justify-content:flex-start">God Hand</div>
+        </div>
+        <div class="ttable__body">
+          <a class="ttable__row" href="tools-lady-autoreplies.html">
+            <div class="tc tc--id">241</div>
+            <div class="tc tc--status"><span class="lady-status lady-status--online"><span class="tip">Online</span></span></div>
+            <div class="tc tc--photo"><span class="avatar">AS</span></div>
+            <div class="tc tc--name c-name">Anna S.</div>
+            <div class="tc tc--age">26</div>
+            <div class="tc tc--site"><img src="assets/logos/real-loves.svg" alt="RealLoves"></div>
+            <div class="tc tc--site-id">884217</div>
+            <div class="tc tc--schedule">Morning shift 08:00–16:00</div>
+            <div class="tc tc--actions">
+              <button class="godhand godhand--play" title="Start AI generation" onclick="event.preventDefault();flowToast('God Hand enabled (prototype)')"><span class="ic ic--play"></span></button>
+              <button class="godhand godhand--stop" title="Stop AI generation" onclick="event.preventDefault();flowToast('God Hand stopped (prototype)')"><span class="ic ic--stop"></span></button>
+              <button class="godhand godhand--warn" title="Policy warnings" onclick="event.preventDefault();flowToast('2 policies missing configs (prototype)')"><span class="ic ic--warning"></span></button>
+            </div>
+          </a>
+          <a class="ttable__row" href="tools-lady-autoreplies.html">
+            <div class="tc tc--id">247</div>
+            <div class="tc tc--status"><span class="lady-status lady-status--offline"><span class="tip">Offline</span></span></div>
+            <div class="tc tc--photo"><span class="avatar">MK</span></div>
+            <div class="tc tc--name c-name">Marina K.</div>
+            <div class="tc tc--age">29</div>
+            <div class="tc tc--site"><img src="assets/logos/find-bride.svg" alt="FindBride"></div>
+            <div class="tc tc--site-id">771903</div>
+            <div class="tc tc--schedule">Evening shift 16:00–00:00</div>
+            <div class="tc tc--actions">
+              <button class="godhand godhand--play" title="Start AI generation" onclick="event.preventDefault();flowToast('God Hand enabled (prototype)')"><span class="ic ic--play"></span></button>
+              <button class="godhand godhand--stop" title="Stop AI generation" onclick="event.preventDefault();flowToast('God Hand stopped (prototype)')"><span class="ic ic--stop"></span></button>
+            </div>
+          </a>
+          <a class="ttable__row" href="tools-lady-autoreplies.html">
+            <div class="tc tc--id">253</div>
+            <div class="tc tc--status"><span class="lady-status lady-status--online"><span class="tip">Online</span></span></div>
+            <div class="tc tc--photo"><span class="avatar">LT</span></div>
+            <div class="tc tc--name c-name">Lena T.</div>
+            <div class="tc tc--age">24</div>
+            <div class="tc tc--site"><img src="assets/logos/real-loves.svg" alt="RealLoves"></div>
+            <div class="tc tc--site-id">640122</div>
+            <div class="tc tc--schedule muted">Not scheduled</div>
+            <div class="tc tc--actions">
+              <button class="godhand godhand--play" title="Start AI generation" onclick="event.preventDefault();flowToast('God Hand enabled (prototype)')"><span class="ic ic--play"></span></button>
+              <button class="godhand godhand--stop" title="Stop AI generation" onclick="event.preventDefault();flowToast('God Hand stopped (prototype)')"><span class="ic ic--stop"></span></button>
+            </div>
+          </a>
+          <a class="ttable__row" href="tools-lady-autoreplies.html">
+            <div class="tc tc--id">258</div>
+            <div class="tc tc--status"><span class="lady-status lady-status--error"><span class="tip">Sync error</span></span></div>
+            <div class="tc tc--photo"><span class="avatar">EV</span></div>
+            <div class="tc tc--name c-name">Elena V.</div>
+            <div class="tc tc--age">31</div>
+            <div class="tc tc--site"><img src="assets/logos/live-beam.svg" alt="LiveBeam"></div>
+            <div class="tc tc--site-id">511477</div>
+            <div class="tc tc--schedule">Night shift 00:00–08:00</div>
+            <div class="tc tc--actions">
+              <button class="godhand godhand--play" title="Start AI generation" onclick="event.preventDefault();flowToast('God Hand enabled (prototype)')"><span class="ic ic--play"></span></button>
+              <button class="godhand godhand--stop" title="Stop AI generation" onclick="event.preventDefault();flowToast('God Hand stopped (prototype)')"><span class="ic ic--stop"></span></button>
+            </div>
+          </a>
+          <a class="ttable__row" href="tools-lady-autoreplies.html">
+            <div class="tc tc--id">261</div>
+            <div class="tc tc--status"><span class="lady-status lady-status--online"><span class="tip">Online</span></span></div>
+            <div class="tc tc--photo"><span class="avatar">OD</span></div>
+            <div class="tc tc--name c-name">Olga D.</div>
+            <div class="tc tc--age">27</div>
+            <div class="tc tc--site"><img src="assets/logos/talky-times.svg" alt="TalkyTimes"></div>
+            <div class="tc tc--site-id">593280</div>
+            <div class="tc tc--schedule">Morning shift 08:00–16:00</div>
+            <div class="tc tc--actions">
+              <button class="godhand godhand--play" title="Start AI generation" onclick="event.preventDefault();flowToast('God Hand enabled (prototype)')"><span class="ic ic--play"></span></button>
+              <button class="godhand godhand--stop" title="Stop AI generation" onclick="event.preventDefault();flowToast('God Hand stopped (prototype)')"><span class="ic ic--stop"></span></button>
+            </div>
+          </a>
+        </div>
+        <nav class="pagination" aria-label="Pages" style="margin-top:16px">
+          <button type="button" data-page-prev disabled aria-label="Previous page">‹</button>
+          <button type="button" data-page-num="1" aria-current="page">1</button>
+          <button type="button" data-page-num="2">2</button>
+          <button type="button" data-page-num="3">3</button>
+          <button type="button" data-page-next aria-label="Next page">›</button>
+        </nav>
+      </div>
+    </div>
+  </main>
+  <script src="assets/app.js"></script>
+  <script>
+  (function () {
+    var search = document.getElementById('tools-search');
+    var rows = Array.prototype.slice.call(document.querySelectorAll('#tools-table .ttable__row'));
+    search.addEventListener('input', function () {
+      var q = search.value.trim().toLowerCase();
+      rows.forEach(function (r) {
+        r.style.display = r.textContent.toLowerCase().indexOf(q) !== -1 ? '' : 'none';
+      });
+    });
+  })();
+  </script>
+</body>
+</html>

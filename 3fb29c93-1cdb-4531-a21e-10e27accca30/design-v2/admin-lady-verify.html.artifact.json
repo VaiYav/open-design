@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "design-v2/admin-lady-verify.html",
+  "entry": "design-v2/admin-lady-verify.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-09-10T20:13:10.723Z",
+  "updatedAt": "2026-09-10T20:13:10.723Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

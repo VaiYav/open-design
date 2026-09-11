@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>History — Flow (design copy)</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="assets/tokens.css">
+  <style>
+    /* HistoryLayoutChats reuses AccountLayoutChatList — same three-pane shell,
+       History context active in the Accounts pane, read-only room. */
+    .hist3 { display: grid; grid-template-columns: 232px 320px 1fr; gap: 2px; align-items: stretch; min-height: calc(100vh - 70px); }
+    .pane { background: var(--c-white); border-radius: var(--radius); display: flex; flex-direction: column; overflow: hidden; }
+    .accounts-pane .pane-nav { display: flex; gap: 2px; padding: 10px 12px 0; }
+    .accounts-pane .pane-nav a {
+      flex: 1; text-align: center; padding: 8px 0;
+      border-radius: var(--radius);
+      font-weight: 600; font-size: 13px;
+      color: var(--muted); text-decoration: none;
+      transition: color var(--t-fast), background var(--t-fast);
+    }
+    .accounts-pane .pane-nav a:hover { color: var(--link-color); background: rgba(var(--link-color-rgb), 0.08); }
+    .accounts-pane .pane-nav a.is-active { color: var(--link-color); background: rgba(var(--link-color-rgb), 0.12); }
+    .platform-filters { display: flex; gap: 6px; flex-wrap: wrap; padding: 12px; border-bottom: 1px solid var(--border); }
+    .platform-filters .pf-chip { padding: 4px 8px; background: var(--c-white); }
+    .platform-filters .pf-chip img { height: 14px; width: auto; display: block; }
+    .accounts-list { flex: 1; min-height: 0; overflow-y: auto; }
+    .account-item {
+      display: flex; align-items: center; gap: 10px;
+      width: 100%; text-align: left; font: inherit; color: inherit;
+      padding: 10px 12px; border: none; border-bottom: 1px solid var(--border);
+      background: var(--c-white); cursor: pointer; transition: background var(--t-fast);
+    }
+    .account-item:hover { background: var(--surface); }
+    .account-item.is-active { background: rgba(var(--link-color-rgb), 0.08); }
+    .account-item .name { font-weight: 700; font-size: 13px; }
+    .account-item .meta { font-size: 11px; color: var(--muted); }
+    .hist-list .items { flex: 1; min-height: 0; overflow-y: auto; }
+    .hist-item {
+      display: flex; gap: 12px; align-items: center;
+      width: 100%; text-align: left; font: inherit; color: inherit;
+      padding: 13px 16px; border: none; border-bottom: 1px solid var(--border);
+      background: var(--c-white); cursor: pointer; transition: background var(--t-fast);
+    }
+    .hist-item:hover { background: var(--surface); }
+    .hist-item[aria-current="true"] { background: rgba(var(--link-color-rgb), 0.08); }
+    .hist-item .names { display: block; font-weight: 700; font-size: 13px; }
+    .hist-item .meta { display: block; font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .hist-toolbar { padding: 14px 16px; border-bottom: 1px solid var(--border); }
+    .conv-readonly { display: flex; flex-direction: column; }
+    .conv-readonly .room { flex: 1; min-height: 0; overflow-y: auto; padding: 20px; }
+    .conv-readonly .chat-bubble { opacity: 0.92; }
+    .badge--archived { background: var(--surface); color: var(--muted); border: 1px solid var(--border); }
+    @media (max-width: 1240px) { .hist3 { grid-template-columns: 232px 1fr; } .room-pane { display: none; } }
+    @media (max-width: 900px) { .hist3 { grid-template-columns: 1fr; } .accounts-pane { display: none; } }
+  </style>
+</head>
+<body data-od-id="page" data-od-label="Accounts / History">
+  <header class="appheader" data-od-id="appheader">
+    <div class="appheader__left">
+      <img class="appheader__logo" src="assets/logos/flow.svg" alt="Flow">
+      <div class="account-info">
+        <span class="account-info__role">Account</span>
+        <span class="account-info__data">
+          <span class="account-info__name">Anna S.</span>
+          <span class="account-info__id">RL-88421</span>
+        </span>
+      </div>
+    </div>
+    <div class="appheader__right">
+      <ul class="appmenu">
+        <li><a href="omniscience.html" title="Omniscience" aria-label="Omniscience"><span class="ic ic--lightning"></span></a></li>
+        <li><a href="statistics.html" title="Statistics" aria-label="Statistics"><span class="ic ic--statistics"></span></a></li>
+        <li><a href="newsfeeds.html" title="Newsfeeds" aria-label="Newsfeeds"><span class="ic ic--newsfeed"></span></a></li>
+        <li><a href="mails.html" title="Mails" aria-label="Mails"><span class="ic ic--mail"></span></a></li>
+        <li><a class="is-active" href="chats.html" title="Accounts" aria-label="Accounts" aria-current="page"><span class="ic ic--chat"></span></a></li>
+        <li><a href="auto-sendings.html" title="Auto Sendings" aria-label="Auto Sendings"><span class="ic ic--auto-sendings"></span></a></li>
+        <li><a href="icebreakers.html" title="Icebreakers" aria-label="Icebreakers"><span class="ic ic--icebreakers"></span></a></li>
+        <li><a href="invites.html" title="Chat Invite" aria-label="Chat Invite"><span class="ic ic--chat-invite"></span></a></li>
+        <li><a href="tools.html" title="Tools" aria-label="Tools"><span class="ic ic--settings"></span></a></li>
+      </ul>
+      <div class="logout">
+        <button type="button" data-logout-toggle aria-expanded="false" aria-label="Account menu"><span class="ic ic--more"></span></button>
+        <div class="logout__menu" role="menu">
+          <button type="button" role="menuitem" onclick="flowToast('Logged out (prototype)')"><span class="ic ic--logout"></span><span>Log out</span></button>
+          <button type="button" role="menuitem" onclick="flowToast('Log out of all devices (prototype)')"><span class="ic ic--logout-all"></span><span>Log out of all devices</span></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="page" style="padding-top:10px" data-od-id="history-main">
+    <div class="hist3">
+      <!-- Pane 1: Accounts pane with History context active -->
+      <aside class="pane accounts-pane" data-od-id="history-accounts-pane" aria-label="Accounts">
+        <nav class="pane-nav" aria-label="Account context">
+          <a href="chats.html">Profiles</a>
+          <a href="history.html" class="is-active" aria-current="page">History</a>
+        </nav>
+        <div class="platform-filters" role="group" aria-label="Platform filters" id="platform-filters">
+          <button class="pf-chip is-active" aria-pressed="true"><img src="assets/logos/real-loves.svg" alt="RealLoves"></button>
+          <button class="pf-chip" aria-pressed="false"><img src="assets/logos/find-bride.svg" alt="FindBride"></button>
+          <button class="pf-chip" aria-pressed="false"><img src="assets/logos/live-beam.svg" alt="LiveBeam"></button>
+          <button class="pf-chip" aria-pressed="false"><img src="assets/logos/talky-times.svg" alt="TalkyTimes"></button>
+        </div>
+        <div class="accounts-list" id="accounts-list">
+          <button class="account-item is-active" aria-current="true" data-platform="RealLoves">
+            <span class="avatar avatar--sm">AS</span>
+            <span style="flex:1"><span class="name">Anna S.</span><br><span class="meta">RealLoves · RL-884217</span></span>
+            <span class="dot dot--online" title="Online"></span>
+          </button>
+          <button class="account-item" data-platform="FindBride">
+            <span class="avatar avatar--sm">MK</span>
+            <span style="flex:1"><span class="name">Marina K.</span><br><span class="meta">FindBride · FB-771903</span></span>
+            <span class="dot dot--offline" title="Offline"></span>
+          </button>
+          <button class="account-item" data-platform="TalkyTimes">
+            <span class="avatar avatar--sm">OD</span>
+            <span style="flex:1"><span class="name">Olga D.</span><br><span class="meta">TalkyTimes · TT-593280</span></span>
+            <span class="dot dot--online" title="Online"></span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- Pane 2: closed conversations for the selected account -->
+      <section class="pane hist-list" data-od-id="history-list" aria-label="Closed conversations">
+        <div class="hist-toolbar">
+          <div class="search-box">
+            <span class="ic ic--search"></span>
+            <input class="input" id="hist-search" type="search" placeholder="Search history" aria-label="Search history">
+          </div>
+        </div>
+        <div class="items" id="hist-items">
+          <button class="hist-item" aria-current="true">
+            <span class="avatar avatar--sm">DM</span>
+            <span style="flex:1;min-width:0">
+              <span class="names">Dmitri M.</span>
+              <span class="meta">Closed Aug 30 · 214 messages · ID 884217</span>
+            </span>
+          </button>
+          <button class="hist-item">
+            <span class="avatar avatar--sm">SV</span>
+            <span style="flex:1;min-width:0">
+              <span class="names">Sergey V.</span>
+              <span class="meta">Closed Aug 21 · 96 messages · ID 771903</span>
+            </span>
+          </button>
+          <button class="hist-item">
+            <span class="avatar avatar--sm">IP</span>
+            <span style="flex:1;min-width:0">
+              <span class="names">Igor P.</span>
+              <span class="meta">Closed Aug 14 · 41 messages · ID 593280</span>
+            </span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Pane 3: read-only room -->
+      <section class="pane conv-readonly room-pane" data-od-id="history-conversation" aria-label="Closed conversation read-only view">
+        <div class="card__head">
+          <div class="row">
+            <span class="avatar">DM</span>
+            <div>
+              <strong>Dmitri M.</strong>
+              <p class="small muted" style="margin:0">Read-only archive · closed Aug 30</p>
+            </div>
+          </div>
+          <div class="row">
+            <span class="badge badge--archived">Archived</span>
+            <a class="btn btn--ghost btn--sm" href="omniscience.html">Ask Omniscience</a>
+          </div>
+        </div>
+        <div class="room">
+          <div class="chat-row">
+            <div class="chat-bubble chat-bubble--assistant">Hi! I saw we matched — your profile made me smile.</div>
+          </div>
+          <div class="chat-row chat-row--user">
+            <div class="chat-bubble chat-bubble--user">Thank you! I liked your photos from the mountains.</div>
+          </div>
+          <div class="chat-row">
+            <div class="chat-bubble chat-bubble--assistant">Weekend hike worked out great. The view was worth every step.</div>
+          </div>
+          <div class="chat-row chat-row--user">
+            <div class="chat-bubble chat-bubble--user">Glad to hear it! Show me pictures sometime?</div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <script src="assets/app.js"></script>
+  <script>
+  (function () {
+    var items = Array.prototype.slice.call(document.querySelectorAll('#hist-items .hist-item'));
+    var search = document.getElementById('hist-search');
+    search.addEventListener('input', function () {
+      var q = search.value.trim().toLowerCase();
+      items.forEach(function (item) {
+        item.style.display = item.textContent.toLowerCase().indexOf(q) !== -1 ? '' : 'none';
+      });
+    });
+    items.forEach(function (item) {
+      item.addEventListener('click', function () {
+        items.forEach(function (i) { i.classList.remove('is-active'); i.removeAttribute('aria-current'); });
+        item.classList.add('is-active');
+        item.setAttribute('aria-current', 'true');
+        window.flowToast('Loading archived conversation (prototype — preview unchanged)');
+      });
+    });
+
+    var chips = Array.prototype.slice.call(document.querySelectorAll('#platform-filters .pf-chip'));
+    var accounts = Array.prototype.slice.call(document.querySelectorAll('#accounts-list .account-item'));
+    chips.forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        chips.forEach(function (c) {
+          c.classList.toggle('is-active', c === chip);
+          c.setAttribute('aria-pressed', String(c === chip));
+        });
+        var platform = chip.querySelector('img').getAttribute('alt');
+        accounts.forEach(function (a) {
+          a.style.display = a.getAttribute('data-platform') === platform ? '' : 'none';
+        });
+      });
+    });
+    accounts.forEach(function (a) {
+      a.addEventListener('click', function () {
+        accounts.forEach(function (x) { x.classList.remove('is-active'); x.removeAttribute('aria-current'); });
+        a.classList.add('is-active');
+        a.setAttribute('aria-current', 'true');
+        window.flowToast('Switched to ' + a.querySelector('.name').textContent + ' (prototype — list unchanged)');
+      });
+    });
+  })();
+  </script>
+</body>
+</html>

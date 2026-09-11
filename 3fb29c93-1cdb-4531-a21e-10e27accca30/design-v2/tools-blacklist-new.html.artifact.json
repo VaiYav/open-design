@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "design-v2/tools-blacklist-new.html",
+  "entry": "design-v2/tools-blacklist-new.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-09-10T20:10:05.646Z",
+  "updatedAt": "2026-09-10T20:10:05.646Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

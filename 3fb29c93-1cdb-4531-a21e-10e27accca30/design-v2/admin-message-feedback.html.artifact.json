@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "design-v2/admin-message-feedback.html",
+  "entry": "design-v2/admin-message-feedback.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-09-11T07:28:39.413Z",
+  "updatedAt": "2026-09-11T07:28:39.413Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

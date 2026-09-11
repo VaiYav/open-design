@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add to blacklist · Flow v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+</head>
+<body data-od-id="page" data-od-label="Add to blacklist">
+<main class="v2-main" id="page">
+
+  <div class="page-head">
+    <div class="page-head__t"><h1>Add to blacklist</h1><p class="sub">Anna S. · RealLoves — two steps: verify the male, then confirm.</p></div>
+  </div>
+
+  <div data-view="verify-step,validation">
+    <div class="card" style="max-width:680px">
+      <div class="card__body">
+        <div class="steps"><div class="st is-active"><span class="n">1</span>Verify male</div><div class="ln"></div><div class="st"><span class="n">2</span>Confirm</div></div>
+        <form class="form-grid" data-form="validate" data-success="Male verified" novalidate id="bl-verify">
+          <div class="field"><label for="bl-id">Male site ID</label><input class="input" id="bl-id" required placeholder="e.g. 771265"><span class="hint">Numeric ID from the platform profile.</span><span class="err"><span class="ic ic--warn ic--sm"></span>Site ID is required</span></div>
+          <div class="field"><label for="bl-type">Blacklist type</label>
+            <select class="select" id="bl-type"><option>Chat</option><option>Mail</option><option>Posts</option><option>Bookmarked</option><option>Credit history</option></select></div>
+          <div class="field span-2"><label for="bl-reason">Reason</label>
+            <select class="select" id="bl-reason"><option>Credit fraud</option><option>Aggressive tone</option><option>Spam</option><option>Off-platform contact ask</option><option>Other — add note</option></select></div>
+          <div class="field span-2"><label for="bl-note">Note <span class="muted" style="font-weight:400">(optional, internal)</span></label><textarea class="textarea" id="bl-note" placeholder="Context for other operators…"></textarea></div>
+          <div class="span-2 row" style="justify-content:flex-end">
+            <a class="btn btn--quiet" href="tools-blacklists.html">Cancel</a>
+            <button type="submit" class="btn btn--primary">Verify</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div data-view="commit-step" hidden>
+    <div class="card" style="max-width:680px">
+      <div class="card__body">
+        <div class="steps"><div class="st is-done"><span class="n">✓</span>Verify male</div><div class="ln"></div><div class="st is-active"><span class="n">2</span>Confirm</div></div>
+        <div class="notice notice--warning mb-3"><span class="ic ic--warn-o"></span><div><span class="t">Check this is the right male.</span> Blacklisting blocks all his messages to Anna S. on this channel.</div></div>
+        <div class="card" style="box-shadow:none;background:var(--surface-2)">
+          <div class="card__body" style="display:flex;gap:14px;align-items:center">
+            <span class="avatar avatar--lg">IP</span>
+            <div style="flex:1"><div class="strong" style="font-size:16px">Igor P.</div><div class="small muted">Site ID <span class="mono">771265</span> · member since 2024 · 3 prior reports</div></div>
+            <span class="badge badge--danger">2 chargebacks</span>
+          </div>
+        </div>
+        <dl class="deflist mt-3">
+          <dt>Type</dt><dd>Chat blacklist</dd>
+          <dt>Reason</dt><dd>Credit fraud</dd>
+          <dt>Note</dt><dd>“Asked for card details twice.”</dd>
+        </dl>
+        <div class="row mt-3" style="justify-content:flex-end">
+          <button type="button" class="btn btn--quiet" data-state-link="verify-step">Back</button>
+          <button type="button" class="btn btn--primary" data-state-link="success">Confirm &amp; blacklist</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div data-view="success" hidden>
+    <div class="card" style="max-width:640px;margin:40px auto"><div class="state">
+      <div class="state__icon" style="background:var(--success-soft);color:var(--success)"><span class="ic ic--check ic--lg"></span></div>
+      <h2>Blacklisted</h2>
+      <p>Igor P. (ID 771265) is now on Anna S.'s chat blacklist. His messages stop arriving; the thread archives itself.</p>
+      <div class="row mt-2"><a class="btn btn--primary" href="tools-blacklists.html">Back to blacklists</a><a class="btn btn--ghost" href="tools-blacklist-new.html">Add another</a></div>
+    </div></div>
+  </div>
+
+</main>
+<script src="assets/fixtures.js"></script>
+<script src="assets/components.js"></script>
+<script src="assets/stateful.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  FlowUI.mount({ nav: 'tools', zone: 'tools', sub: 'tools-blacklists.html', title: 'Add to blacklist', crumbs: ['Tools', 'Anna S.', 'Blacklists'], lady: true });
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-state-link]');
+    if (b && window.FlowState) FlowState.set(b.getAttribute('data-state-link'));
+  });
+  function applyVariant() {
+    var st = document.documentElement.getAttribute('data-state');
+    var f = document.getElementById('bl-id').closest('.field');
+    f.classList.toggle('has-error', st === 'validation');
+  }
+  new MutationObserver(function (m) {
+    m.forEach(function (r) { if (r.attributeName === 'data-state') applyVariant(); });
+  }).observe(document.documentElement, { attributes: true });
+  applyVariant();
+})();
+</script>
+</body>
+</html>

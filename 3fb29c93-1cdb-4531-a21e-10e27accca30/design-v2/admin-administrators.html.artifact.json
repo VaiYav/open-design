@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "design-v2/admin-administrators.html",
+  "entry": "design-v2/admin-administrators.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-09-10T20:20:44.625Z",
+  "updatedAt": "2026-09-10T20:20:44.625Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

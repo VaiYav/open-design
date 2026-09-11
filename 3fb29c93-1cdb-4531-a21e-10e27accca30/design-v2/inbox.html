@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inbox · Flow v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+<style>
+  .inbox2 { display: grid; grid-template-columns: 400px minmax(0, 1fr); height: 100%; border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; background: var(--surface); box-shadow: var(--shadow-sm); }
+  .inbox2 .q { border-right: 1px solid var(--border); overflow-y: auto; min-height: 0; }
+  .q-group { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; gap: 8px; padding: 9px 16px; background: var(--surface-2); border-bottom: 1px solid var(--border); font-size: 12px; font-weight: 700; color: var(--fg-2); }
+  .q-group img { height: 13px; width: auto; }
+  .q-group .gc { margin-left: auto; font: 700 10.5px/1 var(--mono); color: var(--fg-2); background: var(--surface-3); padding: 3px 7px; border-radius: var(--r-pill); }
+  .q-row { display: flex; align-items: center; gap: 11px; width: 100%; padding: 12px 16px; border: 0; border-bottom: 1px solid var(--border); background: none; cursor: pointer; text-align: left; transition: background var(--t-fast); }
+  .q-row:hover { background: var(--hover); }
+  .q-row.is-active { background: var(--accent-soft); box-shadow: inset 3px 0 0 var(--accent); }
+  .q-row.is-active .t2 { color: var(--fg-2); }
+  .q-row .main { flex: 1; min-width: 0; }
+  .q-row .t1 { font-weight: 700; font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .q-row .t2 { font-size: 12px; color: var(--muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .q-row .meta { flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+  .q-row .age { font: 700 11px/1 var(--mono); color: var(--muted); white-space: nowrap; }
+  .q-row .age.hot { color: var(--danger); }
+  .q-row .kind { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--faint); }
+  .detail { display: flex; flex-direction: column; min-height: 0; }
+  .detail__head { display: flex; align-items: center; gap: 12px; padding: 13px 20px; border-bottom: 1px solid var(--border); }
+  .detail__head .who { flex: 1; min-width: 0; }
+  .detail__head .nm { font-weight: 700; font-size: 14.5px; }
+  .detail__head .mt { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 6px; margin-top: 2px; }
+  .detail__head .mt img { height: 13px; width: auto; }
+  .detail__msgs { flex: 1; min-height: 0; overflow-y: auto; padding: 20px 22px 8px; display: flex; flex-direction: column; gap: 4px; }
+  .detail__reply { border-top: 1px solid var(--border); padding: 13px 20px 14px; background: var(--composer-bg); }
+  .detail__reply .composer { border-radius: var(--r-md); }
+  .detail__reply textarea { min-height: 44px; padding: 11px 14px 4px; }
+  @media (max-width: 1080px) { .inbox2 { grid-template-columns: 320px minmax(0, 1fr); } }
+</style>
+</head>
+<body data-od-id="page" data-od-label="Unified inbox">
+<main class="v2-main v2-main--flush" id="page">
+
+  <div data-view="populated" class="fill" style="padding:24px 28px 88px;display:flex;flex-direction:column">
+    <div class="page-head">
+      <div class="page-head__t"><h1>Inbox</h1><p class="sub">Every waiting reply across ladies, chats and mails — one queue, oldest first. Answer in place or open the full thread.</p></div>
+      <div class="page-head__actions"><span class="badge badge--danger" style="font-size:13px;padding:6px 12px">30 waiting</span></div>
+    </div>
+
+    <div class="toolbar">
+      <div class="seg" data-chip-group>
+        <button type="button" class="is-active" data-chip>All</button>
+        <button type="button" data-chip>Chats</button>
+        <button type="button" data-chip>Mails</button>
+        <button type="button" data-chip>&gt;2h old</button>
+      </div>
+      <span class="sp"></span>
+      <div class="search"><span class="ic ic--search"></span><input class="input" type="search" placeholder="Search male, lady or text" id="in-q" aria-label="Search inbox"></div>
+    </div>
+
+    <div class="inbox2" style="flex:1;min-height:0" data-od-id="inbox-list">
+      <div class="q" id="in-rows" role="listbox" aria-label="Waiting replies"></div>
+      <div class="detail" id="in-detail"></div>
+    </div>
+  </div>
+
+  <div data-view="loading" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Inbox</h1><p class="sub">Every waiting reply — one queue.</p></div></div>
+    <div class="card"><div id="in-sk"></div></div>
+  </div>
+  <div data-view="empty" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Inbox</h1><p class="sub">Every waiting reply — one queue.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon" style="background:var(--success-soft);color:var(--success)"><span class="ic ic--check ic--lg"></span></div><h2>Inbox zero</h2><p>Every thread answered — Beloved will nudge you when new replies land.</p></div></div>
+  </div>
+  <div data-view="error" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Inbox</h1><p class="sub">Every waiting reply — one queue.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon state__icon--danger"><span class="ic ic--warn ic--lg"></span></div><h2>Inbox failed to load</h2><p>Retry in a moment.</p><button type="button" class="btn btn--ghost" data-reload>Try again</button></div></div>
+  </div>
+
+</main>
+<script src="assets/fixtures.js"></script>
+<script src="assets/components.js"></script>
+<script src="assets/stateful.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  FlowUI.mount({ nav: 'inbox', zone: 'home', title: 'Inbox', lady: true });
+  var F = window.Fixtures;
+  var items = [
+    { male: 'Andrey K.', mi: 'AK', lady: 'Anna S.', plat: 'realloves', kind: 'chat', age: '4h 20m', hot: true, preview: '…so when could we actually meet?' },
+    { male: 'Victor R.', mi: 'VR', lady: 'Marina K.', plat: 'findbride', kind: 'mail', age: '2h 05m', hot: true, preview: 'Re: Plans — is Friday still on?' },
+    { male: 'Sergey V.', mi: 'SV', lady: 'Anna S.', plat: 'realloves', kind: 'mail', age: '1h 40m', preview: 'Weekend — loved your last letter' },
+    { male: 'Leonid T.', mi: 'LT', lady: 'Marina K.', plat: 'findbride', kind: 'chat', age: '55m', preview: 'That music you mentioned…' },
+    { male: 'Igor P.', mi: 'IP', lady: 'Olga D.', plat: 'talkytimes', kind: 'chat', age: '30m', preview: 'Are you free tonight?' },
+    { male: 'Den R.', mi: 'DR', lady: 'Elena V.', plat: 'livebeam', kind: 'mail', age: '12m', preview: 'Re: Hello — tell me about Kyiv' }
+  ];
+  var selected = 0;
+
+  /* group consecutive items by lady, preserving oldest-first order */
+  var groups = [];
+  items.forEach(function (m, i) {
+    var g = groups[groups.length - 1];
+    if (!g || g.lady !== m.lady) { g = { lady: m.lady, plat: m.plat, rows: [] }; groups.push(g); }
+    g.rows.push({ m: m, i: i });
+  });
+
+  var rows = document.getElementById('in-rows');
+  function renderQueue() {
+    rows.innerHTML = groups.map(function (g) {
+      var li = g.lady.split(' ').map(function (w) { return w[0]; }).join('');
+      return '<div class="q-group"><span class="avatar avatar--sm avatar--lav">' + li + '</span>' +
+        '<span>' + g.lady + '</span><img src="' + F.PLATFORMS[g.plat].logo + '" alt=""><span class="gc">' + g.rows.length + '</span></div>' +
+        g.rows.map(function (r) {
+          var m = r.m;
+          return '<button type="button" class="q-row' + (r.i === selected ? ' is-active' : '') + '" role="option" aria-selected="' + (r.i === selected) + '" data-pick="' + r.i + '">' +
+            '<span class="avatar avatar--sm">' + m.mi + '</span>' +
+            '<span class="main"><span class="t1">' + m.male + '</span><span class="t2" style="display:block">' + m.preview + '</span></span>' +
+            '<span class="meta"><span class="age' + (m.hot ? ' hot' : '') + '">' + m.age + '</span><span class="kind">' + m.kind + '</span></span></button>';
+        }).join('');
+    }).join('');
+  }
+
+  function renderDetail() {
+    var m = items[selected];
+    var msgs = F.MESSAGES.map(function (x) {
+      return '<div class="msg-row' + (x.dir === 'out' ? ' msg-row--out' : '') + '"><div><div class="bubble">' + FlowUI.esc(x.text) + '</div>' +
+        '<div class="msg-meta">' + x.time + (x.status ? ' · ' + x.status : '') + '</div></div></div>';
+    }).join('');
+    document.getElementById('in-detail').innerHTML =
+      '<div class="detail__head"><span class="avatar">' + m.mi + '</span>' +
+      '<div class="who"><div class="nm">' + m.male + '</div><div class="mt"><img src="' + F.PLATFORMS[m.plat].logo + '" alt="">' + F.PLATFORMS[m.plat].name + ' · for ' + m.lady + ' · waiting ' + m.age + '</div></div>' +
+      '<a class="btn btn--ghost btn--sm" href="' + (m.kind === 'chat' ? 'chats' : 'mails') + '.html?state=loaded">Open ' + m.kind + '</a></div>' +
+      '<div class="detail__msgs">' + msgs + '</div>' +
+      '<div class="detail__reply"><form data-form="send" data-success="Reply sent — next in queue"><div class="composer">' +
+      '<textarea placeholder="Reply as ' + m.lady.split(' ')[0] + '…" aria-label="Quick reply"></textarea>' +
+      '<div class="composer__bar"><button type="button" class="icon-btn" title="Insert template" data-toast="Template picker (prototype)"><span class="ic ic--list"></span></button>' +
+      '<button type="button" class="icon-btn" title="Copilot suggestion" data-toast="Copilot is drafting…"><span class="ic ic--omni"></span></button>' +
+      '<span class="cnt">0 / 4000</span>' +
+      '<button type="submit" class="btn btn--primary btn--sm"><span class="ic ic--send"></span>Send</button></div></div></form></div>';
+  }
+
+  renderQueue();
+  renderDetail();
+
+  rows.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-pick]');
+    if (!b) return;
+    selected = +b.getAttribute('data-pick');
+    renderQueue();
+    renderDetail();
+  });
+
+  document.getElementById('in-q').addEventListener('input', function (e) {
+    var qv = e.target.value.trim().toLowerCase();
+    rows.querySelectorAll('.q-row').forEach(function (it) { it.style.display = it.textContent.toLowerCase().indexOf(qv) !== -1 ? '' : 'none'; });
+  });
+  var sk = '';
+  for (var i = 0; i < 6; i++) sk += '<div class="sk-row"><span class="skeleton" style="width:32px;height:32px;border-radius:50%"></span><span style="flex:1"><span class="skeleton" style="display:block;width:45%;height:12px"></span><span class="skeleton" style="display:block;width:65%;height:10px;margin-top:6px"></span></span><span class="skeleton" style="width:60px;height:18px;border-radius:999px"></span></div>';
+  document.getElementById('in-sk').innerHTML = sk;
+})();
+</script>
+</body>
+</html>

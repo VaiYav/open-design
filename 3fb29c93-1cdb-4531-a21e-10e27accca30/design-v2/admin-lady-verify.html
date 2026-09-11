@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verify lady · Flow v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+</head>
+<body data-od-id="page" data-od-label="Verify lady profile">
+<main class="v2-main" id="page">
+
+  <div class="page-head"><div class="page-head__t"><h1>New lady profile</h1><p class="sub">Step 1 — verify the persona exists on the platform before committing it.</p></div></div>
+
+  <div data-view="verify-step,checking">
+    <div class="card" style="max-width:680px">
+      <div class="card__body">
+        <div class="steps"><div class="st is-active"><span class="n">1</span>Verify</div><div class="ln"></div><div class="st"><span class="n">2</span>Commit</div></div>
+        <form class="form-grid" data-form="validate" data-success="Profile verified" novalidate>
+          <div class="field"><label for="lv-plat">Platform</label>
+            <select class="select" id="lv-plat"><option>RealLoves</option><option>FindBride</option><option>LiveBeam</option><option>TalkyTimes</option><option>ChatsHouse</option></select></div>
+          <div class="field"><label for="lv-id">Lady site ID</label><input class="input" id="lv-id" required placeholder="e.g. 884217"><span class="hint">Found on the lady's public profile URL.</span><span class="err"><span class="ic ic--warn ic--sm"></span>Site ID is required</span></div>
+          <div class="field"><label for="lv-acc">Account</label><select class="select" id="lv-acc"><option>anna_rl</option><option>elena_rl</option><option>irina_rl</option></select></div>
+          <div class="field"><label for="lv-op">Operator</label><select class="select" id="lv-op"><option>Katerina V.</option><option>Igor B.</option><option>Sofia L.</option></select></div>
+          <div class="span-2 row" style="justify-content:flex-end" id="lv-actions">
+            <a class="btn btn--quiet" href="admin-lady-profiles.html">Cancel</a>
+            <button type="submit" class="btn btn--primary" id="lv-btn">Verify</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div data-view="not-found" hidden>
+    <div class="card" style="max-width:680px"><div class="card__body">
+      <div class="steps"><div class="st is-active"><span class="n">1</span>Verify</div><div class="ln"></div><div class="st"><span class="n">2</span>Commit</div></div>
+      <div class="notice notice--danger mb-3"><span class="ic ic--warn"></span><div><span class="t">Profile not found.</span> RealLoves returned no lady for ID <span class="mono">884217</span>. Check the ID or pick a different account.</div></div>
+      <div class="row" style="justify-content:flex-end"><button type="button" class="btn btn--quiet" data-state-link="verify-step">Back</button><button type="button" class="btn btn--ghost" data-state-link="checking">Retry</button></div>
+    </div></div>
+  </div>
+
+  <div data-view="verified" hidden>
+    <div class="card" style="max-width:680px"><div class="card__body">
+      <div class="steps"><div class="st is-done"><span class="n">✓</span>Verify</div><div class="ln"></div><div class="st is-active"><span class="n">2</span>Commit</div></div>
+      <div class="notice notice--success mb-3"><span class="ic ic--check"></span><div><span class="t">Profile found on RealLoves.</span> Review the fetched details, then commit.</div></div>
+      <div class="card" style="box-shadow:none;background:var(--surface-2)"><div class="card__body" style="display:flex;gap:14px;align-items:center">
+        <span class="avatar avatar--lg">AS</span>
+        <div style="flex:1"><div class="strong" style="font-size:16px">Anna S.</div><div class="small muted">ID <span class="mono">884217</span> · 29 · Kyiv · 214 photos · English ok</div></div>
+      </div></div>
+      <dl class="deflist mt-3"><dt>Account</dt><dd class="mono">anna_rl</dd><dt>Operator</dt><dd>Katerina V.</dd><dt>Fetch time</dt><dd class="mono">0.8s</dd></dl>
+      <div class="row mt-3" style="justify-content:flex-end">
+        <button type="button" class="btn btn--quiet" data-state-link="verify-step">Back</button>
+        <a class="btn btn--primary" href="admin-lady-commit.html">Commit profile</a>
+      </div>
+    </div></div>
+  </div>
+
+</main>
+<script src="assets/fixtures.js"></script>
+<script src="assets/components.js"></script>
+<script src="assets/stateful.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  FlowUI.mount({ nav: 'admin', zone: 'admin', sub: 'admin-lady-profiles.html', title: 'Verify profile', crumbs: ['Admin', 'Lady profiles'], role: 'admin' });
+  function applyVariant() {
+    var st = document.documentElement.getAttribute('data-state');
+    var btn = document.getElementById('lv-btn');
+    if (st === 'checking') {
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner" style="width:16px;height:16px;border-width:2px"></span>Verifying…';
+    } else { btn.disabled = false; btn.textContent = 'Verify'; }
+  }
+  new MutationObserver(function (m) { m.forEach(function (r) { if (r.attributeName === 'data-state') applyVariant(); }); }).observe(document.documentElement, { attributes: true });
+  applyVariant();
+})();
+</script>
+</body>
+</html>

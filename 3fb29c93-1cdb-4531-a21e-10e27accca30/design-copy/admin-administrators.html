@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administrators — Flow (design copy)</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="assets/tokens.css">
+</head>
+<body data-od-id="page" data-od-label="Administrator / Administrators">
+  <header class="appheader" data-od-id="appheader">
+    <div class="appheader__left">
+      <img class="appheader__logo" src="assets/logos/flow.svg" alt="Flow">
+      <div class="account-info">
+        <span class="account-info__role">Main admin</span>
+        <span class="account-info__data">
+          <span class="account-info__name">Flow Root</span>
+          <span class="account-info__id">FL-ROOT-01</span>
+        </span>
+      </div>
+    </div>
+    <div class="appheader__right">
+      <ul class="appmenu">
+        <li><a href="omniscience.html" title="Omniscience" aria-label="Omniscience"><span class="ic ic--lightning"></span></a></li>
+        <li><a class="is-active" href="admin-dashboard.html" title="Administrator" aria-label="Administrator" aria-current="page"><span class="ic ic--crown"></span></a></li>
+        <li><a href="tools.html" title="Tools" aria-label="Tools"><span class="ic ic--settings"></span></a></li>
+      </ul>
+      <div class="logout">
+        <button type="button" data-logout-toggle aria-expanded="false" aria-label="Account menu"><span class="ic ic--more"></span></button>
+        <div class="logout__menu" role="menu">
+          <button type="button" role="menuitem" onclick="flowToast('Logged out (prototype)')"><span class="ic ic--logout"></span><span>Log out</span></button>
+          <button type="button" role="menuitem" onclick="flowToast('Log out of all devices (prototype)')"><span class="ic ic--logout-all"></span><span>Log out of all devices</span></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="admin-wrap">
+    <aside class="sidebar" data-od-id="admin-sidebar">
+      <nav class="sidebar__nav">
+        <ul>
+          <li><a href="admin-dashboard.html"><img src="assets/icons/dashboard.svg" alt=""><span class="sidebar__text">Dashboard</span></a></li>
+          <li><a class="is-active" href="admin-administrators.html"><img src="assets/icons/administrators.svg" alt=""><span class="sidebar__text">Administrators</span></a></li>
+          <li><a href="admin-accounts.html"><img src="assets/icons/accounts.svg" alt=""><span class="sidebar__text">Accounts</span></a></li>
+          <li><a href="admin-lady-profiles.html"><img src="assets/icons/lady_profiles.svg" alt=""><span class="sidebar__text">Lady Profiles</span></a></li>
+          <li><a href="admin-schedules.html"><img src="assets/icons/schedules.svg" alt=""><span class="sidebar__text">Schedules</span></a></li>
+        </ul>
+      </nav>
+      <button type="button" class="sidebar__collapse" data-sidebar-toggle aria-label="Toggle sidebar">
+        <svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 11L7 6L12 1M6 11L1 6L6 0.999999" stroke="#fff" opacity=".5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </aside>
+
+    <main class="admin-main">
+      <div class="content-card">
+        <div class="tablehead">
+          <a class="tablehead__add" href="admin-administrator-new.html">Add new administrator</a>
+          <form class="tablehead__search" onsubmit="return false">
+            <input type="text" placeholder="Search">
+            <span class="ic ic--search"></span>
+          </form>
+        </div>
+
+        <div class="dtable" data-od-id="admins-table">
+          <div class="dtable__head">
+            <div class="dhead-cell dhead-cell--id">ID</div>
+            <div class="dhead-cell" style="flex:0 0 22.3%">Name</div>
+            <div class="dhead-cell" style="flex:0 0 29.8%">Accounts</div>
+            <div class="dhead-cell" style="flex:0 0 20%">Lady profiles</div>
+            <div class="dhead-cell dcol--right">Actions</div>
+          </div>
+          <div class="dtable__body">
+            <div class="drow">
+              <div class="dcol dcol--id">FL-ADM-01</div>
+              <div class="dcol" style="flex:0 0 22.3%">Flow Admin</div>
+              <div class="dcol" style="flex:0 0 29.8%"></div>
+              <div class="dcol" style="flex:0 0 20%"></div>
+              <div class="dcol dcol--right">
+                <div class="act-group">
+                  <a class="act" href="admin-administrator-new.html" title="Edit" aria-label="Edit"><span class="ic ic--pencil"></span></a>
+                  <button class="act" type="button" data-modal-open="delete-admin" title="Delete" aria-label="Delete"><span class="ic ic--bucket"></span></button>
+                </div>
+              </div>
+            </div>
+            <div class="drow">
+              <div class="dcol dcol--id">FL-ADM-02</div>
+              <div class="dcol" style="flex:0 0 22.3%">Support Lead</div>
+              <div class="dcol" style="flex:0 0 29.8%"></div>
+              <div class="dcol" style="flex:0 0 20%"></div>
+              <div class="dcol dcol--right">
+                <div class="act-group">
+                  <a class="act" href="admin-administrator-new.html" title="Edit" aria-label="Edit"><span class="ic ic--pencil"></span></a>
+                  <button class="act" type="button" data-modal-open="delete-admin" title="Delete" aria-label="Delete"><span class="ic ic--bucket"></span></button>
+                </div>
+              </div>
+            </div>
+            <div class="drow">
+              <div class="dcol dcol--id">FL-ADM-03</div>
+              <div class="dcol" style="flex:0 0 22.3%">Night Shift</div>
+              <div class="dcol" style="flex:0 0 29.8%"></div>
+              <div class="dcol" style="flex:0 0 20%"></div>
+              <div class="dcol dcol--right">
+                <div class="act-group">
+                  <a class="act" href="admin-administrator-new.html" title="Edit" aria-label="Edit"><span class="ic ic--pencil"></span></a>
+                  <button class="act" type="button" data-modal-open="delete-admin" title="Delete" aria-label="Delete"><span class="ic ic--bucket"></span></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <nav class="pagination" aria-label="Pagination">
+          <button type="button" disabled aria-label="Previous page">‹</button>
+          <button type="button" class="is-active" aria-current="page">1</button>
+          <button type="button">2</button>
+          <button type="button">3</button>
+          <button type="button" aria-label="Next page">›</button>
+        </nav>
+      </div>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="delete-admin">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="del-title">
+      <button type="button" class="icon-btn modal__close" data-modal-close aria-label="Close"><span class="ic ic--close"></span></button>
+      <h2 id="del-title">Attention!!!</h2>
+      <p>Are you sure you want to delete this administrator?</p>
+      <div class="modal__actions">
+        <button type="button" class="btn btn--ghost" data-modal-close>Cancel</button>
+        <button type="button" class="btn btn--danger" data-modal-close onclick="flowToast('Administrator deleted (prototype)')">Delete</button>
+      </div>
+    </div>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>

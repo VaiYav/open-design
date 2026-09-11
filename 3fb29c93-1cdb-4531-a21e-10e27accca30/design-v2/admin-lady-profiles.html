@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lady profiles · Flow v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+</head>
+<body data-od-id="page" data-od-label="Lady profiles">
+<main class="v2-main" id="page">
+
+  <div data-view="populated">
+    <div class="page-head">
+      <div class="page-head__t"><h1>Lady profiles</h1><p class="sub">The public personas operators work behind — one profile per account.</p></div>
+      <div class="page-head__actions"><a class="btn btn--primary" href="admin-lady-verify.html"><span class="ic ic--plus"></span>New profile</a></div>
+    </div>
+    <div class="card tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>Lady</th><th>Platform</th><th>Account</th><th>Operator</th><th>Verified</th><th>Status</th><th style="text-align:right">Actions</th></tr></thead>
+        <tbody id="lp-rows"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div data-view="loading" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Lady profiles</h1><p class="sub">The public personas operators work behind.</p></div></div>
+    <div class="card"><div id="lp-sk"></div></div>
+  </div>
+  <div data-view="empty" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Lady profiles</h1><p class="sub">The public personas operators work behind.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon"><span class="ic ic--lady ic--lg"></span></div><h2>No profiles yet</h2><p>A lady profile binds a persona to a platform account — verification runs first.</p><a class="btn btn--primary" href="admin-lady-verify.html">New profile</a></div></div>
+  </div>
+  <div data-view="error" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Lady profiles</h1><p class="sub">The public personas operators work behind.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon state__icon--danger"><span class="ic ic--warn ic--lg"></span></div><h2>Profiles failed to load</h2><p>Retry in a moment.</p><button type="button" class="btn btn--ghost" data-reload>Try again</button></div></div>
+  </div>
+
+</main>
+<script src="assets/fixtures.js"></script>
+<script src="assets/components.js"></script>
+<script src="assets/stateful.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  FlowUI.mount({ nav: 'admin', zone: 'admin', sub: 'admin-lady-profiles.html', title: 'Lady profiles', crumbs: ['Admin'], role: 'admin' });
+  var F = window.Fixtures;
+  document.getElementById('lp-rows').innerHTML = F.LADIES.map(function (l, i) {
+    var verified = l.status === 'error' ? '<span class="badge badge--warning">Pending</span>' : '<span class="badge badge--success"><span class="ic ic--check"></span>Verified</span>';
+    return '<tr><td><span class="row"><span class="avatar avatar--sm">' + l.initials + '</span><span><span class="strong">' + l.name + '</span><br><span class="tiny muted mono">' + l.id + '</span></span></span></td>' +
+      '<td>' + FlowUI.platformTag(l.platform) + '</td><td class="mono small">' + l.id.toLowerCase() + '_acc</td><td class="muted">' + ['Katerina V.', 'Igor B.', 'Sofia L.'][i % 3] + '</td>' +
+      '<td>' + verified + '</td><td>' + FlowUI.dot(l.status) + ' <span class="small muted" style="text-transform:capitalize">' + l.status + '</span></td>' +
+      '<td class="t-actions"><a class="icon-btn" href="admin-lady-edit.html" title="Edit"><span class="ic ic--pencil"></span></a><a class="icon-btn" href="admin-lady-group-edit.html" title="Groups"><span class="ic ic--groups"></span></a></td></tr>';
+  }).join('');
+  var sk = '';
+  for (var i = 0; i < 6; i++) sk += '<div class="sk-row"><span class="skeleton" style="width:32px;height:32px;border-radius:50%"></span><span class="skeleton" style="width:20%;height:13px"></span><span class="skeleton" style="width:14%;height:12px"></span><span style="flex:1"></span><span class="skeleton" style="width:90px;height:30px;border-radius:6px"></span></div>';
+  document.getElementById('lp-sk').innerHTML = sk;
+})();
+</script>
+</body>
+</html>

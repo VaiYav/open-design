@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "design-v2/campaigns-templates.html",
+  "entry": "design-v2/campaigns-templates.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-09-10T20:03:22.607Z",
+  "updatedAt": "2026-09-10T20:03:22.607Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

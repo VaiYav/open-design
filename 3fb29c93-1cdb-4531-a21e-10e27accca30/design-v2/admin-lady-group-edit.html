@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lady groups · Flow v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+</head>
+<body data-od-id="page" data-od-label="Edit lady group">
+<main class="v2-main" id="page">
+
+  <div class="page-head"><div class="page-head__t"><h1>Groups — Anna S.</h1><p class="sub">Assign the profile to operator groups; group membership drives the send pipeline.</p></div></div>
+
+  <div data-view="populated">
+    <div class="card" style="max-width:680px"><div class="card__body">
+      <div class="field"><label>Member of</label>
+        <div class="row wrap" data-chip-group style="gap:6px">
+          <button type="button" class="chip is-active" data-chip>A-team</button>
+          <button type="button" class="chip" data-chip>Night shift</button>
+          <button type="button" class="chip is-active" data-chip>High priority</button>
+          <button type="button" class="chip" data-chip>Training</button>
+        </div>
+      </div>
+      <div class="notice notice--info mt-2"><span class="ic ic--info"></span><div>“High priority” profiles get moderation fast-track and appear first in the operator's picker.</div></div>
+      <div class="row mt-3" style="justify-content:flex-end">
+        <a class="btn btn--quiet" href="admin-lady-edit.html">Back to profile</a>
+        <button type="button" class="btn btn--primary" data-state-link="success">Save groups</button>
+      </div>
+    </div></div>
+  </div>
+
+  <div data-view="success" hidden>
+    <div class="card" style="max-width:640px;margin:40px auto"><div class="state">
+      <div class="state__icon" style="background:var(--success-soft);color:var(--success)"><span class="ic ic--check ic--lg"></span></div>
+      <h2>Groups updated</h2><p>Anna S. is in “A-team” and “High priority”. Pipelines refresh on next send window.</p>
+      <div class="row mt-2"><a class="btn btn--primary" href="admin-lady-profiles.html">All profiles</a></div>
+    </div></div>
+  </div>
+
+</main>
+<script src="assets/fixtures.js"></script>
+<script src="assets/components.js"></script>
+<script src="assets/stateful.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  FlowUI.mount({ nav: 'admin', zone: 'admin', sub: 'admin-lady-profiles.html', title: 'Lady groups', crumbs: ['Admin', 'Lady profiles', 'Anna S.'], role: 'admin' });
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-state-link]');
+    if (b && window.FlowState) FlowState.set(b.getAttribute('data-state-link'));
+  });
+})();
+</script>
+</body>
+</html>

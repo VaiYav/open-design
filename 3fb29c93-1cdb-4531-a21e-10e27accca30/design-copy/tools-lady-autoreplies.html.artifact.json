@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "design-copy/tools-lady-autoreplies.html",
+  "entry": "design-copy/tools-lady-autoreplies.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-09-10T18:12:26.550Z",
+  "updatedAt": "2026-09-10T18:12:26.550Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

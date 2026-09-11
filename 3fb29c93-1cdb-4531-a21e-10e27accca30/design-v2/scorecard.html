@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scorecard · Flow v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+<style>
+  .goal { height: 10px; border-radius: 6px; background: var(--surface-3); overflow: hidden; }
+  .goal i { display: block; height: 100%; border-radius: 6px; background: var(--accent-grad); }
+  .wk { display: flex; align-items: flex-end; gap: 10px; height: 120px; padding: 10px 6px 0; }
+  .wk .d { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 7px; height: 100%; justify-content: flex-end; }
+  .wk .d i { width: 100%; max-width: 46px; border-radius: 5px 5px 0 0; background: oklch(from var(--c-blue-500) l c h / 0.5); }
+  .wk .d.today i { background: var(--accent); }
+  .wk .d span { font: 400 10px/1 var(--mono); color: var(--faint); }
+  .vs td:first-child { color: var(--muted); font-weight: 600; }
+  .vs .me { font-weight: 700; color: var(--fg); }
+</style>
+</head>
+<body data-od-id="page" data-od-label="My scorecard">
+<main class="v2-main" id="page">
+
+  <div data-view="populated">
+    <div class="page-head">
+      <div class="page-head__t"><h1>My scorecard</h1><p class="sub">Your shift today and this week — volume, speed, quality signals.</p></div>
+      <div class="page-head__actions"><span class="status-pill"><span class="dot dot--on"></span>Shift 08:00–16:00 · Kyiv</span></div>
+    </div>
+
+    <div class="grid cols-4 mb-3" data-od-id="sc-kpis">
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--send ic--sm"></span>Replies sent</div><div class="kpi__num">86</div><div class="kpi__delta" style="color:var(--muted)">goal 120 · 72%</div></div>
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--clock ic--sm"></span>Median first reply</div><div class="kpi__num">11m</div><div class="kpi__delta kpi__delta--up">team median 18m</div></div>
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--inbox ic--sm"></span>Queue cleared</div><div class="kpi__num">31</div><div class="kpi__delta" style="color:var(--muted)">4 pending</div></div>
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--thumb-up ic--sm"></span>Feedback on my sends</div><div class="kpi__num">81%</div><div class="kpi__delta kpi__delta--up">42 votes · +4pp WoW</div></div>
+    </div>
+
+    <div class="grid" style="grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);align-items:start">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card" data-od-id="sc-week">
+          <div class="card__head"><h2>This week — replies per day</h2><span class="tiny muted mono">Mon–Sun</span></div>
+          <div class="wk" id="sc-wk"></div>
+          <div class="card__foot tiny muted">Today is highlighted. Dashed goal line = 120 replies/day.</div>
+        </div>
+        <div class="card" data-od-id="sc-vs">
+          <div class="card__head"><h2>You vs team median</h2><span class="badge badge--muted">last 30 days</span></div>
+          <div class="tbl-wrap"><table class="tbl vs"><tbody>
+            <tr><td>First-reply time</td><td class="me mono">11m</td><td class="mono muted">18m</td><td><span class="delta-pill delta-pill--up">−39%</span></td></tr>
+            <tr><td>Replies / shift</td><td class="me mono">104</td><td class="mono muted">92</td><td><span class="delta-pill delta-pill--up">+13%</span></td></tr>
+            <tr><td>Positive feedback</td><td class="me mono">81%</td><td class="mono muted">76%</td><td><span class="delta-pill delta-pill--up">+5pp</span></td></tr>
+            <tr><td>Comments received</td><td class="me mono">12</td><td class="mono muted">9</td><td><span class="delta-pill delta-pill--flat">≈</span></td></tr>
+            <tr><td>Blacklist incidents</td><td class="me mono">1</td><td class="mono muted">2</td><td><span class="delta-pill delta-pill--up">−50%</span></td></tr>
+          </tbody></table></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card card--pad" data-od-id="sc-goal">
+          <div class="card__head" style="padding:0 0 12px"><h2 style="font-size:15px">Today's goal</h2><span class="mono tiny muted">86 / 120</span></div>
+          <div class="goal"><i style="width:72%"></i></div>
+          <p class="tiny muted" style="margin-top:10px">34 replies to go — on pace to finish by 15:40.</p>
+        </div>
+        <div class="card" data-od-id="sc-fb">
+          <div class="card__head"><h2>Recent comments</h2><a class="btn btn--quiet btn--sm" href="admin-message-feedback.html">Feedback</a></div>
+          <div id="sc-comments"></div>
+        </div>
+        <div class="card card--pad">
+          <h3 class="mb-2" style="font-size:14px">Coaching note</h3>
+          <p class="small muted" style="line-height:1.6">Warm-up openers land well — your “coffee” line earned 4 positive votes. Watch tone on follow-ups: 2 of your 3 negatives were “too pushy”.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div data-view="loading" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>My scorecard</h1><p class="sub">Your shift today and this week.</p></div></div>
+    <div class="grid cols-4 mb-3"><div class="skeleton" style="height:110px;border-radius:16px"></div><div class="skeleton" style="height:110px;border-radius:16px"></div><div class="skeleton" style="height:110px;border-radius:16px"></div><div class="skeleton" style="height:110px;border-radius:16px"></div></div>
+    <div class="card"><div id="sc-sk"></div></div>
+  </div>
+  <div data-view="empty" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>My scorecard</h1><p class="sub">Your shift today and this week.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon"><span class="ic ic--stats ic--lg"></span></div><h2>No data yet</h2><p>Your scorecard fills in after your first shift — replies, speed and feedback appear here.</p></div></div>
+  </div>
+  <div data-view="error" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>My scorecard</h1><p class="sub">Your shift today and this week.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon state__icon--danger"><span class="ic ic--warn ic--lg"></span></div><h2>Scorecard failed to load</h2><p>Shift metrics could not be fetched.</p><button type="button" class="btn btn--ghost" data-reload>Try again</button></div></div>
+  </div>
+
+</main>
+<script src="assets/fixtures.js"></script>
+<script src="assets/components.js"></script>
+<script src="assets/stateful.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  FlowUI.mount({ nav: 'scorecard', title: 'My scorecard', lady: false });
+  var days = [68, 92, 104, 97, 110, 41, 86];
+  var lbl = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+  var max = Math.max.apply(null, days.concat([120]));
+  document.getElementById('sc-wk').innerHTML = days.map(function (v, i) {
+    return '<div class="d' + (i === 6 ? ' today' : '') + '" title="' + v + ' replies"><i style="height:' + Math.round(v / max * 100) + '%"></i><span>' + lbl[i] + '</span></div>';
+  }).join('');
+  document.getElementById('sc-comments').innerHTML = [
+    { dir: 'up', t: '“their flat white is genuinely good” — specific, warm', who: 'Kira M. · Sep 10' },
+    { dir: 'down', t: 'Too generic — name the café and keep it warmer.', who: 'Denis A. · Sep 10' },
+    { dir: 'up', t: 'Good recovery after his long silence.', who: 'Kira M. · Sep 9' },
+    { dir: 'down', t: 'Pushed for a meeting too early in the thread.', who: 'Denis A. · Sep 8' }
+  ].map(function (c) {
+    var up = c.dir === 'up';
+    return '<div class="lrow"><span class="ic ic--thumb-up" style="color:var(--' + (up ? 'success' : 'danger') + ');' + (up ? '' : 'transform:scaleY(-1)') + '"></span><div class="main"><div class="t1" style="white-space:normal">' + c.t + '</div><div class="t2">' + c.who + '</div></div></div>';
+  }).join('');
+  var sk = '';
+  for (var i = 0; i < 4; i++) sk += '<div class="sk-row"><span class="skeleton" style="width:30px;height:30px;border-radius:8px"></span><span style="flex:1"><span class="skeleton" style="display:block;width:50%;height:12px"></span><span class="skeleton" style="display:block;width:70%;height:10px;margin-top:6px"></span></span></div>';
+  document.getElementById('sc-sk').innerHTML = sk;
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Presets · Flow v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+</head>
+<body data-od-id="page" data-od-label="Presets">
+<main class="v2-main" id="page">
+
+  <div data-view="populated,edit,fb-default,fb-saving,fb-comment,fb-comment-limit,fb-expired,fb-conflict,fb-error,fb-lineage,fb-no-perm">
+    <div class="page-head">
+      <div class="page-head__t"><h1>Presets — Anna S.</h1><p class="sub">Operator's quick-reply library — insert into chat or mail with one click. Order is the picker order.</p></div>
+      <div class="page-head__actions">
+        <button type="button" class="btn btn--ghost" id="edit-toggle"><span class="ic ic--list"></span>Reorder</button>
+        <button type="button" class="btn btn--primary" data-modal-open="preset-modal"><span class="ic ic--plus"></span>New preset</button>
+      </div>
+    </div>
+
+    <div class="card tbl-wrap" data-view="populated,fb-default,fb-saving,fb-comment,fb-comment-limit,fb-expired,fb-conflict,fb-error,fb-lineage,fb-no-perm" data-od-id="presets-table">
+      <table class="tbl">
+        <thead><tr><th style="width:56px">#</th><th>Preset</th><th>Used in</th><th>Shortcut</th><th>Used (30d)</th><th style="text-align:right">Actions</th></tr></thead>
+        <tbody id="pr-rows"></tbody>
+      </table>
+    </div>
+
+    <div class="card" data-view="edit" hidden data-od-id="presets-edit">
+      <div class="card__head"><h3>Reorder presets</h3><span class="small muted">Use arrows — position 1 shows first in the picker.</span></div>
+      <div id="pr-edit-rows"></div>
+      <div class="card__foot"><button type="button" class="btn btn--quiet" data-state-link="populated">Done</button></div>
+    </div>
+  </div>
+
+  <div data-view="loading" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Presets</h1><p class="sub">Quick-reply library.</p></div></div>
+    <div class="card"><div id="pr-sk"></div></div>
+  </div>
+  <div data-view="empty" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Presets</h1><p class="sub">Quick-reply library.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon"><span class="ic ic--templates ic--lg"></span></div><h2>No presets yet</h2><p>Presets are the operator's fastest replies — greetings, photo answers, goodnights — one click into any chat.</p><button type="button" class="btn btn--primary" data-modal-open="preset-modal">New preset</button></div></div>
+  </div>
+  <div data-view="error" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Presets</h1><p class="sub">Quick-reply library.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon state__icon--danger"><span class="ic ic--warn ic--lg"></span></div><h2>Presets failed to load</h2><p>Retry in a moment.</p><button type="button" class="btn btn--ghost" data-reload>Try again</button></div></div>
+  </div>
+
+  <div class="modal-backdrop" id="preset-modal" role="dialog" aria-modal="true" aria-labelledby="preset-modal-t">
+    <div class="modal">
+      <div class="modal__head"><h3 id="preset-modal-t">New preset</h3><button type="button" class="icon-btn" data-modal-close aria-label="Close"><span class="ic ic--close"></span></button></div>
+      <div class="modal__body">
+        <form class="form-grid" data-form="validate" data-success="Preset saved" novalidate>
+          <div class="field"><label for="pr-name">Name</label><input class="input" id="pr-name" required placeholder="e.g. Goodnight"><span class="err"><span class="ic ic--warn ic--sm"></span>Name is required</span></div>
+          <div class="field"><label for="pr-where">Used in</label><select class="select" id="pr-where"><option>Chats and mails</option><option>Chats only</option><option>Mails only</option></select></div>
+          <div class="field span-2"><label for="pr-text">Text</label><textarea class="textarea" id="pr-text" required maxlength="300"></textarea><span class="err"><span class="ic ic--warn ic--sm"></span>Text is required</span></div>
+          <div class="span-2 row" style="justify-content:flex-end"><button type="button" class="btn btn--quiet" data-modal-close>Cancel</button><button type="submit" class="btn btn--primary">Save preset</button></div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</main>
+<script src="assets/fixtures.js"></script>
+<script src="assets/components.js"></script>
+<script src="assets/stateful.js"></script>
+<script src="assets/feedback.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  FlowUI.mount({ nav: 'tools', zone: 'tools', sub: 'tools-presets.html', title: 'Presets', crumbs: ['Tools', 'Anna S.'], lady: true });
+  /* ai:true marks presets produced by generation/import — they carry the
+     same review control as generated outputs elsewhere. */
+  var presets = [
+    { name: 'Evening hello', where: 'Chats', key: '⌘1', used: 88, text: 'Good evening! I saw you online and couldn’t resist saying hi — how’s your night?', ai: true, fb: { mode: 'ai' } },
+    { name: 'Photo answer', where: 'Chats + mails', key: '⌘2', used: 64, text: 'Thank you for the lovely photo — you have a great eye for light.' },
+    { name: 'Busy today', where: 'Chats', key: '⌘3', used: 41, text: 'Work is hectic today, but I’ll be free tonight — save me a story?' },
+    { name: 'Weekend invite', where: 'Chats', key: '⌘4', used: 33, text: 'I’m planning a slow Saturday morning — coffee, a walk, maybe a market. Join me in spirit?', ai: true, fb: { mode: 'ai', st: 'down', vote: 'down', comment: '“Join me in spirit” confuses men — too abstract for an invite.', reasons: ['context'] } },
+    { name: 'Goodnight', where: 'Chats', key: '⌘5', used: 29, text: 'Off to sleep — dream of something warm, and tell me about it tomorrow.' }
+  ];
+  document.getElementById('pr-rows').innerHTML = presets.map(function (p, i) {
+    return '<tr><td class="num muted">' + (i + 1) + '</td>' +
+      '<td><div class="strong">' + p.name + (p.ai ? ' <span class="badge badge--accent" style="margin-left:6px"><span class="ic ic--omni ic--sm"></span>AI import</span>' : '') + '</div>' +
+      '<div class="tiny muted" style="max-width:340px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="' + FlowUI.esc(p.text) + '">' + FlowUI.esc(p.text) + '</div>' +
+      (p.ai ? '<div class="variant" style="margin-top:6px;padding-top:0;border-top:0">' + window.FlowFB.render(p.fb) + '</div>' : '') + '</td>' +
+      '<td><span class="badge badge--muted">' + p.where + '</span></td><td class="num">' + p.key + '</td><td class="num">' + p.used + '</td>' +
+      '<td class="t-actions"><button type="button" class="icon-btn" title="Edit" data-toast="Editor opened (prototype)"><span class="ic ic--pencil"></span></button><button type="button" class="icon-btn" title="Duplicate" data-toast="Duplicated"><span class="ic ic--copy"></span></button><button type="button" class="icon-btn" title="Delete" data-toast="Preset deleted"><span class="ic ic--trash"></span></button></td></tr>';
+  }).join('');
+  window.FlowFB.hydrate(document);
+  document.getElementById('pr-edit-rows').innerHTML = presets.map(function (p, i) {
+    return '<div class="lrow"><span class="badge badge--accent">' + (i + 1) + '</span><div class="main"><div class="t1">' + p.name + '</div></div>' +
+      '<button type="button" class="icon-btn" title="Up" data-toast="Moved up"><span class="ic ic--chev-u"></span></button><button type="button" class="icon-btn" title="Down" data-toast="Moved down"><span class="ic ic--chev-d"></span></button></div>';
+  }).join('');
+  document.getElementById('edit-toggle').addEventListener('click', function () { if (window.FlowState) FlowState.set('edit'); });
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-state-link]');
+    if (b && window.FlowState) FlowState.set(b.getAttribute('data-state-link'));
+  });
+  var sk = '';
+  for (var i = 0; i < 5; i++) sk += '<div class="sk-row"><span class="skeleton" style="width:26px;height:13px"></span><span class="skeleton" style="width:22%;height:13px"></span><span style="flex:1"></span><span class="skeleton" style="width:110px;height:30px;border-radius:6px"></span></div>';
+  document.getElementById('pr-sk').innerHTML = sk;
+})();
+</script>
+</body>
+</html>

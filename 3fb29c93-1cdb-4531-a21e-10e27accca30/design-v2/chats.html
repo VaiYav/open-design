@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chats · Flow v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+</head>
+<body data-od-id="page" data-od-label="Chats">
+<main class="v2-main v2-main--flush" id="page">
+<div class="fill">
+
+  <!-- ============ loaded / copilot / send-failed / fb-* ============ -->
+  <div class="chat3" data-view="loaded,copilot,send-failed,fb-default,fb-saving,fb-comment,fb-comment-limit,fb-expired,fb-conflict,fb-error,fb-lineage,fb-no-perm" data-od-id="chats-loaded">
+
+    <aside class="pane" data-od-id="ladies-pane" aria-label="Ladies">
+      <div class="pane__head">
+        <div class="search"><span class="ic ic--search"></span><input class="input" type="search" placeholder="Search ladies" aria-label="Search ladies" id="lady-q"></div>
+        <div class="row" style="gap:6px;flex-wrap:nowrap;overflow-x:auto;padding-bottom:2px" data-chip-group>
+          <button type="button" class="chip is-active" data-chip style="height:30px;padding:0 10px;flex:0 0 auto"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE4MCAxODAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik00MC40MzIzIDE0LjYyMDFDMzkuOTIzNSAxNC44NzUgMzguMDg2NSAxNS43NjQ4IDM2LjMxIDE2LjU4OThDMjUuOTEzOSAyMS40NzkzIDE5LjM4NTYgMzQuMzA3NiAyMS4zNDc1IDQ1Ljk5MTVDMjUuMTUwNyA2OC4wODkyIDQzLjU5NzIgOTAuMzc3MSA2NC44MzggOTguNDQ1NkM2OC43NzA1IDk5LjkwNTYgNzYuMTIyMyAxMDAuNDE1IDc3LjI2NSA5OS4yNzA2Qzc3LjU4NDEgOTguOTU1MyA3Ny4zMjk3IDk3Ljg3NTQgNzYuNTY2NSA5Ni41NDA3QzcxLjQzMDkgODcuMzk2NyA2OC40NTE0IDc5LjMzMjUgNjcuOTQyNiA3My4wNDM2QzY3LjE4MzYgNjMuNjQ0NyA2OS43ODM4IDU2LjIxNTQgNzYuMTgyOCA0OS44NjZDODEuNjk3OCA0NC4zNDE2IDg3LjIxMjcgNDEuOTI3IDkzLjkzNTEgNDEuOTI3QzEwMC42NTcgNDEuOTI3IDEwNS43MjggNDMuODMxOCAxMTIuMjU3IDQ5LjIzMUwxMTYuMjQ5IDUyLjUzMUwxMjAuMDU3IDQ5LjIzMUwxMjMuNzk1IDQ1Ljg2NjNMMTIzLjY3IDQwLjU5NjZDMTIzLjM1NiAyOS41NDc3IDExNy4zOTYgMjAuMjc0MSAxMDcuOTQ5IDE2LjIwOTZDMTA2LjU1MiAxNS41NzQ3IDEwNC45MDUgMTQuODc1IDEwNC4zMzYgMTQuNTU5N0MxMDIuNzQ5IDEzLjczNDcgOTQuMDY0NSAxMy44NTk5IDkxLjk3MzIgMTQuNjg0OUM4Ny4yODE3IDE2LjY1NDUgODUuODg4OSAxNy4zNTQzIDgzLjA5OTEgMTkuNTE0Qzc5LjgwMDUgMjEuOTg5IDc2LjM3NjggMjUuMjkzMyA3NC4yMjUxIDI4LjE0ODNMNzIuODI4IDI5Ljk5MjdMNjcuMjQ4MyAyNC4zMzg2QzYyLjA0ODEgMTkuMTMzOCA2MC43ODA0IDE4LjMwNDUgNTIuOTg0NCAxNC40OTQ5QzUxLjUyNjkgMTMuODU5OSA0MS43IDEzLjkyNDcgNDAuNDMyMyAxNC42MjAxWk00NS42OTI4IDI5LjczMzVDNTAuMzE5NiAzMy45MjMzIDQ5LjM3MSA0MC41MzE5IDQzLjczMDkgNDMuMjYxN0M0MS4wNjYxIDQ0LjU5NjQgNDAuOTQxMSA0NC41OTYzIDM4LjE1MTIgNDMuNTE2NUMzMi43MDA5IDQxLjQyMTYgMzAuOTg5IDM1LjEzMjYgMzQuNzI3NSAzMC44NzgxQzM1LjgwNTUgMjkuNjczIDM3LjMyNzYgMjguNTI4NCAzOC4wODY1IDI4LjQwMzFDNDAuNDMyMiAyNy44OTM0IDQ0LjQyNTEgMjguNTkzMiA0NS42OTI4IDI5LjczNzhWMjkuNzMzNVoiIGZpbGw9IiMzNTdDQjkiLz4KPHBhdGggZD0iTTkwLjczNDQgNDYuNjc5MUM4Ni43NTM4IDQ3LjM3NTMgODEuMjUxNCA1MC4zNDQ2IDc4LjcyODEgNTMuMjQ5NkM3My41NDgyIDU5LjI1MjkgNzEuNDU5IDY2LjcwODggNzIuNzg3MyA3NC4xMDAxQzc0LjE3NTggODEuNTU1OSA3OC4zNDk4IDkwLjU4ODkgODMuNTI5OCA5Ny42MDIxQzg4LjQ2MDQgMTA0LjIzNyA5OC42OTk5IDExMi44OTIgMTA1LjAxOSAxMTUuNzM3QzExNC41NjIgMTIwLjA5OCAxMTguNDE4IDExOS45NyAxMjcuODM3IDExNS4yOTRDMTQyLjk0MiAxMDcuNzA5IDE1Ni41OTUgODkuODMyNiAxNTkuMzEyIDczLjk3NTZDMTYxLjIwNyA2My4zNjEyIDE1Ni4wODggNTIuOTM2IDE0Ni44NTggNDguNTE0MUMxNDMuMjU2IDQ2LjgwOCAxNDIuMDU3IDQ2LjU1NDQgMTM3LjYzMyA0Ni42MTg5QzEzMC44NzEgNDYuNjE4OSAxMjYuNzAyIDQ4LjcwMzEgMTIwLjUwNyA1NS4wODQ2TDExNi4wODQgNTkuNjk1NkwxMTEuMjE4IDU0Ljc3MDlDMTA0LjM5MSA0Ny44ODIzIDk4LjE5NyA0NS40ODQ1IDkwLjczODcgNDYuNjgzNEw5MC43MzQ0IDQ2LjY3OTFaTTkxLjkzMzggNTguODEwNEM5NC4zOTY5IDYwLjA3MzggOTUuNTM2MSA2Mi4wMzMzIDk1LjUzNjEgNjUuMTI3NEM5NS41MzYxIDY5LjIzNTYgOTMuMzg2NyA3MS4zOCA4OS4yMTcgNzEuMzhDODQuNjA0NCA3MS4zOCA4MS42OTQyIDY3Ljk2NzkgODIuNTE5NiA2My41NDZDODMuMzQwNiA1OS4zNzc2IDg4LjIwNjcgNTYuOTExIDkxLjkzOCA1OC44MTA0SDkxLjkzMzhaIiBmaWxsPSIjRkY1OTY2Ii8+CjxwYXRoIGQ9Ik03Ny4xMTU5IDEwMy44ODhDNzYuMjE1MSAxMDQuMjU0IDczLjMyMDUgMTA0LjQzNyA3MC40OTU4IDEwNC4yNTRMNjUuNDE1IDEwMy45NTFMNjQuNTE0MiAxMDUuOTY3QzYyLjc3ODMgMTA5Ljk5OSA2NC44Mzc3IDExMS4xNjMgNzMuNTEyOSAxMTEuMTYzQzc4LjQ2MjYgMTExLjE2MyA3OS44MTM3IDExMC45OCA4MS4wMzM3IDExMC4wMDNDODIuNTExNiAxMDguODQzIDgyLjU3NzIgMTA4Ljc4MSA4MS42MTA4IDEwNi4xNTRDODAuNTgzMyAxMDMuMzQ0IDc5LjY4MjYgMTAyLjkxNSA3Ny4xMTE1IDEwMy44OTJMNzcuMTE1OSAxMDMuODg4WiIgZmlsbD0iIzM1N0NCOSIvPgo8cGF0aCBkPSJNNzAuOTg5NSAxMjEuNDk3QzcwLjk4OTUgMTI0LjA3IDcxLjY5MzYgMTI4Ljc2NSA3MS42OTM2IDEyOC43NjVDNzEuNjkzNiAxMjguNzY1IDcyLjQzNzMgMTM0LjE2OSA3Mi44Nzg1IDEzNi42MTRDNzMuNjk2NyAxNDEuMzIgNzMuNTQwMSAxNDEuNjQ3IDc0LjE1NzkgMTQzLjU1Qzc0Ljk5MzggMTQ2LjEyNiA3Ni4wNDc5IDE0OC45NjQgNzguMzgyNCAxNTIuMzUxQzgyLjk3ODQgMTU5LjA2MyA4NS43NDk4IDE2MS4wNzIgODcuNTc4OCAxNTkuMjVDODguNzEzOSAxNTguMTI0IDg4LjUyNTQgMTU3LjM2OSA4Ni4zODM3IDE1NC45ODRDNzkuNzkwNSAxNDguMTI3IDc3Ljg1NTggMTQ0LjM5MiA3NS41ODk5IDEyMS44NzNMNzUuMDg0NSAxMTcuMTcxTDczLjA3MTMgMTE2Ljk4M0w3MC45OTM4IDExNi43OTVWMTIxLjUwMkw3MC45ODk1IDEyMS40OTdaIiBmaWxsPSIjMzU3Q0I5Ii8+CjxwYXRoIGQ9Ik0xMjAuMjUyIDEyMy43OTNDMTE5LjA1NyAxMjQuMTUyIDExNi4yODYgMTI0LjI3NCAxMTQuMDgxIDEyNC4wMzNDMTEwLjM2NCAxMjMuNzMyIDExMC4xMTUgMTIzLjc5MyAxMDkuNDIxIDEyNS4xNzZDMTA4LjQxNSAxMjcuMzM0IDEwOS4xNjkgMTI4LjIzNSAxMTIuNjMzIDEyOS4wNzJDMTE2LjQ3NSAxMjkuOTEyIDEyMS41NzUgMTI5LjM2OSAxMjMuNDY0IDEyNy45MzNDMTI0Ljc4NyAxMjYuOTE0IDEyNC43ODcgMTI2Ljg1MiAxMjMuNzc3IDEyNC45OTZDMTIzLjIxMSAxMjMuOTE1IDEyMi42NDIgMTIzLjA3NSAxMjIuNTgyIDEyMy4xMzZDMTIyLjUxOCAxMjMuMTM2IDEyMS40NDcgMTIzLjQzNCAxMjAuMjUyIDEyMy43OTdWMTIzLjc5M1oiIGZpbGw9IiNGRjU5NjYiLz4KPHBhdGggZD0iTTExMy44OTIgMTM0Ljg1MkMxMTMuNzAxIDEzNS4xNjkgMTEzLjM4MSAxMzcuNjI1IDExMy4xMjYgMTQwLjM5OUMxMTIuNzQ1IDE0NS4xMjIgMTEyLjQyNSAxNDcuMDE3IDExMC43NzMgMTUzLjk0N0MxMDkuODk0IDE1Ny42MzIgMTA4Ljk5IDE1OC4xNiAxMDguOTkgMTU4LjE2QzEwNy42MDIgMTYwLjQ0OCAxMDUuOTQgMTYyLjMxNyAxMDYuMTkxIDE2My41MThDMTA2Ljc2MiAxNjUuNTk2IDEwOC44IDE2NS40NjggMTEwLjc3MyAxNjMuMjY1QzExMi4xNzggMTYxLjY5NSAxMTQuMzQ5IDE1OS4wNCAxMTUuNDE5IDE1NC44OUMxMTYuODE2IDE0OS40NzMgMTE4LjUzNCAxMzYuNDg5IDExOC4wOTIgMTM1LjE2NUMxMTcuNzcyIDEzNC4zNDYgMTE0LjMzNyAxMzQuMDkzIDExMy44OTYgMTM0Ljg0OEwxMTMuODkyIDEzNC44NTJaIiBmaWxsPSIjRkY1OTY2Ii8+Cjwvc3ZnPgo=" alt="RealLoves"></button>
+          <button type="button" class="chip" data-chip style="height:30px;padding:0 10px;flex:0 0 auto"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMSIgZmlsbD0ibm9uZSI+CiAgPHBhdGggZmlsbD0iI0ZGNDE1OSIgZD0ibTkuOTEgMTUuMi0uNjItLjY2LTIuNTItMi42OSAyLjI5LTIuNDRMNy4zIDcuNTQgNS4wMiA5Ljk4bC0uMDgtLjA5LS43Ni0uOGMtLjM5LS40Mi0uNjQtLjktLjc1LTEuNDNhMi42NiAyLjY2IDAgMCAxIC4xNy0xLjYybC4wNi0uMTQtMS44LTEuOTMtLjIuMjd2LjAyYTUuMzggNS4zOCAwIDAgMC0uNDMgNC45MWMuMjQuNjQuNjEgMS4yMyAxLjExIDEuNzZsLjUzLjU3IDEuNjQgMS43NWMxLjU3IDEuNjcgMy41MyAzLjc1IDQuODEgNS4xMy4xOC4yLjM4LjMuNi4zLjIxIDAgLjQxLS4xLjU4LS4yOWguMDFsLjk0LTEuMDIuMjYtLjI3LTEuOC0xLjlaIi8+CiAgPHBhdGggZmlsbD0iIzk4MkQ1OCIgZD0iTTE4LjggNS42OGE0Ljg0IDQuODQgMCAwIDAtMS41Ni0yLjUzIDQuNTMgNC41MyAwIDAgMC0zLjQ0LTEuMTIgNC43OSA0Ljc5IDAgMCAwLTMuMSAxLjUxbC0uNTcuNjItLjIuMjJjLS4yOC0uMzEtLjU3LS42Mi0uODgtLjkyYTQuNiA0LjYgMCAwIDAtNC44LTEuMjJjLS41Mi4xNi0xIC40LTEuNDIuNzFsLS4zNC4yNkw0LjMgNS4xNWwuMjMtLjEzYS45LjkgMCAwIDEgLjIyLS4xYy45Ni0uNCAxLjgtLjIzIDIuNTcuNTIuNTIuNSAxLjAzIDEuMDYgMS41MSAxLjZsLjUuNTRjLjA3LjA3LjI3LjMuNi4zLjMyIDAgLjUzLS4yMi42LS4zbDEuMDYtMS4xNC44LS44NWMuNDEtLjQ1LjktLjcyIDEuNDgtLjgzYTIuMiAyLjIgMCAwIDEgMi40NCAxLjQ1Yy4zNSAxLjAxLjE5IDEuOS0uNSAyLjczbC0uNzIuNzhWOS43bC0xLjY0IDEuNzMtMS4yMyAxLjMtMi40OC0yLjY0LTEuNjcgMS43OCAyLjU4IDIuNzUgMS43IDEuODEgMS42Ny0xLjc4IDEuODUtMS45Ny40OS0uNTIuMzgtLjQuMDEtLjAxLjQtLjQyLjU0LS42YTUuNTIgNS41MiAwIDAgMCAxLjExLTUuMDZaIi8+Cjwvc3ZnPg==" alt="FindBride"></button>
+          <button type="button" class="chip" data-chip style="height:30px;padding:0 10px;flex:0 0 auto"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0ibm9uZSI+CiAgPHBhdGggZmlsbD0idXJsKCNhKSIgZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNMi4wNyA1LjIyYTMuNDkgMy40OSAwIDAgMSAzLjQtMy41Nmg5LjE4YzEuODggMCAzLjQgMS42IDMuNCAzLjU2djkuNTVhMy40OSAzLjQ5IDAgMCAxLTMuNCAzLjU2SDUuNDhhMy40OSAzLjQ5IDAgMCAxLTMuNDEtMy41NnYtMi43TDAgMTBsMi4wNy0yLjNWNS4yMlpNMTQuNTYgMTBhNC42IDQuNiAwIDAgMS00LjUgNC42OEE0LjYgNC42IDAgMCAxIDUuNTYgMTBhNC42IDQuNiAwIDAgMSA0LjUtNC43IDQuNiA0LjYgMCAwIDEgNC41IDQuN1oiIGNsaXAtcnVsZT0iZXZlbm9kZCIvPgogIDxwYXRoIGZpbGw9IiMzMDMwMzAiIGZpbGwtcnVsZT0iZXZlbm9kZCIgZD0iTTkuNzEgNy45NGMwIC45My0uNzMgMS42OS0xLjYyIDEuNjlhMS42IDEuNiAwIDAgMS0xLjI4LS42NWMtLjEuMzItLjE1LjY2LS4xNSAxLjAyYTMuNDcgMy40NyAwIDAgMCAzLjQgMy41NGMxLjg4IDAgMy40LTEuNTkgMy40LTMuNTRhMy40NyAzLjQ3IDAgMCAwLTMuNC0zLjU1Yy0uMzQgMC0uNjcuMDYtLjk4LjE1LjM4LjMxLjYzLjguNjMgMS4zNFptMS42NiA0LjM3Yy40NSAwIC44MS0uMzguODEtLjg0YS44My44MyAwIDAgMC0uOC0uODUuODMuODMgMCAwIDAtLjgyLjg1YzAgLjQ2LjM3Ljg0LjgxLjg0WiIgY2xpcC1ydWxlPSJldmVub2RkIi8+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImEiIHgxPSIzLjc2IiB4Mj0iMTguMDQiIHkxPSIxOC4zMyIgeTI9IjIuODIiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KICAgICAgPHN0b3Agc3RvcC1jb2xvcj0iIzU3NERDQyIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiM1NzlBRkYiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgo8L3N2Zz4=" alt="LiveBeam"></button>
+          <button type="button" class="chip" data-chip style="height:30px;padding:0 10px;flex:0 0 auto"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0ibm9uZSI+CiAgPHBhdGggZmlsbD0idXJsKCNhKSIgZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNNy4zNSAxLjY2YTUuNjggNS42OCAwIDAgMC01LjY4IDUuNjh2NS4zYTUuNjggNS42OCAwIDAgMCA1LjY4IDUuNjloNS4zYTUuNjggNS42OCAwIDAgMCA1LjY4LTUuNjh2LTUuM2E1LjY4IDUuNjggMCAwIDAtNS42OC01LjY5aC01LjNabS0yLjMgNC43NSA5LjI2LTEuNTNjLjQ1LS4wNy44Mi4yMi44Mi42NnY3LjMxYzAgLjQ0LS4zNi42OS0uOC41NmwtMS4wMy0uM2E4LjQzIDguNDMgMCAwIDEtNi40IDIuNjZzMi4yNi0xLjI2IDIuNzUtMy43NGwtNC42My0xLjM2YTEuMTUgMS4xNSAwIDAgMS0uNzktMS4wMlY3LjMzYzAtLjQ0LjM3LS44NS44MS0uOTJabTIuNDQgMi4xOGMwIC4zLjI2LjU1LjU3LjU1LjMyIDAgLjU4LS4yNC41OC0uNTUgMC0uMy0uMjYtLjU0LS41OC0uNTRhLjU2LjU2IDAgMCAwLS41Ny41NFptMS43OCAwYzAgLjMuMjYuNTUuNTcuNTUuMzIgMCAuNTgtLjI0LjU4LS41NSAwLS4zLS4yNi0uNTQtLjU4LS41NGEuNTYuNTYgMCAwIDAtLjU3LjU0Wm0xLjc4IDBjMCAuMy4yNi41NS41Ny41NS4zMiAwIC41OC0uMjQuNTgtLjU1IDAtLjMtLjI2LS41NC0uNTgtLjU0YS41Ni41NiAwIDAgMC0uNTcuNTRaIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiLz4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iYSIgeDE9IjIuNjYiIHgyPSIxOC4zMyIgeTE9IjEuNjYiIHkyPSIxOC4zMyIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgogICAgICA8c3RvcCBzdG9wLWNvbG9yPSIjMDAwQUZGIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAyMDA1OSIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+Cjwvc3ZnPg==" alt="TalkyTimes"></button>
+          <button type="button" class="chip" data-chip style="height:30px;padding:0 10px;flex:0 0 auto"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTciIGhlaWdodD0iMTUiIHZpZXdCb3g9IjAgMCAxNyAxNSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik00LjY1OTUxIDBDMy4xMzQ2IDAgMS44OTgxIDEuMjExNzcgMS44OTgxIDIuNzA2MTlWNS42NzM5N0wyLjk3MTk4IDUuMTYxM1YyLjU1NTg0QzIuOTcxOTggMS43MjU5NCAzLjY1OTI3IDEuMDUyNDEgNC41MDYxIDEuMDUyNDFIMTIuMTc2N0MxMy4wMjM1IDEuMDUyNDEgMTMuNzEwOCAxLjcyNTk0IDEzLjcxMDggMi41NTU4NFY2LjAzMTc5TDguMjg0NjQgMy40MzgzNkwwLjMyMTAyNSA3LjI0MzU2QzAuMDM3MjEzNCA3LjM3ODg2IC0wLjA4MDkxNDggNy43MTQxMyAwLjA1ODY5IDcuOTkyMjdDMC4xOTY3NjEgOC4yNzA0IDAuNTM4ODY5IDguMzg2MTcgMC44MjI2ODEgOC4yNDkzNUwxLjg5OTYzIDcuNzM1MThWOS45MjQxOEMxLjg5OTYzIDExLjQxODYgMy4xMzYxMyAxMi42MzA0IDQuNjYxMDUgMTIuNjMwNEgxMS40ODc5TDEzLjgwNTkgMTQuMzIxN0MxNC4yMTA5IDE0LjYxNjQgMTQuNzg2MiAxNC4zMzM4IDE0Ljc4NjIgMTMuODM5MVY4LjQ4NjlMMTMuNzEyMyA3Ljk3NDIzVjEyLjg1NzRMMTIuMDI0OCAxMS41Nzk1SDQuNTA3NjNDMy42NjA4IDExLjU3OTUgMi45NzM1MiAxMC45MDU5IDIuOTczNTIgMTAuMDc2VjcuMjI0MDFMOC4yODQ2NCA0LjY4NjIxTDE1Ljc0NTEgOC4yNTIzNkMxNi4wMjg5IDguMzg3NjcgMTYuMzcxIDguMjcxOTEgMTYuNTA5IDcuOTk1MjdDMTYuNjQ3MSA3LjcxNzE0IDE2LjUyOSA3LjM4MTg3IDE2LjI0NjcgNy4yNDY1NkwxNC43ODc4IDYuNTQ4OTdWMi43MTA3QzE0Ljc4NzggMS4yMTYyOCAxMy41NTEzIDAuMDA0NTEwMzEgMTIuMDI2NCAwLjAwNDUxMDMxSDQuNjYyNThMNC42NTk1MSAwWk01LjczMzQgOS4zMjEzQzYuMTU2ODEgOS4zMjEzIDYuNTAwNDYgOC45ODQ1MyA2LjUwMDQ2IDguNTY5NTlDNi41MDA0NiA4LjE1NDY0IDYuMTU2ODEgNy44MTc4NyA1LjczMzQgNy44MTc4N0M1LjMwOTk4IDcuODE3ODcgNC45NjYzNCA4LjE1NDY0IDQuOTY2MzQgOC41Njk1OUM0Ljk2NjM0IDguOTg0NTMgNS4zMDk5OCA5LjMyMTMgNS43MzM0IDkuMzIxM1pNOS4xMDg0NiA4LjU2OTU5QzkuMTA4NDYgOC45ODQ1MyA4Ljc2NDgxIDkuMzIxMyA4LjM0MTQgOS4zMjEzQzcuOTE3OTggOS4zMjEzIDcuNTc0MzQgOC45ODQ1MyA3LjU3NDM0IDguNTY5NTlDNy41NzQzNCA4LjE1NDY0IDcuOTE3OTggNy44MTc4NyA4LjM0MTQgNy44MTc4N0M4Ljc2NDgxIDcuODE3ODcgOS4xMDg0NiA4LjE1NDY0IDkuMTA4NDYgOC41Njk1OVpNMTAuOTQ5NCA5LjMyMTNDMTEuMzcyOCA5LjMyMTMgMTEuNzE2NSA4Ljk4NDUzIDExLjcxNjUgOC41Njk1OUMxMS43MTY1IDguMTU0NjQgMTEuMzcyOCA3LjgxNzg3IDEwLjk0OTQgNy44MTc4N0MxMC41MjYgNy44MTc4NyAxMC4xODIzIDguMTU0NjQgMTAuMTgyMyA4LjU2OTU5QzEwLjE4MjMgOC45ODQ1MyAxMC41MjYgOS4zMjEzIDEwLjk0OTQgOS4zMjEzWiIgZmlsbD0iIzAwQTlEMCIvPgo8L3N2Zz4K" alt="ChatsHouse"></button>
+        </div>
+      </div>
+      <div class="scroll" id="lady-list"></div>
+    </aside>
+
+    <section class="pane" data-od-id="chat-list" aria-label="Conversations">
+      <div class="pane__head">
+        <div class="seg" role="tablist" style="width:100%">
+          <button type="button" data-tab="all" class="is-active" role="tab" aria-selected="true" style="flex:1">All</button>
+          <button type="button" data-tab="unanswered" role="tab" aria-selected="false" style="flex:1">Unanswered</button>
+          <button type="button" data-tab="flagged" role="tab" aria-selected="false" style="flex:1">Flagged</button>
+        </div>
+        <div class="search" style="width:100%"><span class="ic ic--search"></span><input class="input" type="search" placeholder="Search conversations" aria-label="Search conversations" id="chat-q"></div>
+      </div>
+      <div class="scroll" data-tab-scope>
+        <div data-tab-panel="all" id="chat-items"></div>
+        <div data-tab-panel="unanswered" id="chat-unanswered" hidden></div>
+        <div data-tab-panel="flagged" id="chat-flagged" hidden></div>
+      </div>
+    </section>
+
+    <section class="pane" data-od-id="conversation" aria-label="Conversation">
+      <div class="convo">
+        <div class="convo__head">
+          <span class="avatar">DM</span>
+          <div class="who">
+            <span class="nm">Dmitri M. <span class="dot dot--on" title="Online"></span></span>
+            <span class="mt"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE4MCAxODAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik00MC40MzIzIDE0LjYyMDFDMzkuOTIzNSAxNC44NzUgMzguMDg2NSAxNS43NjQ4IDM2LjMxIDE2LjU4OThDMjUuOTEzOSAyMS40NzkzIDE5LjM4NTYgMzQuMzA3NiAyMS4zNDc1IDQ1Ljk5MTVDMjUuMTUwNyA2OC4wODkyIDQzLjU5NzIgOTAuMzc3MSA2NC44MzggOTguNDQ1NkM2OC43NzA1IDk5LjkwNTYgNzYuMTIyMyAxMDAuNDE1IDc3LjI2NSA5OS4yNzA2Qzc3LjU4NDEgOTguOTU1MyA3Ny4zMjk3IDk3Ljg3NTQgNzYuNTY2NSA5Ni41NDA3QzcxLjQzMDkgODcuMzk2NyA2OC40NTE0IDc5LjMzMjUgNjcuOTQyNiA3My4wNDM2QzY3LjE4MzYgNjMuNjQ0NyA2OS43ODM4IDU2LjIxNTQgNzYuMTgyOCA0OS44NjZDODEuNjk3OCA0NC4zNDE2IDg3LjIxMjcgNDEuOTI3IDkzLjkzNTEgNDEuOTI3QzEwMC42NTcgNDEuOTI3IDEwNS43MjggNDMuODMxOCAxMTIuMjU3IDQ5LjIzMUwxMTYuMjQ5IDUyLjUzMUwxMjAuMDU3IDQ5LjIzMUwxMjMuNzk1IDQ1Ljg2NjNMMTIzLjY3IDQwLjU5NjZDMTIzLjM1NiAyOS41NDc3IDExNy4zOTYgMjAuMjc0MSAxMDcuOTQ5IDE2LjIwOTZDMTA2LjU1MiAxNS41NzQ3IDEwNC45MDUgMTQuODc1IDEwNC4zMzYgMTQuNTU5N0MxMDIuNzQ5IDEzLjczNDcgOTQuMDY0NSAxMy44NTk5IDkxLjk3MzIgMTQuNjg0OUM4Ny4yODE3IDE2LjY1NDUgODUuODg4OSAxNy4zNTQzIDgzLjA5OTEgMTkuNTE0Qzc5LjgwMDUgMjEuOTg5IDc2LjM3NjggMjUuMjkzMyA3NC4yMjUxIDI4LjE0ODNMNzIuODI4IDI5Ljk5MjdMNjcuMjQ4MyAyNC4zMzg2QzYyLjA0ODEgMTkuMTMzOCA2MC43ODA0IDE4LjMwNDUgNTIuOTg0NCAxNC40OTQ5QzUxLjUyNjkgMTMuODU5OSA0MS43IDEzLjkyNDcgNDAuNDMyMyAxNC42MjAxWk00NS42OTI4IDI5LjczMzVDNTAuMzE5NiAzMy45MjMzIDQ5LjM3MSA0MC41MzE5IDQzLjczMDkgNDMuMjYxN0M0MS4wNjYxIDQ0LjU5NjQgNDAuOTQxMSA0NC41OTYzIDM4LjE1MTIgNDMuNTE2NUMzMi43MDA5IDQxLjQyMTYgMzAuOTg5IDM1LjEzMjYgMzQuNzI3NSAzMC44NzgxQzM1LjgwNTUgMjkuNjczIDM3LjMyNzYgMjguNTI4NCAzOC4wODY1IDI4LjQwMzFDNDAuNDMyMiAyNy44OTM0IDQ0LjQyNTEgMjguNTkzMiA0NS42OTI4IDI5LjczNzhWMjkuNzMzNVoiIGZpbGw9IiMzNTdDQjkiLz4KPHBhdGggZD0iTTkwLjczNDQgNDYuNjc5MUM4Ni43NTM4IDQ3LjM3NTMgODEuMjUxNCA1MC4zNDQ2IDc4LjcyODEgNTMuMjQ5NkM3My41NDgyIDU5LjI1MjkgNzEuNDU5IDY2LjcwODggNzIuNzg3MyA3NC4xMDAxQzc0LjE3NTggODEuNTU1OSA3OC4zNDk4IDkwLjU4ODkgODMuNTI5OCA5Ny42MDIxQzg4LjQ2MDQgMTA0LjIzNyA5OC42OTk5IDExMi44OTIgMTA1LjAxOSAxMTUuNzM3QzExNC41NjIgMTIwLjA5OCAxMTguNDE4IDExOS45NyAxMjcuODM3IDExNS4yOTRDMTQyLjk0MiAxMDcuNzA5IDE1Ni41OTUgODkuODMyNiAxNTkuMzEyIDczLjk3NTZDMTYxLjIwNyA2My4zNjEyIDE1Ni4wODggNTIuOTM2IDE0Ni44NTggNDguNTE0MUMxNDMuMjU2IDQ2LjgwOCAxNDIuMDU3IDQ2LjU1NDQgMTM3LjYzMyA0Ni42MTg5QzEzMC44NzEgNDYuNjE4OSAxMjYuNzAyIDQ4LjcwMzEgMTIwLjUwNyA1NS4wODQ2TDExNi4wODQgNTkuNjk1NkwxMTEuMjE4IDU0Ljc3MDlDMTA0LjM5MSA0Ny44ODIzIDk4LjE5NyA0NS40ODQ1IDkwLjczODcgNDYuNjgzNEw5MC43MzQ0IDQ2LjY3OTFaTTkxLjkzMzggNTguODEwNEM5NC4zOTY5IDYwLjA3MzggOTUuNTM2MSA2Mi4wMzMzIDk1LjUzNjEgNjUuMTI3NEM5NS41MzYxIDY5LjIzNTYgOTMuMzg2NyA3MS4zOCA4OS4yMTcgNzEuMzhDODQuNjA0NCA3MS4zOCA4MS42OTQyIDY3Ljk2NzkgODIuNTE5NiA2My41NDZDODMuMzQwNiA1OS4zNzc2IDg4LjIwNjcgNTYuOTExIDkxLjkzOCA1OC44MTA0SDkxLjkzMzhaIiBmaWxsPSIjRkY1OTY2Ii8+CjxwYXRoIGQ9Ik03Ny4xMTU5IDEwMy44ODhDNzYuMjE1MSAxMDQuMjU0IDczLjMyMDUgMTA0LjQzNyA3MC40OTU4IDEwNC4yNTRMNjUuNDE1IDEwMy45NTFMNjQuNTE0MiAxMDUuOTY3QzYyLjc3ODMgMTA5Ljk5OSA2NC44Mzc3IDExMS4xNjMgNzMuNTEyOSAxMTEuMTYzQzc4LjQ2MjYgMTExLjE2MyA3OS44MTM3IDExMC45OCA4MS4wMzM3IDExMC4wMDNDODIuNTExNiAxMDguODQzIDgyLjU3NzIgMTA4Ljc4MSA4MS42MTA4IDEwNi4xNTRDODAuNTgzMyAxMDMuMzQ0IDc5LjY4MjYgMTAyLjkxNSA3Ny4xMTE1IDEwMy44OTJMNzcuMTE1OSAxMDMuODg4WiIgZmlsbD0iIzM1N0NCOSIvPgo8cGF0aCBkPSJNNzAuOTg5NSAxMjEuNDk3QzcwLjk4OTUgMTI0LjA3IDcxLjY5MzYgMTI4Ljc2NSA3MS42OTM2IDEyOC43NjVDNzEuNjkzNiAxMjguNzY1IDcyLjQzNzMgMTM0LjE2OSA3Mi44Nzg1IDEzNi42MTRDNzMuNjk2NyAxNDEuMzIgNzMuNTQwMSAxNDEuNjQ3IDc0LjE1NzkgMTQzLjU1Qzc0Ljk5MzggMTQ2LjEyNiA3Ni4wNDc5IDE0OC45NjQgNzguMzgyNCAxNTIuMzUxQzgyLjk3ODQgMTU5LjA2MyA4NS43NDk4IDE2MS4wNzIgODcuNTc4OCAxNTkuMjVDODguNzEzOSAxNTguMTI0IDg4LjUyNTQgMTU3LjM2OSA4Ni4zODM3IDE1NC45ODRDNzkuNzkwNSAxNDguMTI3IDc3Ljg1NTggMTQ0LjM5MiA3NS41ODk5IDEyMS44NzNMNzUuMDg0NSAxMTcuMTcxTDczLjA3MTMgMTE2Ljk4M0w3MC45OTM4IDExNi43OTVWMTIxLjUwMkw3MC45ODk1IDEyMS40OTdaIiBmaWxsPSIjMzU3Q0I5Ii8+CjxwYXRoIGQ9Ik0xMjAuMjUyIDEyMy43OTNDMTE5LjA1NyAxMjQuMTUyIDExNi4yODYgMTI0LjI3NCAxMTQuMDgxIDEyNC4wMzNDMTEwLjM2NCAxMjMuNzMyIDExMC4xMTUgMTIzLjc5MyAxMDkuNDIxIDEyNS4xNzZDMTA4LjQxNSAxMjcuMzM0IDEwOS4xNjkgMTI4LjIzNSAxMTIuNjMzIDEyOS4wNzJDMTE2LjQ3NSAxMjkuOTEyIDEyMS41NzUgMTI5LjM2OSAxMjMuNDY0IDEyNy45MzNDMTI0Ljc4NyAxMjYuOTE0IDEyNC43ODcgMTI2Ljg1MiAxMjMuNzc3IDEyNC45OTZDMTIzLjIxMSAxMjMuOTE1IDEyMi42NDIgMTIzLjA3NSAxMjIuNTgyIDEyMy4xMzZDMTIyLjUxOCAxMjMuMTM2IDEyMS40NDcgMTIzLjQzNCAxMjAuMjUyIDEyMy43OTdWMTIzLjc5M1oiIGZpbGw9IiNGRjU5NjYiLz4KPHBhdGggZD0iTTExMy44OTIgMTM0Ljg1MkMxMTMuNzAxIDEzNS4xNjkgMTEzLjM4MSAxMzcuNjI1IDExMy4xMjYgMTQwLjM5OUMxMTIuNzQ1IDE0NS4xMjIgMTEyLjQyNSAxNDcuMDE3IDExMC43NzMgMTUzLjk0N0MxMDkuODk0IDE1Ny42MzIgMTA4Ljk5IDE1OC4xNiAxMDguOTkgMTU4LjE2QzEwNy42MDIgMTYwLjQ0OCAxMDUuOTQgMTYyLjMxNyAxMDYuMTkxIDE2My41MThDMTA2Ljc2MiAxNjUuNTk2IDEwOC44IDE2NS40NjggMTEwLjc3MyAxNjMuMjY1QzExMi4xNzggMTYxLjY5NSAxMTQuMzQ5IDE1OS4wNCAxMTUuNDE5IDE1NC44OUMxMTYuODE2IDE0OS40NzMgMTE4LjUzNCAxMzYuNDg5IDExOC4wOTIgMTM1LjE2NUMxMTcuNzcyIDEzNC4zNDYgMTE0LjMzNyAxMzQuMDkzIDExMy44OTYgMTM0Ljg0OEwxMTMuODkyIDEzNC44NTJaIiBmaWxsPSIjRkY1OTY2Ii8+Cjwvc3ZnPgo=" alt="RealLoves">RealLoves · site ID <span class="mono">884217</span> · online</span>
+          </div>
+          <button type="button" class="btn btn--ghost btn--sm" data-toast="Conversation bookmarked"><span class="ic ic--bookmark"></span>Bookmark</button>
+          <button type="button" class="btn btn--soft btn--sm" id="copilot-btn"><span class="ic ic--omni"></span>Copilot</button>
+        </div>
+
+        <div class="convo__msgs" id="convo-msgs">
+          <div class="day-sep"><span>Today</span></div>
+        </div>
+
+        <div class="convo__composer">
+          <div class="ai-suggest" data-view="loaded">
+            <div class="ai-suggest__tag"><span class="ic ic--omni ic--sm"></span>Beloved suggests</div>
+            <p>“How about Thursday around 7 pm? The place does a great flat white.”</p>
+            <div class="row">
+              <button type="button" class="btn btn--primary btn--sm" id="use-sugg">Use</button>
+              <button type="button" class="btn btn--quiet btn--sm" id="dismiss-sugg">Dismiss</button>
+            </div>
+          </div>
+          <div class="notice notice--danger" data-view="send-failed" hidden role="alert" style="margin-bottom:12px">
+            <span class="ic ic--warn"></span>
+            <div style="flex:1"><span class="t">Message not delivered.</span> The platform timed out. Retry or save as draft.</div>
+            <button type="button" class="btn btn--danger btn--sm" data-toast="Retried — message queued">Retry</button>
+          </div>
+          <div class="composer">
+            <textarea id="msg-input" placeholder="Type a message…" maxlength="300" aria-label="Message"></textarea>
+            <div class="composer__bar">
+              <button type="button" class="icon-btn" style="border:0;width:34px;height:34px" aria-label="Attach media" data-toast="Attach media (prototype)"><span class="ic ic--media"></span></button>
+              <button type="button" class="icon-btn" style="border:0;width:34px;height:34px" aria-label="Stickers" data-toast="Stickers (prototype)"><span class="ic ic--stickers"></span></button>
+              <button type="button" class="icon-btn" style="border:0;width:34px;height:34px" aria-label="Templates" data-toast="Insert preset (prototype)"><span class="ic ic--templates"></span></button>
+              <span class="cnt" id="msg-cnt">0 / 300</span>
+              <button type="button" class="btn btn--primary btn--sm" id="send-btn" data-od-id="chat-send">Send</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- copilot side panel (state: copilot) -->
+    <aside class="side-panel scroll" data-view="copilot" data-od-id="copilot-panel" aria-label="AI copilot" hidden>
+      <div class="pane__head pane__head--row">
+        <span class="pane__title" style="display:flex;align-items:center;gap:8px"><span class="ic ic--omni"></span>Beloved copilot</span>
+        <span style="flex:1"></span>
+        <button type="button" class="icon-btn" style="width:30px;height:30px;border:0" data-state-link="loaded" aria-label="Close copilot"><span class="ic ic--close ic--sm"></span></button>
+      </div>
+      <div style="padding:14px;display:flex;flex-direction:column;gap:14px">
+        <div class="copilot-card">
+          <h4><span class="ic ic--pencil ic--sm"></span>Draft reply</h4>
+          <p style="font-size:13px;line-height:1.55">“Thursday works for me — I'll grab the corner table. What time do you finish work?”</p>
+          <div class="row mt-1">
+            <button type="button" class="btn btn--primary btn--sm" data-toast="Draft inserted into composer">Insert</button>
+            <button type="button" class="btn btn--quiet btn--sm" data-toast="Regenerating…">Regenerate</button>
+          </div>
+        </div>
+        <div class="copilot-card">
+          <h4><span class="ic ic--list ic--sm"></span>Thread summary</h4>
+          <p class="small" style="color:var(--fg-2);line-height:1.55">Dmitri, 34, engineer. Planning an in-person coffee this week — he proposed it. Warm tone, quick replies (avg 14 min). No media exchanged yet.</p>
+        </div>
+        <div class="copilot-card">
+          <h4><span class="ic ic--heart ic--sm"></span>Tone</h4>
+          <div class="seg" style="width:100%">
+            <button type="button" class="chip is-active" data-chip style="flex:1;justify-content:center">Warm</button>
+            <button type="button" class="chip" data-chip style="flex:1;justify-content:center">Playful</button>
+            <button type="button" class="chip" data-chip style="flex:1;justify-content:center">Formal</button>
+          </div>
+        </div>
+        <div class="copilot-card">
+          <h4><span class="ic ic--mails ic--sm"></span>Translate</h4>
+          <div class="row">
+            <select class="select" style="height:38px" data-demo aria-label="Translate to"><option>English → Russian</option><option>Russian → English</option><option>English → German</option></select>
+            <button type="button" class="btn btn--ghost btn--sm" data-toast="Translated (prototype)">Go</button>
+          </div>
+        </div>
+        <div class="notice notice--info" style="font-size:12px"><span class="ic ic--info"></span><div>Copilot drafts need an operator review before sending. Nothing is sent automatically.</div></div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- ============ no-selection ============ -->
+  <div class="chat3" data-view="no-selection" data-od-id="chats-nosel" hidden>
+    <aside class="pane" aria-label="Ladies"><div class="pane__head"><div class="search"><span class="ic ic--search"></span><input class="input" type="search" placeholder="Search ladies" aria-label="Search ladies"></div></div><div class="scroll" id="lady-list-2"></div></aside>
+    <section class="pane" aria-label="Conversations"><div class="pane__head"><span class="pane__title">Conversations</span></div><div class="scroll" id="chat-items-2"></div></section>
+    <section class="pane" aria-label="Conversation">
+      <div class="state" style="height:100%">
+        <div class="state__icon state__icon--muted"><span class="ic ic--chat ic--lg"></span></div>
+        <h2>Pick a conversation</h2>
+        <p>Select a lady on the left, then a chat — the thread opens here. Unread and flagged items surface first.</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============ loading ============ -->
+  <div class="chat3" data-view="loading" data-od-id="chats-loading" role="status" aria-busy="true" hidden>
+    <aside class="pane"><div class="pane__head"><span class="skeleton" style="height:44px;border-radius:999px"></span></div><div id="sk-ladies"></div></aside>
+    <section class="pane"><div class="pane__head"><span class="skeleton" style="height:34px;border-radius:999px"></span></div><div id="sk-chats"></div></section>
+    <section class="pane"><div class="convo"><div class="convo__head"><span class="skeleton" style="width:40px;height:40px;border-radius:50%"></span><span class="skeleton" style="width:160px;height:14px"></span></div><div class="convo__msgs"><span class="skeleton" style="width:52%;height:44px;border-radius:18px"></span><span class="skeleton" style="width:44%;height:44px;border-radius:18px;align-self:flex-end"></span><span class="skeleton" style="width:60%;height:66px;border-radius:18px"></span></div></div></section>
+  </div>
+
+  <!-- ============ error ============ -->
+  <div data-view="error" data-od-id="chats-error" style="height:100%" hidden>
+    <div class="state" style="height:100%">
+      <div class="state__icon state__icon--danger"><span class="ic ic--warn ic--lg"></span></div>
+      <h2>Workspace failed to load</h2>
+      <p>The account list could not be fetched. Platform connections may be down — check Alerts for details.</p>
+      <div class="row mt-2">
+        <button type="button" class="btn btn--ghost" data-reload>Try again</button>
+        <a class="btn btn--quiet" href="alerts.html">Open alerts</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+</main>
+<script src="assets/fixtures.js"></script>
+<script src="assets/components.js"></script>
+<script src="assets/stateful.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/feedback.js"></script>
+<script>
+(function () {
+  FlowUI.mount({ nav: 'chats', zone: 'workspace', title: 'Chats', lady: true });
+  var F = window.Fixtures;
+
+  function ladyItem(l, i) {
+    return '<button type="button" class="lady-item' + (i === 0 ? ' is-active' : '') + '" data-platform="' + l.platform + '">' +
+      '<span class="avatar avatar--sm">' + l.initials + '</span>' +
+      '<span style="flex:1;min-width:0"><span class="nm">' + l.name + '</span>' +
+      '<span class="mt"><img src="' + F.PLATFORMS[l.platform].logo + '" alt="">' + l.id + '</span></span>' +
+      FlowUI.dot(l.status) + (l.unread ? '<span class="unread">' + l.unread + '</span>' : '') + '</button>';
+  }
+  var ladiesHtml = F.LADIES.map(ladyItem).join('');
+  document.getElementById('lady-list').innerHTML = ladiesHtml;
+  document.getElementById('lady-list-2').innerHTML = ladiesHtml;
+
+  function chatItem(m, active) {
+    var flagBadge = '';
+    if (m.flags.indexOf('failed') !== -1) flagBadge = '<span class="badge badge--danger">Failed</span>';
+    else if (m.flags.indexOf('flagged') !== -1) flagBadge = '<span class="badge badge--accent">AI flag</span>';
+    else if (m.sla) flagBadge = '<span class="badge badge--warning">' + m.sla + '</span>';
+    return '<button type="button" class="chat-item' + (active ? ' is-active' : '') + '"' + (active ? ' aria-current="true"' : '') + '>' +
+      '<span class="avatar">' + m.initials + '</span>' +
+      '<span style="flex:1;min-width:0"><span class="who"><span class="nm">' + m.name + ' ' + FlowUI.dot(m.status) + '</span><span class="tm">' + m.time + '</span></span>' +
+      '<span class="pv"><span class="sn">' + m.snippet + '</span>' + (m.unread ? '<span class="unread">' + m.unread + '</span>' : flagBadge) + '</span></span></button>';
+  }
+  var chatsHtml = F.MALES.map(function (m, i) { return chatItem(m, i === 0); }).join('');
+  document.getElementById('chat-items').innerHTML = chatsHtml;
+  document.getElementById('chat-items-2').innerHTML = chatsHtml;
+  document.getElementById('chat-unanswered').innerHTML = F.MALES.filter(function (m) { return m.flags.indexOf('unanswered') !== -1 || m.unread; }).map(function (m) { return chatItem(m); }).join('');
+  document.getElementById('chat-flagged').innerHTML = F.MALES.filter(function (m) { return m.flags.indexOf('flagged') !== -1 || m.flags.indexOf('failed') !== -1; }).map(function (m) { return chatItem(m); }).join('');
+
+  var msgs = document.getElementById('convo-msgs');
+  F.MESSAGES.forEach(function (m) {
+    var row = document.createElement('div');
+    row.className = 'msg-row' + (m.dir === 'out' ? ' msg-row--out' : '');
+    row.innerHTML = '<div><div class="bubble">' + FlowUI.esc(m.text) + '</div>' +
+      '<div class="msg-meta"><span>' + m.time + '</span>' + (m.status ? '<span class="ic ic--double-check"></span><span>' + m.status + '</span>' : '') + '</div>' +
+      (m.fb && window.FlowFB ? FlowFB.render(m.fb) : '') + '</div>';
+    msgs.appendChild(row);
+  });
+  var tp = document.createElement('div');
+  tp.className = 'msg-row';
+  tp.innerHTML = '<div><div class="bubble"><span class="typing"><i></i><i></i><i></i></span></div><div class="msg-meta"><span>Dmitri is typing…</span></div></div>';
+  msgs.appendChild(tp);
+
+  /* composer counter + send */
+  var input = document.getElementById('msg-input');
+  var cnt = document.getElementById('msg-cnt');
+  input.addEventListener('input', function () { cnt.textContent = input.value.length + ' / 300'; });
+  document.getElementById('send-btn').addEventListener('click', function () {
+    if (!input.value.trim()) { flowToast('Type a message first'); return; }
+    var row = document.createElement('div');
+    row.className = 'msg-row msg-row--out';
+    row.innerHTML = '<div><div class="bubble"></div><div class="msg-meta"><span>now</span><span>Sending…</span></div></div>';
+    row.querySelector('.bubble').textContent = input.value;
+    msgs.appendChild(row);
+    msgs.scrollTop = msgs.scrollHeight;
+    input.value = ''; cnt.textContent = '0 / 300';
+    setTimeout(function () { row.querySelector('.msg-meta').innerHTML = '<span>now</span><span class="ic ic--double-check"></span><span>Delivered</span>'; }, 900);
+  });
+
+  /* ai suggestion */
+  document.getElementById('use-sugg').addEventListener('click', function () {
+    input.value = 'How about Thursday around 7 pm? The place does a great flat white.';
+    cnt.textContent = input.value.length + ' / 300';
+    input.focus();
+  });
+  document.getElementById('dismiss-sugg').addEventListener('click', function () {
+    document.querySelector('.ai-suggest').style.display = 'none';
+  });
+  document.getElementById('copilot-btn').addEventListener('click', function () {
+    if (window.FlowState) FlowState.set('copilot');
+  });
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-state-link]');
+    if (b && window.FlowState) FlowState.set(b.getAttribute('data-state-link'));
+  });
+
+  /* search filters */
+  function filterList(inputId, sel) {
+    var el = document.getElementById(inputId);
+    if (!el) return;
+    el.addEventListener('input', function () {
+      var qv = el.value.trim().toLowerCase();
+      document.querySelectorAll(sel).forEach(function (it) {
+        it.style.display = it.textContent.toLowerCase().indexOf(qv) !== -1 ? '' : 'none';
+      });
+    });
+  }
+  filterList('lady-q', '#lady-list .lady-item');
+  filterList('chat-q', '#chat-items .chat-item');
+
+  /* loading skeletons */
+  var sk = '';
+  for (var i = 0; i < 7; i++) sk += '<div class="sk-row"><span class="skeleton" style="width:32px;height:32px;border-radius:50%"></span><span style="flex:1"><span class="skeleton" style="display:block;width:55%;height:12px"></span><span class="skeleton" style="display:block;width:80%;height:10px;margin-top:6px"></span></span></div>';
+  document.getElementById('sk-ladies').innerHTML = sk;
+  document.getElementById('sk-chats').innerHTML = sk;
+})();
+</script>
+</body>
+</html>

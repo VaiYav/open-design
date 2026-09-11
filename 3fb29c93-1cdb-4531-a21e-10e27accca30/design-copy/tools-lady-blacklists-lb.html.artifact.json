@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "design-copy/tools-lady-blacklists-lb.html",
+  "entry": "design-copy/tools-lady-blacklists-lb.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-09-10T18:21:22.676Z",
+  "updatedAt": "2026-09-10T18:21:22.676Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

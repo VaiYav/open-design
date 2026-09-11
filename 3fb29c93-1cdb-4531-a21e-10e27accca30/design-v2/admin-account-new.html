@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>New account · Flow v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+</head>
+<body data-od-id="page" data-od-label="New account">
+<main class="v2-main" id="page">
+
+  <div class="page-head"><div class="page-head__t"><h1>New account</h1><p class="sub">Connect a platform login. The workspace verifies credentials before saving.</p></div></div>
+
+  <div data-view="default,validation">
+    <div class="card" style="max-width:680px">
+      <div class="card__body">
+        <form class="form-grid" data-form="validate" data-success="Account created" novalidate>
+          <div class="field"><label for="a-plat">Platform</label>
+            <select class="select" id="a-plat"><option>RealLoves</option><option>FindBride</option><option>LiveBeam</option><option>TalkyTimes</option><option>ChatsHouse</option></select></div>
+          <div class="field"><label for="a-login">Login</label><input class="input" id="a-login" required placeholder="account login"><span class="err"><span class="ic ic--warn ic--sm"></span>Login is required</span></div>
+          <div class="field"><label for="a-pass">Password</label><input class="input" id="a-pass" type="password" required placeholder="platform password"><span class="err"><span class="ic ic--warn ic--sm"></span>Password is required</span></div>
+          <div class="field"><label for="a-lady">Assigned lady</label><select class="select" id="a-lady"><option>Anna S.</option><option>Elena V.</option><option>Irina K.</option><option>Maria D.</option></select></div>
+          <div class="field span-2"><label class="check"><input type="checkbox" checked data-demo><span class="box"></span>Verify credentials on save</label></div>
+          <div class="span-2 row" style="justify-content:flex-end">
+            <a class="btn btn--quiet" href="admin-accounts.html">Cancel</a>
+            <button type="submit" class="btn btn--primary">Create account</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div data-view="success" hidden>
+    <div class="card" style="max-width:640px;margin:40px auto"><div class="state">
+      <div class="state__icon" style="background:var(--success-soft);color:var(--success)"><span class="ic ic--check ic--lg"></span></div>
+      <h2>Account connected</h2>
+      <p>Credentials verified — the account is live and starts sending on the next schedule window.</p>
+      <div class="row mt-2"><a class="btn btn--primary" href="admin-accounts.html">All accounts</a><a class="btn btn--ghost" href="admin-account-new.html">Add another</a></div>
+    </div></div>
+  </div>
+
+</main>
+<script src="assets/fixtures.js"></script>
+<script src="assets/components.js"></script>
+<script src="assets/stateful.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  FlowUI.mount({ nav: 'admin', zone: 'admin', sub: 'admin-accounts.html', title: 'New account', crumbs: ['Admin', 'Accounts'], role: 'admin' });
+  function applyVariant() {
+    var st = document.documentElement.getAttribute('data-state');
+    ['a-login', 'a-pass'].forEach(function (id) {
+      document.getElementById(id).closest('.field').classList.toggle('has-error', st === 'validation');
+    });
+  }
+  new MutationObserver(function (m) { m.forEach(function (r) { if (r.attributeName === 'data-state') applyVariant(); }); }).observe(document.documentElement, { attributes: true });
+  applyVariant();
+})();
+</script>
+</body>
+</html>

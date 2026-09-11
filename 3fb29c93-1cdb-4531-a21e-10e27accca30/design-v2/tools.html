@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tools · Flow v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+</head>
+<body data-od-id="page" data-od-label="Tools">
+<main class="v2-main" id="page">
+
+  <div data-view="populated">
+    <div class="page-head">
+      <div class="page-head__t">
+        <h1>Tools</h1>
+        <p class="sub">Per-lady automation: autoreplies, mailing, presets and blacklists. Pick a lady to manage her toolset.</p>
+      </div>
+      <div class="page-head__actions">
+        <div class="search"><span class="ic ic--search"></span><input class="input" type="search" placeholder="Search lady or ID" id="tools-q" aria-label="Search ladies"></div>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="seg" data-chip-group>
+        <button type="button" class="is-active" data-chip>All platforms</button>
+        <button type="button" data-chip>RealLoves</button>
+        <button type="button" data-chip>FindBride</button>
+        <button type="button" data-chip>LiveBeam</button>
+        <button type="button" data-chip>TalkyTimes</button>
+        <button type="button" data-chip>ChatsHouse</button>
+      </div>
+      <span class="sp"></span>
+      <label class="switch"><input type="checkbox" checked data-demo><span class="tr"></span>God Hand enabled</label>
+    </div>
+
+    <div class="card tbl-wrap">
+      <table class="tbl" id="tools-tbl" data-od-id="tools-table">
+        <thead><tr>
+          <th>Lady</th><th>Platform</th><th>Status</th><th>Autoreplies</th><th>Blacklists</th><th>Presets</th><th>Open chats</th><th style="text-align:right">Tools</th>
+        </tr></thead>
+        <tbody id="tools-rows"></tbody>
+      </table>
+    </div>
+    <div class="row row--between mt-2">
+      <span class="small muted">6 ladies · 4 with God Hand on</span>
+      <div class="pagination"><button type="button" disabled>‹</button><button type="button" class="is-active" aria-current="page">1</button><button type="button">2</button><button type="button">›</button></div>
+    </div>
+  </div>
+
+  <div data-view="loading" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Tools</h1><p class="sub">Per-lady automation.</p></div></div>
+    <div class="card"><div id="tools-sk"></div></div>
+  </div>
+
+  <div data-view="empty" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Tools</h1><p class="sub">Per-lady automation.</p></div></div>
+    <div class="card"><div class="state">
+      <div class="state__icon"><span class="ic ic--tools ic--lg"></span></div>
+      <h2>No ladies assigned</h2>
+      <p>Tools appear once an administrator assigns lady profiles to your account. Ask your admin to add one.</p>
+      <a class="btn btn--soft" href="admin-lady-profiles.html">Go to lady profiles</a>
+    </div></div>
+  </div>
+
+  <div data-view="error" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Tools</h1><p class="sub">Per-lady automation.</p></div></div>
+    <div class="card"><div class="state">
+      <div class="state__icon state__icon--danger"><span class="ic ic--warn ic--lg"></span></div>
+      <h2>Could not load tools</h2>
+      <p>The tools registry did not respond. Retry in a moment.</p>
+      <button type="button" class="btn btn--ghost" data-reload>Try again</button>
+    </div></div>
+  </div>
+
+</main>
+<script src="assets/fixtures.js"></script>
+<script src="assets/components.js"></script>
+<script src="assets/stateful.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  FlowUI.mount({ nav: 'tools', zone: 'tools', sub: 'tools.html', title: 'Tools', lady: true });
+  var F = window.Fixtures;
+  var tools = [
+    { href: 'tools-autoreplies.html', icon: 'autoreply', label: 'Autoreplies' },
+    { href: 'tools-mailing.html', icon: 'mailing', label: 'Mailing' },
+    { href: 'tools-presets.html', icon: 'templates', label: 'Presets' },
+    { href: 'tools-blacklists.html', icon: 'blacklist', label: 'Blacklists' }
+  ];
+  var tbody = document.getElementById('tools-rows');
+  tbody.innerHTML = F.LADIES.map(function (l) {
+    var ar = l.status === 'error' ? '<span class="badge badge--danger">Error</span>' : (l.platform === 'findbride' ? '<span class="badge badge--muted">Off</span>' : '<span class="badge badge--success">On</span>');
+    return '<tr>' +
+      '<td><span class="row"><span class="avatar avatar--sm">' + l.initials + '</span><span><span class="strong">' + l.name + '</span><br><span class="tiny muted mono">' + l.id + '</span></span></span></td>' +
+      '<td>' + FlowUI.platformTag(l.platform) + '</td>' +
+      '<td>' + FlowUI.dot(l.status) + ' <span class="small muted" style="text-transform:capitalize">' + l.status + '</span></td>' +
+      '<td>' + ar + '</td>' +
+      '<td class="num">' + (l.platform === 'livebeam' ? 4 : l.platform === 'findbride' ? 3 : 2) + '</td>' +
+      '<td class="num">' + (l.chats * 2 + 3) + '</td>' +
+      '<td class="num">' + l.chats + '</td>' +
+      '<td class="t-actions">' + tools.map(function (t) {
+        return '<a class="icon-btn" href="' + t.href + '" title="' + t.label + '" aria-label="' + t.label + ' for ' + l.name + '"><span class="ic ic--' + t.icon + '"></span></a>';
+      }).join(' ') + '</td></tr>';
+  }).join('');
+
+  document.getElementById('tools-q').addEventListener('input', function (e) {
+    var qv = e.target.value.trim().toLowerCase();
+    tbody.querySelectorAll('tr').forEach(function (tr) {
+      tr.style.display = tr.textContent.toLowerCase().indexOf(qv) !== -1 ? '' : 'none';
+    });
+  });
+
+  var sk = '';
+  for (var i = 0; i < 6; i++) sk += '<div class="sk-row"><span class="skeleton" style="width:32px;height:32px;border-radius:50%"></span><span class="skeleton" style="width:18%;height:13px"></span><span class="skeleton" style="width:14%;height:13px"></span><span style="flex:1"></span><span class="skeleton" style="width:120px;height:30px;border-radius:6px"></span></div>';
+  document.getElementById('tools-sk').innerHTML = sk;
+})();
+</script>
+</body>
+</html>

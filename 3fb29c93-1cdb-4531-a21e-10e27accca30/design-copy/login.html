@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Log in — Flow (design copy)</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="assets/tokens.css">
+</head>
+<body data-od-id="page" data-od-label="Public / Login">
+  <div class="login-page">
+    <div class="login-form">
+      <div class="form-header">
+        <img src="assets/logos/flow_login.svg" alt="Flow" width="42" height="57">
+        <h1>Welcome!</h1>
+        <p>Authorization required</p>
+      </div>
+      <form onsubmit="return false" id="login-form">
+        <div class="row-input">
+          <div class="field">
+            <label for="login">Login</label>
+            <input class="input input--fill" type="text" id="login" autocomplete="username">
+            <span class="validation-error" id="login-error" hidden>Please enter your Login</span>
+          </div>
+        </div>
+        <div class="row-input">
+          <div class="field">
+            <label for="password">Password</label>
+            <div class="input-wrap">
+              <input class="input input--fill" type="password" id="password" autocomplete="current-password">
+              <button type="button" class="icon-btn" aria-label="Show password"
+                      onclick="var i=this.previousElementSibling;i.type=i.type==='password'?'text':'password';this.setAttribute('aria-label',i.type==='password'?'Show password':'Hide password')">
+                <span class="ic ic--eye"></span>
+              </button>
+            </div>
+            <span class="validation-error" id="password-error" hidden>Please enter your password</span>
+          </div>
+        </div>
+        <button type="submit" class="sign-in" id="sign-in" disabled>Log in</button>
+      </form>
+    </div>
+  </div>
+  <script src="assets/app.js"></script>
+  <script>
+    // Prototype: enable submit when both fields non-empty; blur validation per source.
+    (function () {
+      var login = document.getElementById('login');
+      var password = document.getElementById('password');
+      var btn = document.getElementById('sign-in');
+      function refresh() { btn.disabled = !(login.value.length && password.value.length); }
+      login.addEventListener('input', refresh);
+      password.addEventListener('input', refresh);
+      login.addEventListener('blur', function () {
+        var e = document.getElementById('login-error');
+        var bad = login.value.length === 0;
+        e.hidden = !bad;
+        login.classList.toggle('is-error', bad);
+      });
+      login.addEventListener('focus', function () {
+        document.getElementById('login-error').hidden = true;
+        login.classList.remove('is-error');
+      });
+      password.addEventListener('blur', function () {
+        var e = document.getElementById('password-error');
+        var bad = password.value.length === 0;
+        e.hidden = !bad;
+        password.classList.toggle('is-error', bad);
+      });
+      password.addEventListener('focus', function () {
+        document.getElementById('password-error').hidden = true;
+        password.classList.remove('is-error');
+      });
+      document.getElementById('login-form').addEventListener('submit', function () {
+        if (!btn.disabled) window.location.href = 'chats.html';
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accounts · Flow v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+</head>
+<body data-od-id="page" data-od-label="Accounts">
+<main class="v2-main" id="page">
+
+  <div data-view="populated">
+    <div class="page-head">
+      <div class="page-head__t"><h1>Accounts</h1><p class="sub">Platform logins the workspace sends through — grouped by platform.</p></div>
+      <div class="page-head__actions"><a class="btn btn--primary" href="admin-account-new.html"><span class="ic ic--plus"></span>New account</a></div>
+    </div>
+    <div id="acc-groups"></div>
+  </div>
+
+  <div data-view="loading" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Accounts</h1><p class="sub">Platform logins the workspace sends through.</p></div></div>
+    <div class="card"><div id="acc-sk"></div></div>
+  </div>
+  <div data-view="empty" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Accounts</h1><p class="sub">Platform logins the workspace sends through.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon"><span class="ic ic--admin ic--lg"></span></div><h2>No accounts</h2><p>Add the first platform login — chats, mails and campaigns all send through accounts.</p><a class="btn btn--primary" href="admin-account-new.html">New account</a></div></div>
+  </div>
+  <div data-view="error" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Accounts</h1><p class="sub">Platform logins the workspace sends through.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon state__icon--danger"><span class="ic ic--warn ic--lg"></span></div><h2>Accounts failed to load</h2><p>Retry in a moment.</p><button type="button" class="btn btn--ghost" data-reload>Try again</button></div></div>
+  </div>
+
+</main>
+<script src="assets/fixtures.js"></script>
+<script src="assets/components.js"></script>
+<script src="assets/stateful.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  FlowUI.mount({ nav: 'admin', zone: 'admin', sub: 'admin-accounts.html', title: 'Accounts', crumbs: ['Admin'], role: 'admin' });
+  var F = window.Fixtures;
+  var groups = {};
+  F.ACCOUNTS.forEach(function (a) { (groups[a.platform] = groups[a.platform] || []).push(a); });
+  var statusBadge = { ok: '<span class="badge badge--success">OK</span>', error: '<span class="badge badge--danger">Error</span>', paused: '<span class="badge badge--muted">Paused</span>' };
+  document.getElementById('acc-groups').innerHTML = Object.keys(groups).map(function (p) {
+    var pl = F.PLATFORMS[p];
+    return '<div class="card mb-3"><div class="card__head"><img src="' + pl.logo + '" alt="" style="height:17px"><h2>' + pl.name + '</h2><span class="badge badge--muted">' + groups[p].length + ' accounts</span></div>' +
+      '<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Login</th><th>Assigned lady</th><th>Operator</th><th>Status</th><th>Last send</th><th style="text-align:right">Actions</th></tr></thead><tbody>' +
+      groups[p].map(function (a, i) {
+        return '<tr><td class="strong mono">' + a.login + '</td><td>' + a.lady + '</td><td class="muted">Katerina V.</td><td>' + statusBadge[a.status] + '</td><td class="num muted">' + (a.status === 'ok' ? 'Today ' + (10 + i) + ':0' + i : '—') + '</td>' +
+          '<td class="t-actions"><a class="icon-btn" href="admin-account-edit.html" title="Edit"><span class="ic ic--pencil"></span></a><button type="button" class="icon-btn" title="Test connection" data-toast="Connection OK"><span class="ic ic--check"></span></button></td></tr>';
+      }).join('') + '</tbody></table></div></div>';
+  }).join('');
+  var sk = '';
+  for (var i = 0; i < 5; i++) sk += '<div class="sk-row"><span class="skeleton" style="width:22%;height:13px"></span><span class="skeleton" style="width:14%;height:12px"></span><span style="flex:1"></span><span class="skeleton" style="width:80px;height:22px;border-radius:999px"></span></div>';
+  document.getElementById('acc-sk').innerHTML = sk;
+})();
+</script>
+</body>
+</html>

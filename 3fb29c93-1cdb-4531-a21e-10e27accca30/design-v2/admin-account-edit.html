@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit account · Flow v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+</head>
+<body data-od-id="page" data-od-label="Edit account">
+<main class="v2-main" id="page">
+
+  <div class="page-head"><div class="page-head__t"><h1>Edit — anna_rl</h1><p class="sub">RealLoves · assigned to Anna S. · last send today 10:42.</p></div>
+    <div class="page-head__actions"><button type="button" class="btn btn--ghost" data-toast="Connection OK — credentials valid"><span class="ic ic--check"></span>Test connection</button></div>
+  </div>
+
+  <div data-view="default">
+    <div class="grid" style="grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);align-items:start">
+      <div class="card">
+        <div class="card__body">
+          <form class="form-grid" data-form="validate" data-success="Account updated" novalidate>
+            <div class="field"><label for="ea-plat">Platform</label><select class="select" id="ea-plat" disabled><option>RealLoves</option></select><span class="hint">Platform can't change after creation.</span></div>
+            <div class="field"><label for="ea-login">Login</label><input class="input" id="ea-login" required value="anna_rl"><span class="err"><span class="ic ic--warn ic--sm"></span>Login is required</span></div>
+            <div class="field"><label for="ea-pass">Password <span class="muted" style="font-weight:400">(blank = keep)</span></label><input class="input" id="ea-pass" type="password" placeholder="••••••••"></div>
+            <div class="field"><label for="ea-lady">Assigned lady</label><select class="select" id="ea-lady"><option selected>Anna S.</option><option>Elena V.</option><option>Irina K.</option><option>Maria D.</option></select></div>
+            <div class="field span-2"><label class="check"><input type="checkbox" checked data-demo><span class="box"></span>Enable sends from this account</label></div>
+            <div class="span-2 row" style="justify-content:flex-end">
+              <a class="btn btn--quiet" href="admin-accounts.html">Cancel</a>
+              <button type="submit" class="btn btn--primary">Save changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="card card--pad">
+        <h3 class="mb-2" style="font-size:14px">Send health (7d)</h3>
+        <dl class="deflist">
+          <dt>Delivered</dt><dd class="mono">412</dd>
+          <dt>Failed</dt><dd class="mono" style="color:var(--danger)">6</dd>
+          <dt>Limit hits</dt><dd class="mono" style="color:var(--warning)">2</dd>
+          <dt>Reply rate</dt><dd class="mono">23.4%</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div data-view="success" hidden>
+    <div class="card" style="max-width:640px;margin:40px auto"><div class="state">
+      <div class="state__icon" style="background:var(--success-soft);color:var(--success)"><span class="ic ic--check ic--lg"></span></div>
+      <h2>Account updated</h2><p>Changes apply on the next send window.</p>
+      <div class="row mt-2"><a class="btn btn--primary" href="admin-accounts.html">All accounts</a></div>
+    </div></div>
+  </div>
+
+</main>
+<script src="assets/fixtures.js"></script>
+<script src="assets/components.js"></script>
+<script src="assets/stateful.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () { FlowUI.mount({ nav: 'admin', zone: 'admin', sub: 'admin-accounts.html', title: 'Edit account', crumbs: ['Admin', 'Accounts'], role: 'admin' }); })();
+</script>
+</body>
+</html>

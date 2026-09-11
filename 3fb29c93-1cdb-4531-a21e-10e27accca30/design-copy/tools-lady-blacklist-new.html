@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add to Blacklist · Anna S. — Flow (design copy)</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="assets/tokens.css">
+  <style>
+    .verify-data { display: flex; gap: 14px; align-items: center; padding: 14px; background: var(--surface); border-radius: var(--radius); margin-bottom: 16px; }
+    .verify-data .avatar { width: 56px; height: 56px; border-radius: var(--radius); }
+    .verify-data .vd-name { font: 700 15px/20px var(--font); }
+    .verify-data .vd-meta { font: 600 12px/16px var(--font); color: var(--muted); }
+  </style>
+</head>
+<body data-theme="theme_purple" data-od-id="page" data-od-label="Tools / Lady / Blacklists / New">
+  <header class="appheader" data-od-id="appheader">
+    <div class="appheader__left">
+      <img class="appheader__logo" src="assets/logos/flow.svg" alt="Flow">
+      <div class="account-info">
+        <span class="account-info__role">Account</span>
+        <span class="account-info__data">
+          <span class="account-info__name">Anna S.</span>
+          <span class="account-info__id">RL-88421</span>
+        </span>
+      </div>
+    </div>
+    <div class="appheader__right">
+      <ul class="appmenu">
+        <li><a href="omniscience.html" title="Omniscience" aria-label="Omniscience"><span class="ic ic--lightning"></span></a></li>
+        <li><a href="statistics.html" title="Statistics" aria-label="Statistics"><span class="ic ic--statistics"></span></a></li>
+        <li><a href="newsfeeds.html" title="Newsfeeds" aria-label="Newsfeeds"><span class="ic ic--newsfeed"></span></a></li>
+        <li><a href="mails.html" title="Mails" aria-label="Mails"><span class="ic ic--mail"></span></a></li>
+        <li><a href="chats.html" title="Accounts" aria-label="Accounts"><span class="ic ic--chat"></span></a></li>
+        <li><a href="auto-sendings.html" title="Auto Sendings" aria-label="Auto Sendings"><span class="ic ic--auto-sendings"></span></a></li>
+        <li><a href="icebreakers.html" title="Icebreakers" aria-label="Icebreakers"><span class="ic ic--icebreakers"></span></a></li>
+        <li><a href="invites.html" title="Chat Invite" aria-label="Chat Invite"><span class="ic ic--chat-invite"></span></a></li>
+        <li><a class="is-active" href="tools.html" title="Tools" aria-label="Tools" aria-current="page"><span class="ic ic--settings"></span></a></li>
+      </ul>
+      <div class="logout">
+        <button type="button" data-logout-toggle aria-expanded="false" aria-label="Account menu"><span class="ic ic--more"></span></button>
+        <div class="logout__menu" role="menu">
+          <button type="button" role="menuitem" onclick="flowToast('Logged out (prototype)')"><span class="ic ic--logout"></span><span>Log out</span></button>
+          <button type="button" role="menuitem" onclick="flowToast('Log out of all devices (prototype)')"><span class="ic ic--logout-all"></span><span>Log out of all devices</span></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="page" style="padding-top:10px" data-od-id="blacklist-new-main">
+    <div class="tools-shell">
+      <aside class="tsidebar" aria-label="Lady tools">
+        <a class="back-btn" href="tools.html"><img src="assets/icons/backToIndex.svg" alt=""><span class="nav-text">Back to index</span></a>
+        <div class="lady-card">
+          <div class="lady-avatar"><span class="avatar-fallback">AS</span></div>
+          <span class="lady-name">Anna S., 26</span>
+          <span class="lady-platform">
+            <span class="pf-ico"><img src="assets/logos/real-loves.svg" alt="RealLoves"></span>
+            <span class="platform-name">RealLoves</span>
+          </span>
+          <dl>
+            <dt>ID:</dt><dd>241</dd>
+            <dt>ID on site:</dt><dd>884217</dd>
+          </dl>
+        </div>
+        <nav class="nav" aria-label="Tools sections">
+          <ul>
+            <li><a href="tools-lady-autoreplies.html"><img src="assets/icons/autorepliesIco.svg" alt=""><span class="nav-text">Autoreplies</span></a></li>
+            <li><a href="tools-lady-presets.html"><span class="ic ic--list"></span><span class="nav-text">Presets</span></a></li>
+            <li><a class="is-active" href="tools-lady-blacklists.html"><img src="assets/icons/blacklistsIco.svg" alt=""><span class="nav-text">Blacklists</span></a></li>
+          </ul>
+        </nav>
+        <button type="button" class="collapse-btn" data-sidebar-toggle aria-label="Collapse sidebar">
+          <svg width="13" height="12" viewBox="0 0 13 12" fill="none" aria-hidden="true"><path d="M12 11L7 6L12 1M6 11L1 6L6 1" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </aside>
+
+      <section class="tools-content" data-od-id="blacklist-new-content" aria-label="Add to blacklist">
+        <!-- Step 1: VerifyUserCredentials -->
+        <div class="form-card" id="step-verify">
+          <h2>Add to Blacklist - verification</h2>
+          <p class="form-lead">Enter the male profile ID from the site to look it up.</p>
+          <div class="field">
+            <label for="male-id">ID on Site</label>
+            <input class="input input--fill" type="text" id="male-id" placeholder="e.g. 512477">
+            <span class="validation-error" id="male-id-error" hidden>Please enter ID on Site</span>
+          </div>
+          <div class="form-actions">
+            <a class="btn btn--ghost" href="tools-lady-blacklists.html">Cancel</a>
+            <button class="btn btn--primary" id="btn-verify" type="button">Verify</button>
+          </div>
+        </div>
+
+        <!-- Step 2: CommitUserProfile -->
+        <div class="form-card" id="step-commit" hidden>
+          <h2>Add to Blacklist</h2>
+          <p class="form-lead">Check the resolved profile and confirm.</p>
+          <div class="verify-data">
+            <span class="avatar">IP</span>
+            <div>
+              <div class="vd-name">Igor P., 34</div>
+              <div class="vd-meta">RealLoves · ID512477 · Moscow</div>
+            </div>
+          </div>
+          <div class="field">
+            <label for="bl-reason">Comment (optional)</label>
+            <input class="input input--fill" type="text" id="bl-reason" placeholder="Why is this user blacklisted?">
+          </div>
+          <div class="form-actions">
+            <button class="btn btn--ghost" id="btn-back" type="button">Back</button>
+            <button class="btn btn--primary" id="btn-commit" type="button">Add to list</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <script src="assets/app.js"></script>
+  <script>
+  (function () {
+    var verify = document.getElementById('step-verify');
+    var commit = document.getElementById('step-commit');
+    var input = document.getElementById('male-id');
+    var err = document.getElementById('male-id-error');
+    document.getElementById('btn-verify').addEventListener('click', function () {
+      if (!input.value.trim()) { err.hidden = false; input.classList.add('is-error'); input.focus(); return; }
+      err.hidden = true; input.classList.remove('is-error');
+      verify.hidden = true; commit.hidden = false;
+    });
+    input.addEventListener('focus', function () { err.hidden = true; input.classList.remove('is-error'); });
+    document.getElementById('btn-back').addEventListener('click', function () {
+      commit.hidden = true; verify.hidden = false;
+    });
+    document.getElementById('btn-commit').addEventListener('click', function () {
+      flowToast('Added to blacklist (prototype)');
+      setTimeout(function () { location.href = 'tools-lady-blacklists.html'; }, 700);
+    });
+  })();
+  </script>
+</body>
+</html>

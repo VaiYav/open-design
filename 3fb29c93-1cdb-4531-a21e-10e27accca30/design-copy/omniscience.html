@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Omniscience — Flow (design copy)</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="assets/tokens.css">
+  <style>
+    /* AI chat layer — scoped tokens on .chat-layout[data-theme] (source: AIChat/tokens.scss).
+       44px controls, larger radii, indigo accent — distinct from the operator shell. */
+    .chat-layout {
+      min-height: calc(100vh - var(--header-h) - 2px);
+      background: var(--layout-gradient);
+      color: var(--text-primary);
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 24px 16px 40px;
+      position: relative;
+    }
+    .chat-layout::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: var(--glow-animated);
+      pointer-events: none;
+      opacity: var(--pattern-opacity);
+    }
+    .aichat {
+      position: relative;
+      width: 720px; max-width: 100%;
+      border-radius: 18px;
+      border: 1px solid var(--border-default);
+      background: var(--surface-main);
+      box-shadow: var(--chat-glow);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: min(680px, calc(100vh - 150px));
+      min-height: 520px;
+      color: var(--text-primary);
+    }
+    .aichat__head {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      padding: 14px 20px; border-bottom: 1px solid var(--border-default);
+      background: var(--header-bg);
+      flex-wrap: wrap;
+    }
+    .aichat__head .ident { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .aichat__head h1 { margin: 0; font-size: 15px; color: var(--header-title); }
+    .aichat__head .sub { margin: 0; font-size: 12px; color: var(--header-subtitle); }
+    .aichat__select {
+      min-height: 44px; padding: 0 10px; width: clamp(140px, 32vw, 180px);
+      background: var(--control-bg); border: 1px solid var(--control-border);
+      color: var(--control-text); border-radius: 10px;
+    }
+    .aichat__messages { flex: 1; min-height: 0; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; background: var(--surface-chat); }
+    .aichat__messages .chat-bubble { color: var(--text-primary); }
+    .aichat__messages .chat-bubble--assistant { background: var(--bubble-assistant); border-radius: 14px; border-bottom-left-radius: 6px; }
+    .aichat__messages .chat-bubble--user { background: var(--bubble-user); border-radius: 14px; border-bottom-right-radius: 6px; }
+    .aichat__messages .chat-meta { color: var(--meta-text); }
+    .aichat__messages .chat-author { color: var(--chat-author); font-weight: 600; }
+    .aichat__composer { border-top: 1px solid var(--composer-border); padding: 14px 20px 18px; background: var(--composer-bg); }
+    .aichat .composer-row { display: flex; gap: 10px; align-items: flex-end; }
+    .aichat .composer-row textarea {
+      flex: 1; resize: none; min-height: 44px; max-height: 220px;
+      padding: 12px 14px; border: 1px solid var(--control-border);
+      border-radius: 12px; background: var(--control-bg); color: var(--control-text); line-height: 1.5;
+    }
+    .aichat .composer-row textarea::placeholder { color: var(--text-placeholder); }
+    .aichat .composer-row textarea:focus { outline: none; border-color: var(--accent-primary); box-shadow: 0 0 0 3px var(--accent-shadow); }
+    .aichat .btn-send {
+      width: 44px; height: 44px; padding: 0; flex: 0 0 auto;
+      border: none; border-radius: 50%; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(to bottom, var(--accent-primary), var(--accent-primary-hover));
+      box-shadow: 0 8px 16px var(--accent-shadow);
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .aichat .btn-send:hover { box-shadow: 0 10px 22px var(--accent-shadow-hover); transform: translateY(-1px); }
+    .aichat .btn-send svg { width: 20px; height: 20px; stroke: #fff; fill: none; stroke-width: 1.8; }
+    .aichat .icon-btn--chat {
+      width: 44px; height: 44px; border-radius: 50%;
+      border: 1px solid var(--control-border); background: var(--btn-bg);
+      color: var(--text-secondary); cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+    .aichat .icon-btn--chat:hover { color: var(--accent-primary); border-color: var(--accent-primary); }
+    .aichat .icon-btn--chat .ic { width: 20px; height: 20px; }
+    .settings-panel {
+      position: absolute; inset: 0;
+      background: var(--surface-main);
+      opacity: 0; pointer-events: none; visibility: hidden;
+      transition: opacity var(--t-normal), visibility var(--t-normal);
+      display: flex; flex-direction: column;
+      overflow-y: auto;
+      z-index: 5;
+    }
+    .aichat__wrap { position: relative; flex: 1; display: flex; flex-direction: column; min-height: 0; }
+    .settings-panel.is-open { opacity: 1; pointer-events: auto; visibility: visible; }
+    .settings-panel .panel-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px; border-bottom: 1px solid var(--border-default);
+    }
+    .settings-panel .panel-head h2 { margin: 0; font-size: 14px; color: var(--text-primary); }
+    .settings-section { padding: 16px 20px; border-bottom: 1px solid var(--border-default); }
+    .settings-section h3 { margin: 0 0 10px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); }
+    .seg-theme { display: flex; gap: 2px; padding: 3px; border: 1px solid var(--border-default); border-radius: 12px; background: var(--surface-secondary); }
+    .seg-theme button { flex: 1; height: 38px; border: none; border-radius: 9px; background: transparent; color: var(--text-muted); font-weight: 600; cursor: pointer; }
+    .seg-theme button.is-active { background: var(--accent-primary); color: #fff; }
+    .about-row { display: flex; justify-content: space-between; gap: 10px; padding: 8px 0; font-size: 13px; color: var(--text-primary); }
+    .about-row span:first-child { color: var(--text-muted); }
+    .settings-section .switch .track { background: var(--surface-secondary); border: 1px solid var(--border-default); }
+    .settings-section .switch input:checked + .track { background: var(--accent-primary); }
+    .settings-section .switch .switch-label { color: var(--text-primary); }
+    .aichat-note { text-align: center; margin-top: 14px; font-size: 12px; color: var(--text-muted); position: relative; }
+  </style>
+</head>
+<body data-od-id="page" data-od-label="Omniscience (AI chat)">
+  <header class="appheader" data-od-id="appheader">
+    <div class="appheader__left">
+      <img class="appheader__logo" src="assets/logos/flow.svg" alt="Flow">
+      <div class="account-info">
+        <span class="account-info__role">Account</span>
+        <span class="account-info__data">
+          <span class="account-info__name">Anna S.</span>
+          <span class="account-info__id">RL-88421</span>
+        </span>
+      </div>
+    </div>
+    <div class="appheader__right">
+      <ul class="appmenu">
+        <li><a class="is-active is-active--lav" href="omniscience.html" title="Omniscience" aria-label="Omniscience" aria-current="page"><span class="ic ic--lightning"></span></a></li>
+        <li><a href="statistics.html" title="Statistics" aria-label="Statistics"><span class="ic ic--statistics"></span></a></li>
+        <li><a href="newsfeeds.html" title="Newsfeeds" aria-label="Newsfeeds"><span class="ic ic--newsfeed"></span></a></li>
+        <li><a href="mails.html" title="Mails" aria-label="Mails"><span class="ic ic--mail"></span></a></li>
+        <li><a href="chats.html" title="Accounts" aria-label="Accounts"><span class="ic ic--chat"></span></a></li>
+        <li><a href="auto-sendings.html" title="Auto Sendings" aria-label="Auto Sendings"><span class="ic ic--auto-sendings"></span></a></li>
+        <li><a href="icebreakers.html" title="Icebreakers" aria-label="Icebreakers"><span class="ic ic--icebreakers"></span></a></li>
+        <li><a href="invites.html" title="Chat Invite" aria-label="Chat Invite"><span class="ic ic--chat-invite"></span></a></li>
+        <li><a href="tools.html" title="Tools" aria-label="Tools"><span class="ic ic--settings"></span></a></li>
+      </ul>
+      <div class="logout">
+        <button type="button" data-logout-toggle aria-expanded="false" aria-label="Account menu"><span class="ic ic--more"></span></button>
+        <div class="logout__menu" role="menu">
+          <button type="button" role="menuitem" onclick="flowToast('Logged out (prototype)')"><span class="ic ic--logout"></span><span>Log out</span></button>
+          <button type="button" role="menuitem" onclick="flowToast('Log out of all devices (prototype)')"><span class="ic ic--logout-all"></span><span>Log out of all devices</span></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="chat-layout" data-theme="light" data-od-id="aichat-main">
+    <section class="aichat" aria-label="AI chat" data-od-id="aichat-panel">
+      <div class="aichat__head">
+        <div class="ident">
+          <span class="avatar" style="background:rgba(99,102,241,.14);color:var(--accent-primary)">B</span>
+          <div>
+            <h1>Beloved 💖</h1>
+            <p class="sub">Omniscience (dev/stage) · context: Anna S. · RealLoves</p>
+          </div>
+        </div>
+        <div class="row">
+          <select class="aichat__select" aria-label="Assistant profile" data-context-select>
+            <option>Profile: Anna S.</option>
+            <option>Profile: Marina K.</option>
+            <option>Profile: Olga D.</option>
+          </select>
+          <button class="icon-btn--chat" data-chat-theme-toggle aria-label="Toggle dark theme" aria-pressed="false">🌙</button>
+          <button class="icon-btn--chat" id="open-settings" aria-label="Open assistant settings"><span class="ic ic--settings"></span></button>
+        </div>
+      </div>
+
+      <div class="aichat__wrap">
+        <div class="aichat__messages" id="messages">
+          <div class="chat-row">
+            <div>
+              <div class="chat-bubble chat-bubble--assistant">Good afternoon! I've reviewed today's unanswered conversations — 2 need a reply within the hour. Want me to draft replies?</div>
+              <div class="chat-meta"><span class="chat-author">Beloved</span><span>13:02</span></div>
+            </div>
+          </div>
+          <div class="chat-row chat-row--user">
+            <div>
+              <div class="chat-bubble chat-bubble--user">Yes — start with Andrey K.</div>
+              <div class="chat-meta" style="justify-content:flex-end"><span>You</span><span>13:04</span></div>
+            </div>
+          </div>
+          <div class="chat-row">
+            <div>
+              <div class="chat-bubble chat-bubble--assistant">Drafted. He asked for another photo of the garden — suggest sending the one from June and adding a line about the roses. Shall I prepare it for Anna S. to review?</div>
+              <div class="chat-meta"><span class="chat-author">Beloved</span><span>13:04</span></div>
+            </div>
+          </div>
+          <div class="chat-row" id="thinking-row" hidden aria-live="polite">
+            <div class="chat-bubble chat-bubble--assistant">
+              <p class="small" style="margin:0 0 4px;color:var(--text-muted)" id="thinking-label">Thinking…</p>
+              <span class="typing-dots"><span></span><span></span><span></span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-panel" id="settings-panel" role="dialog" aria-modal="false" aria-label="Assistant settings">
+          <div class="panel-head">
+            <h2>Assistant settings</h2>
+            <button class="icon-btn--chat" id="close-settings" aria-label="Close settings"><span class="ic ic--close"></span></button>
+          </div>
+          <div class="settings-section">
+            <h3>Appearance</h3>
+            <div class="seg-theme" id="theme-seg">
+              <button type="button" data-set-theme="light" class="is-active">Light</button>
+              <button type="button" data-set-theme="dark">Dark</button>
+            </div>
+          </div>
+          <div class="settings-section">
+            <h3>Model</h3>
+            <select class="aichat__select" style="width:100%" aria-label="AI model" data-context-select>
+              <option>Balanced (recommended)</option>
+              <option>Fast</option>
+              <option>Thorough</option>
+            </select>
+          </div>
+          <div class="settings-section">
+            <h3>Assistant behaviour</h3>
+            <label class="switch"><input type="checkbox" checked><span class="track"></span><span class="switch-label">Suggest replies in conversations</span></label>
+            <label class="switch"><input type="checkbox" checked><span class="track"></span><span class="switch-label">Translate messages automatically</span></label>
+            <label class="switch"><input type="checkbox"><span class="track"></span><span class="switch-label">Flag suspicious patterns</span></label>
+          </div>
+          <div class="settings-section">
+            <h3>About</h3>
+            <div class="about-row"><span>Assistant</span><span>Beloved 💖</span></div>
+            <div class="about-row"><span>Context window</span><span>Anna S. · RealLoves</span></div>
+            <div class="about-row"><span>Conversation ID</span><button class="icon-btn--chat" style="width:auto;padding:0 14px;border-radius:10px" onclick="flowToast('Full ID copied (prototype)')">Copy full ID</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="aichat__composer">
+        <form class="composer-row" id="composer">
+          <label class="sr-only" for="message-input">Message</label>
+          <textarea id="message-input" placeholder="Type a message…"></textarea>
+          <button class="btn-send" type="submit" aria-label="Send message" data-od-id="aichat-send">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 11 18-8-8 18-2.5-7.5L3 11Z"/></svg>
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <p class="aichat-note" data-od-id="aichat-note">Assistant drafts only — every outgoing message requires operator approval.</p>
+  </main>
+  <script src="assets/app.js"></script>
+  <script>
+  (function () {
+    var messages = document.getElementById('messages');
+    var thinkingRow = document.getElementById('thinking-row');
+    var thinkingLabel = document.getElementById('thinking-label');
+    var input = document.getElementById('message-input');
+    var layout = document.querySelector('.chat-layout');
+
+    function append(text, side) {
+      var row = document.createElement('div');
+      row.className = 'chat-row is-new' + (side === 'user' ? ' chat-row--user' : '');
+      var bubble = document.createElement('div');
+      bubble.className = 'chat-bubble chat-bubble--' + (side === 'user' ? 'user' : 'assistant');
+      bubble.textContent = text;
+      var meta = document.createElement('div');
+      meta.className = 'chat-meta';
+      if (side === 'user') { meta.style.justifyContent = 'flex-end'; meta.innerHTML = '<span>You</span><span>Just now</span>'; }
+      else meta.innerHTML = '<span class="chat-author">Beloved</span><span>Just now</span>';
+      var wrap = document.createElement('div');
+      wrap.appendChild(bubble); wrap.appendChild(meta);
+      row.appendChild(wrap);
+      messages.appendChild(row);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    var replies = [
+      'Done — the reply is saved as a draft for Anna S. She can review it in the conversation view.',
+      'Good idea. I\'ll watch that conversation and flag it if the tone shifts.',
+      'Noted. Anything else you\'d like me to check across the platforms?'
+    ];
+    var replyIdx = 0;
+
+    document.getElementById('composer').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var text = input.value.trim();
+      if (!text) { input.focus(); return; }
+      append(text, 'user');
+      input.value = '';
+      thinkingRow.hidden = false;
+      thinkingLabel.textContent = ['Thinking…', 'Reviewing context…', 'Checking conversation history…'][replyIdx % 3];
+      messages.appendChild(thinkingRow);
+      setTimeout(function () {
+        thinkingRow.hidden = true;
+        append(replies[replyIdx % replies.length], 'assistant');
+        replyIdx += 1;
+      }, 1800);
+    });
+
+    var panel = document.getElementById('settings-panel');
+    var openSettings = document.getElementById('open-settings');
+    var closeSettings = document.getElementById('close-settings');
+    openSettings.setAttribute('aria-controls', 'settings-panel');
+    openSettings.setAttribute('aria-expanded', 'false');
+
+    function setPanel(open) {
+      panel.classList.toggle('is-open', open);
+      openSettings.setAttribute('aria-expanded', String(open));
+      if (open) { closeSettings.focus(); } else { openSettings.focus(); }
+    }
+    openSettings.addEventListener('click', function () { setPanel(true); });
+    closeSettings.addEventListener('click', function () { setPanel(false); });
+    panel.addEventListener('keydown', function (e) { if (e.key === 'Escape') setPanel(false); });
+
+    // Segmented theme control — scoped to the chat layer
+    var seg = document.getElementById('theme-seg');
+    var themeBtn = document.querySelector('[data-chat-theme-toggle]');
+    function syncSeg() {
+      var current = layout.getAttribute('data-theme') || 'light';
+      seg.querySelectorAll('button').forEach(function (b) {
+        var active = b.getAttribute('data-set-theme') === current;
+        b.classList.toggle('is-active', active);
+        b.setAttribute('aria-pressed', String(active));
+      });
+      themeBtn.textContent = current === 'light' ? '🌙' : '☀️';
+    }
+    seg.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-set-theme]');
+      if (btn) { layout.setAttribute('data-theme', btn.getAttribute('data-set-theme')); syncSeg(); }
+    });
+    themeBtn.addEventListener('click', function () { setTimeout(syncSeg, 0); });
+    syncSeg();
+  })();
+  </script>
+</body>
+</html>

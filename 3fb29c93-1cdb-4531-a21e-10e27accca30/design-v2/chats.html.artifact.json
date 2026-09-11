@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "design-v2/chats.html",
+  "entry": "design-v2/chats.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-09-10T20:01:29.903Z",
+  "updatedAt": "2026-09-10T20:01:29.903Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

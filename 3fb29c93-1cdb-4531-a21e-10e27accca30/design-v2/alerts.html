@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alerts · Flow v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+</head>
+<body data-od-id="page" data-od-label="Alerts">
+<main class="v2-main" id="page">
+
+  <div data-view="delivery,limits,blacklists,moderation,feedback">
+    <div class="page-head">
+      <div class="page-head__t"><h1>Alerts</h1><p class="sub">Operational events — delivery failures, platform limits, blacklist hits, moderation verdicts.</p></div>
+      <div class="page-head__actions"><button type="button" class="btn btn--ghost" data-toast="All alerts acknowledged">Mark all read</button></div>
+    </div>
+
+    <div class="card" data-tab-scope>
+      <div class="tabs tabs--card" role="tablist" data-od-id="alert-tabs">
+        <button type="button" data-tab="delivery" class="is-active" role="tab" aria-selected="true" data-state-link-tab="delivery">Delivery <span class="cnt">4</span></button>
+        <button type="button" data-tab="limits" role="tab" aria-selected="false" data-state-link-tab="limits">Limits <span class="cnt">3</span></button>
+        <button type="button" data-tab="blacklists" role="tab" aria-selected="false" data-state-link-tab="blacklists">Blacklists <span class="cnt">3</span></button>
+        <button type="button" data-tab="moderation" role="tab" aria-selected="false" data-state-link-tab="moderation">Moderation <span class="cnt">3</span></button>
+        <button type="button" data-tab="feedback" role="tab" aria-selected="false" data-state-link-tab="feedback">Feedback <span class="cnt">3</span></button>
+      </div>
+
+      <div data-tab-panel="delivery" data-view="delivery" id="al-delivery"></div>
+      <div data-tab-panel="limits" data-view="limits" id="al-limits" hidden>
+        <div id="al-limits-rows"></div>
+        <div class="notice notice--info" style="margin:8px 20px 16px"><span class="ic ic--info"></span><div>Limit hits are informational — the sender queues and retries. Repeated hits within an hour escalate to critical.</div></div>
+      </div>
+      <div data-tab-panel="blacklists" data-view="blacklists" id="al-blacklists" hidden></div>
+      <div data-tab-panel="moderation" data-view="moderation" id="al-moderation" hidden></div>
+      <div data-tab-panel="feedback" data-view="feedback" id="al-feedback" hidden></div>
+    </div>
+  </div>
+
+  <div data-view="loading" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Alerts</h1><p class="sub">Operational events.</p></div></div>
+    <div class="card"><div id="al-sk"></div></div>
+  </div>
+  <div data-view="empty" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Alerts</h1><p class="sub">Operational events.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon" style="background:var(--success-soft);color:var(--success)"><span class="ic ic--check ic--lg"></span></div><h2>All quiet</h2><p>No open alerts — delivery is clean, limits healthy, queues moving.</p></div></div>
+  </div>
+  <div data-view="error" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Alerts</h1><p class="sub">Operational events.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon state__icon--danger"><span class="ic ic--warn ic--lg"></span></div><h2>Alerts failed to load</h2><p>Retry in a moment.</p><button type="button" class="btn btn--ghost" data-reload>Try again</button></div></div>
+  </div>
+
+</main>
+<script src="assets/fixtures.js"></script>
+<script src="assets/components.js"></script>
+<script src="assets/stateful.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  FlowUI.mount({ nav: 'alerts', zone: 'home', title: 'Alerts', lady: true });
+  var feed = window.Fixtures.ALERT_FEED;
+  function renderRows(list) {
+    return list.map(function (a) {
+      return '<div class="lrow"><span class="ic ic--' + a.icon + '" style="color:var(--' + a.color + ')"></span>' +
+        '<div class="main"><div class="t1">' + a.t1 + '</div><div class="t2">' + a.t2 + '</div></div>' +
+        '<span class="tiny mono faint">' + a.time + '</span>' + a.act + '</div>';
+    }).join('');
+  }
+  document.getElementById('al-delivery').innerHTML = renderRows(feed.delivery);
+  document.getElementById('al-limits-rows').innerHTML = renderRows(feed.limits);
+  document.getElementById('al-blacklists').innerHTML = renderRows(feed.blacklists);
+  document.getElementById('al-moderation').innerHTML = renderRows(feed.moderation);
+  document.getElementById('al-feedback').innerHTML = renderRows(feed.feedback);
+  document.querySelectorAll('[data-state-link-tab]').forEach(function (b) {
+    b.addEventListener('click', function () { if (window.FlowState) FlowState.set(b.getAttribute('data-state-link-tab')); });
+  });
+  var sk = '';
+  for (var i = 0; i < 4; i++) sk += '<div class="sk-row"><span class="skeleton" style="width:30px;height:30px;border-radius:8px"></span><span style="flex:1"><span class="skeleton" style="display:block;width:45%;height:12px"></span><span class="skeleton" style="display:block;width:65%;height:10px;margin-top:6px"></span></span></div>';
+  document.getElementById('al-sk').innerHTML = sk;
+})();
+</script>
+</body>
+</html>

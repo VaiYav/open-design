@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live monitor · Flow v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+<style>
+  .plat { display: flex; align-items: center; gap: 12px; padding: 14px 16px; }
+  .plat img { height: 20px; width: auto; }
+  .plat .nm { font-weight: 700; font-size: 13.5px; }
+  .plat .lat { font: 400 11px/1 var(--mono); color: var(--muted); margin-top: 3px; }
+  .live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); animation: pulse 1.6s ease-in-out infinite; }
+  @keyframes pulse { 50% { opacity: .35; } }
+  @media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } }
+  .feed { max-height: 420px; overflow-y: auto; }
+  .feed .lrow { padding: 10px 16px; }
+  .send-bars { display: flex; align-items: flex-end; gap: 5px; height: 110px; padding: 8px 4px 0; }
+  .send-bars .b { flex: 1; border-radius: 4px 4px 0 0; background: oklch(from var(--c-blue-500) l c h / 0.55); min-height: 4px; position: relative; }
+  .send-bars .b.now { background: var(--accent); }
+  .send-bars .b.err::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 22%; border-radius: 4px 4px 0 0; background: var(--danger); }
+  .send-bars-x { display: flex; gap: 5px; padding: 6px 4px 0; }
+  .send-bars-x span { flex: 1; text-align: center; font: 400 9.5px/1 var(--mono); color: var(--faint); }
+</style>
+</head>
+<body data-od-id="page" data-od-label="Live monitor">
+<main class="v2-main" id="page">
+
+  <div data-view="live">
+    <div class="page-head">
+      <div class="page-head__t"><h1>Live monitor</h1><p class="sub">Operations right now — platform health, send flow, operator floor.</p></div>
+      <div class="page-head__actions">
+        <span class="status-pill"><span class="live-dot"></span>Live · updated 12:41:07</span>
+        <button type="button" class="btn btn--ghost" data-state-link="paused"><span class="ic ic--stop"></span>Pause stream</button>
+      </div>
+    </div>
+
+    <div class="grid cols-5 mb-3" data-od-id="mon-platforms" id="mon-platforms"></div>
+
+    <div class="grid cols-4 mb-3">
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--user ic--sm"></span>Operators online</div><div class="kpi__num">4<span class="muted" style="font-size:15px;font-weight:600">/5</span></div><div class="kpi__delta" style="color:var(--muted)">Roman T. starts 00:00</div></div>
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--send ic--sm"></span>Sends last hour</div><div class="kpi__num">312</div><div class="kpi__delta kpi__delta--up">+9% vs prev hour</div></div>
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--inbox ic--sm"></span>Inbound queue</div><div class="kpi__num">27</div><div class="kpi__delta" style="color:var(--muted)">oldest 4h 20m</div></div>
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--warn ic--sm"></span>Failing now</div><div class="kpi__num">14</div><div class="kpi__delta kpi__delta--down">LiveBeam API</div></div>
+    </div>
+
+    <div class="grid" style="grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);align-items:start">
+      <div class="card" data-od-id="mon-feed">
+        <div class="card__head"><h2>Event stream</h2><span class="badge badge--success"><span class="live-dot"></span>Streaming</span></div>
+        <div class="feed" id="mon-feed"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card" data-od-id="mon-sends">
+          <div class="card__head"><h2>Sends per hour</h2><span class="tiny muted mono">last 12h</span></div>
+          <div class="send-bars" id="mon-bars"></div>
+          <div class="send-bars-x" id="mon-bars-x"></div>
+          <div class="card__foot tiny muted">Red cap = failed share of the hour. Current hour highlighted.</div>
+        </div>
+        <div class="card" data-od-id="mon-floor">
+          <div class="card__head"><h2>On the floor</h2><a class="btn btn--quiet btn--sm" href="admin-schedules.html">Schedules</a></div>
+          <div id="mon-floor"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div data-view="paused" hidden>
+    <div class="page-head">
+      <div class="page-head__t"><h1>Live monitor</h1><p class="sub">Operations right now — platform health, send flow, operator floor.</p></div>
+      <div class="page-head__actions">
+        <span class="status-pill"><span class="dot dot--off"></span>Paused at 12:41:07</span>
+        <button type="button" class="btn btn--primary" data-state-link="live"><span class="ic ic--play"></span>Resume stream</button>
+      </div>
+    </div>
+    <div class="card"><div class="state"><div class="state__icon"><span class="ic ic--stats ic--lg"></span></div><h2>Stream paused</h2><p>Snapshots above are frozen. Resume to keep watching live operations.</p><button type="button" class="btn btn--soft" data-state-link="live">Resume</button></div></div>
+  </div>
+
+  <div data-view="loading" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Live monitor</h1><p class="sub">Connecting to the event stream…</p></div></div>
+    <div class="grid cols-5 mb-3"><div class="skeleton" style="height:76px;border-radius:16px"></div><div class="skeleton" style="height:76px;border-radius:16px"></div><div class="skeleton" style="height:76px;border-radius:16px"></div><div class="skeleton" style="height:76px;border-radius:16px"></div><div class="skeleton" style="height:76px;border-radius:16px"></div></div>
+    <div class="card"><div id="mon-sk"></div></div>
+  </div>
+  <div data-view="error" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Live monitor</h1><p class="sub">Operations right now — platform health, send flow, operator floor.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon state__icon--danger"><span class="ic ic--warn ic--lg"></span></div><h2>Stream unavailable</h2><p>The events channel dropped. Data shown before the disconnect stays on screen; retry to resume.</p><button type="button" class="btn btn--ghost" data-reload>Reconnect</button></div></div>
+  </div>
+
+</main>
+<script src="assets/fixtures.js"></script>
+<script src="assets/components.js"></script>
+<script src="assets/stateful.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  FlowUI.mount({ nav: 'admin', zone: 'admin', sub: 'monitor', title: 'Live monitor', lady: false, crumbs: ['Admin'] });
+  var F = window.Fixtures;
+
+  var plats = [
+    { p: 'realloves', st: 'on', lat: '210ms · 0.2% err' },
+    { p: 'findbride', st: 'on', lat: '340ms · 0.4% err' },
+    { p: 'livebeam', st: 'err', lat: 'timeout · 8.1% err' },
+    { p: 'talkytimes', st: 'on', lat: '180ms · 0.1% err' },
+    { p: 'chatshouse', st: 'off', lat: 'maintenance' }
+  ];
+  document.getElementById('mon-platforms').innerHTML = plats.map(function (x) {
+    var d = x.st === 'on' ? 'dot--on' : (x.st === 'err' ? 'dot--err' : 'dot--off');
+    return '<div class="card plat"><img src="' + F.PLATFORMS[x.p].logo + '" alt="' + F.PLATFORMS[x.p].name + '"><div style="flex:1;min-width:0"><div class="nm">' + F.PLATFORMS[x.p].name + '</div><div class="lat">' + x.lat + '</div></div><span class="dot ' + d + '"></span></div>';
+  }).join('');
+
+  var feed = [
+    { icon: 'send', c: 'var(--accent)', t1: 'Chat invite sent — Anna S. → male 220144', t2: 'RealLoves · 12:41:02' },
+    { icon: 'chat', c: 'var(--fg-2)', t1: 'Inbound: Dmitri M. → Anna S.', t2: 'RealLoves · 12:40:48' },
+    { icon: 'warn', c: 'var(--danger)', t1: 'Send timeout — LiveBeam gateway', t2: '12:40:11 · retry queued' },
+    { icon: 'check', c: 'var(--success)', t1: 'Mail delivered — Marina K. → Oleg S.', t2: 'FindBride · 12:39:55' },
+    { icon: 'thumb-up', c: 'var(--success)', t1: 'Kira M. rated an AI output positive', t2: 'Feedback · 12:38:30' },
+    { icon: 'autoreply', c: 'var(--accent-2)', t1: 'God Hand replied — Lena T. thread 4410', t2: 'RealLoves · 12:37:14' },
+    { icon: 'blacklist', c: 'var(--warning)', t1: 'Blacklist drop — male 771265 tried Anna S.', t2: 'RealLoves · 12:35:58' },
+    { icon: 'mail', c: 'var(--fg-2)', t1: 'Welcome letter batch: 40 sent', t2: 'FindBride · 12:34:20' },
+    { icon: 'warn', c: 'var(--danger)', t1: 'Send timeout — LiveBeam gateway', t2: '12:33:47 · retry queued' },
+    { icon: 'user', c: 'var(--muted)', t1: 'Sofia L. started her shift', t2: '12:30:00' }
+  ];
+  document.getElementById('mon-feed').innerHTML = feed.map(function (f) {
+    return '<div class="lrow"><span class="ic ic--' + f.icon + '" style="color:' + f.c + '"></span><div class="main"><div class="t1">' + f.t1 + '</div><div class="t2">' + f.t2 + '</div></div></div>';
+  }).join('');
+
+  var hours = [142, 168, 201, 236, 255, 289, 244, 198, 231, 274, 296, 312];
+  var errs = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1];
+  var max = Math.max.apply(null, hours);
+  document.getElementById('mon-bars').innerHTML = hours.map(function (v, i) {
+    var h = Math.round(v / max * 100);
+    return '<div class="b' + (i === hours.length - 1 ? ' now' : '') + (errs[i] ? ' err' : '') + '" style="height:' + h + '%" title="' + v + ' sends' + (errs[i] ? ' · failures' : '') + '"></div>';
+  }).join('');
+  document.getElementById('mon-bars-x').innerHTML = ['01','02','03','04','05','06','07','08','09','10','11','12'].map(function (h) { return '<span>' + h + '</span>'; }).join('');
+
+  document.getElementById('mon-floor').innerHTML = [
+    { n: 'Katerina V.', s: 'until 16:00 · 14 chats', st: 'online' },
+    { n: 'Igor B.', s: 'until 00:00 · moderation', st: 'online' },
+    { n: 'Sofia L.', s: 'until 20:00 · content', st: 'online' },
+    { n: 'Alina P.', s: 'break — back 13:15', st: 'offline' }
+  ].map(function (o) {
+    return '<div class="lrow"><span class="avatar avatar--sm">' + o.n.split(' ').map(function (w) { return w[0]; }).join('') + '</span><div class="main"><div class="t1">' + o.n + '</div><div class="t2">' + o.s + '</div></div>' + FlowUI.dot(o.st) + '</div>';
+  }).join('');
+
+  var sk = '';
+  for (var i = 0; i < 5; i++) sk += '<div class="sk-row"><span class="skeleton" style="width:30px;height:30px;border-radius:8px"></span><span style="flex:1"><span class="skeleton" style="display:block;width:55%;height:12px"></span><span class="skeleton" style="display:block;width:35%;height:10px;margin-top:6px"></span></span></div>';
+  document.getElementById('mon-sk').innerHTML = sk;
+})();
+</script>
+</body>
+</html>

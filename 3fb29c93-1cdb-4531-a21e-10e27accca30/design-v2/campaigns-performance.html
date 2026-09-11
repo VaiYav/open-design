@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campaign performance · Flow v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+</head>
+<body data-od-id="page" data-od-label="Campaign performance">
+<main class="v2-main" id="page">
+
+  <div data-view="populated">
+    <div class="page-head">
+      <div class="page-head__t"><h1>Performance</h1><p class="sub">Which templates actually earn replies — per type, per lady, per platform. Last 30 days.</p></div>
+      <div class="page-head__actions">
+        <select class="select" style="width:150px;height:40px" data-demo aria-label="Period"><option>7 days</option><option selected>30 days</option><option>90 days</option></select>
+      </div>
+    </div>
+
+    <div class="grid cols-4 mb-3">
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--send ic--sm"></span>Sends</div><div class="kpi__num">8 412</div><div class="kpi__delta kpi__delta--up">▲ 9%</div></div>
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--reply ic--sm"></span>Reply rate</div><div class="kpi__num">23.4<span class="unit">%</span></div><div class="kpi__delta kpi__delta--up">▲ 2.1 pts</div></div>
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--templates ic--sm"></span>Best template</div><div class="kpi__num" style="font-size:20px;line-height:1.2">Weekend plans</div><div class="kpi__delta kpi__delta--up">41% reply rate</div></div>
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--declined ic--sm"></span>Declined</div><div class="kpi__num">2.1<span class="unit">%</span></div><div class="kpi__delta" style="color:var(--muted)">of submissions</div></div>
+    </div>
+
+    <div class="grid" style="grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);align-items:start">
+      <div class="card">
+        <div class="card__head"><h2>By template</h2><span class="small muted">sorted by reply rate</span></div>
+        <div class="tbl-wrap"><table class="tbl">
+          <thead><tr><th>Template</th><th>Type</th><th>Sends</th><th>Replies</th><th>Rate</th><th style="width:140px">vs avg</th></tr></thead>
+          <tbody id="perf-rows"></tbody>
+        </table></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card card--pad">
+          <h3 class="mb-2" style="font-size:14px">By type</h3>
+          <div id="perf-bars" style="display:flex;flex-direction:column;gap:12px"></div>
+        </div>
+        <div class="copilot-card">
+          <h4><span class="ic ic--omni ic--sm"></span>Beloved insight</h4>
+          <p class="small">“Weekend plans” outperforms by 18 pts — it ends on a concrete question. Rewrite “Late night” in that shape before resubmitting.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div data-view="loading" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Performance</h1><p class="sub">Which templates earn replies.</p></div></div>
+    <div class="grid cols-4 mb-3"><div class="skeleton" style="height:110px;border-radius:16px"></div><div class="skeleton" style="height:110px;border-radius:16px"></div><div class="skeleton" style="height:110px;border-radius:16px"></div><div class="skeleton" style="height:110px;border-radius:16px"></div></div>
+    <div class="card"><div id="perf-sk"></div></div>
+  </div>
+  <div data-view="empty" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Performance</h1><p class="sub">Which templates earn replies.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon"><span class="ic ic--stats ic--lg"></span></div><h2>No sends yet</h2><p>Performance data appears after the first template goes out.</p><a class="btn btn--soft" href="campaigns.html">Campaigns</a></div></div>
+  </div>
+  <div data-view="error" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Performance</h1><p class="sub">Which templates earn replies.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon state__icon--danger"><span class="ic ic--warn ic--lg"></span></div><h2>Performance failed to load</h2><p>Retry in a moment.</p><button type="button" class="btn btn--ghost" data-reload>Try again</button></div></div>
+  </div>
+
+</main>
+<script src="assets/fixtures.js"></script>
+<script src="assets/components.js"></script>
+<script src="assets/stateful.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  FlowUI.mount({ nav: 'campaigns', zone: 'campaigns', sub: 'campaigns-performance.html', title: 'Performance', crumbs: ['Campaigns'], lady: true });
+  var rows = [
+    ['Weekend plans', 'Chat invite', 412, '41%'], ['Morning coffee opener', 'Chat invite', 388, '33%'],
+    ['Travel question', 'Icebreaker mail', 240, '28%'], ['Warm welcome', 'Welcome letter', 517, '24%'],
+    ['Book club', 'Icebreaker mail', 156, '19%'], ['Late night', 'Chat invite', 91, '7%']
+  ];
+  document.getElementById('perf-rows').innerHTML = rows.map(function (r) {
+    var pct = parseInt(r[3]);
+    var w = Math.min(100, pct * 2.4);
+    var col = pct >= 23 ? 'var(--success)' : (pct >= 15 ? 'var(--accent-txt)' : 'var(--danger)');
+    return '<tr><td class="strong">' + r[0] + '</td><td><span class="badge badge--muted">' + r[1] + '</span></td>' +
+      '<td class="num">' + r[2] + '</td><td class="num">' + Math.round(r[2] * pct / 100) + '</td><td class="num strong" style="color:' + col + '">' + r[3] + '</td>' +
+      '<td><div style="height:8px;border-radius:999px;background:var(--surface-2)"><div style="height:100%;width:' + w + '%;border-radius:999px;background:' + col + '"></div></div></td></tr>';
+  }).join('');
+  var types = [['Chat invites', 34], ['Welcome letters', 24], ['Icebreaker mail', 21], ['Icebreaker msg', 18], ['Newsfeed posts', 12]];
+  document.getElementById('perf-bars').innerHTML = types.map(function (t) {
+    return '<div><div class="row row--between" style="font-size:12.5px;margin-bottom:5px"><span>' + t[0] + '</span><span class="mono">' + t[1] + '%</span></div>' +
+      '<div style="height:8px;border-radius:999px;background:var(--surface-2)"><div style="height:100%;width:' + t[1] * 2.8 + '%;border-radius:999px;background:var(--accent-grad)"></div></div></div>';
+  }).join('');
+  var sk = '';
+  for (var i = 0; i < 6; i++) sk += '<div class="sk-row"><span class="skeleton" style="width:22%;height:13px"></span><span class="skeleton" style="width:10%;height:22px;border-radius:999px"></span><span style="flex:1"></span><span class="skeleton" style="width:140px;height:8px;border-radius:999px"></span></div>';
+  document.getElementById('perf-sk').innerHTML = sk;
+})();
+</script>
+</body>
+</html>

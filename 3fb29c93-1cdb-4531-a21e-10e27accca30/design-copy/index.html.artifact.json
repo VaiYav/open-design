@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "design-copy/index.html",
+  "entry": "design-copy/index.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-09-10T18:22:45.841Z",
+  "updatedAt": "2026-09-10T18:22:45.841Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>New template · Flow v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+</head>
+<body data-od-id="page" data-od-label="Create template">
+<main class="v2-main" id="page">
+
+  <div data-view="default,edit,validation,submitting">
+    <div class="page-head">
+      <div class="page-head__t">
+        <h1 id="cr-title">New template</h1>
+        <p class="sub" id="cr-sub">Anna S. · RealLoves — a first-touch template goes through platform moderation before it can send.</p>
+      </div>
+    </div>
+
+    <div class="grid" style="grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);align-items:start">
+      <form class="card" data-form="validate" data-success="Template submitted to moderation" novalidate data-od-id="tpl-form">
+        <div class="card__body">
+          <div class="form-grid">
+            <div class="field"><label for="f-type">Template type</label>
+              <select class="select" id="f-type" data-demo>
+                <option>Chat invite</option><option>Mail invite</option><option>Chat post invite</option><option>Welcome letter</option><option>Icebreaker message</option><option>Icebreaker mail</option><option>Newsfeed post</option>
+              </select>
+            </div>
+            <div class="field"><label for="f-name">Name <span class="muted" style="font-weight:400">(internal)</span></label>
+              <input class="input" id="f-name" required placeholder="e.g. Morning coffee opener">
+              <span class="err"><span class="ic ic--warn ic--sm"></span>Name is required</span>
+            </div>
+            <div class="field span-2"><label for="f-text">Text</label>
+              <textarea class="textarea" id="f-text" required maxlength="300" placeholder="Write the message men will receive…"></textarea>
+              <span class="hint"><span id="f-cnt">0</span> / 300 characters · emoji allowed, links are not</span>
+              <span class="err"><span class="ic ic--warn ic--sm"></span>Text is required</span>
+            </div>
+            <div class="field"><label for="f-mood">Suggested mood</label>
+              <select class="select" id="f-mood" data-demo><option>None</option><option>Playful</option><option>Sincere</option><option>Curious</option><option>Bold</option></select>
+            </div>
+            <div class="field"><label for="f-when">Send window</label>
+              <select class="select" id="f-when" data-demo><option>Any time</option><option>Morning 8–12</option><option>Evening 18–23</option></select>
+            </div>
+            <div class="field span-2">
+              <label class="check"><input type="checkbox" checked data-demo><span class="box"></span>Enable God Hand autoreply for replies to this template</label>
+              <label class="check"><input type="checkbox" data-demo><span class="box"></span>Only send to males with credit history</label>
+            </div>
+          </div>
+        </div>
+        <div class="card__foot">
+          <a class="btn btn--quiet" href="campaigns-templates.html">Cancel</a>
+          <button type="button" class="btn btn--ghost" data-toast="Draft saved">Save draft</button>
+          <button type="submit" class="btn btn--primary" id="cr-submit">Submit to moderation</button>
+        </div>
+      </form>
+
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card card--pad">
+          <h3 class="mb-2" style="font-size:14px">Live preview</h3>
+          <div class="msg-row"><div><div class="bubble" id="pv-bubble" style="max-width:100%">Good morning! I just made my coffee and wondered how your day started…</div><div class="msg-meta"><span>Chat invite</span></div></div></div>
+          <p class="tiny muted mt-1">Shown as it renders inside the chat thread.</p>
+        </div>
+        <div class="notice notice--info"><span class="ic ic--info"></span><div><span class="t">Moderation takes ~3h.</span> You'll see it under “On moderation” and get an alert when it clears.</div></div>
+        <div class="copilot-card">
+          <h4><span class="ic ic--omni ic--sm"></span>Beloved quality check</h4>
+          <div class="row" style="font-size:13px"><span class="dot dot--on"></span>Asks a question — invites a reply</div>
+          <div class="row mt-1" style="font-size:13px"><span class="dot dot--on"></span>No links or contact details</div>
+          <div class="row mt-1" style="font-size:13px"><span class="dot dot--err"></span>A bit short — 90+ characters converts better</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div data-view="success" hidden>
+    <div class="card" style="max-width:640px;margin:40px auto"><div class="state">
+      <div class="state__icon" style="background:var(--success-soft);color:var(--success)"><span class="ic ic--check ic--lg"></span></div>
+      <h2>Submitted to moderation</h2>
+      <p>“Morning coffee opener” is in the RealLoves review queue. Average wait is ~3h — you'll get an alert when it's approved or declined.</p>
+      <div class="row mt-2">
+        <a class="btn btn--primary" href="campaigns-templates.html">Back to templates</a>
+        <a class="btn btn--ghost" href="campaigns-create.html">Create another</a>
+      </div>
+    </div></div>
+  </div>
+
+</main>
+<script src="assets/fixtures.js"></script>
+<script src="assets/components.js"></script>
+<script src="assets/stateful.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  FlowUI.mount({ nav: 'campaigns', zone: 'campaigns', sub: 'campaigns-templates.html', title: 'New template', crumbs: ['Campaigns', 'Anna S.', 'Templates'], lady: true });
+
+  var ta = document.getElementById('f-text');
+  var pv = document.getElementById('pv-bubble');
+  var cnt = document.getElementById('f-cnt');
+  ta.addEventListener('input', function () {
+    cnt.textContent = ta.value.length;
+    pv.textContent = ta.value.trim() || 'Good morning! I just made my coffee and wondered how your day started…';
+  });
+
+  /* state variants of the same form */
+  function applyVariant() {
+    var st = document.documentElement.getAttribute('data-state');
+    var title = document.getElementById('cr-title');
+    var sub = document.getElementById('cr-sub');
+    var submit = document.getElementById('cr-submit');
+    document.querySelectorAll('.field.has-error').forEach(function (f) { f.classList.remove('has-error'); });
+    submit.disabled = false;
+    submit.textContent = 'Submit to moderation';
+    document.getElementById('f-type').disabled = false;
+    ta.disabled = false;
+    if (st === 'edit') {
+      title.textContent = 'Edit template';
+      sub.textContent = 'T-2201 “Morning coffee opener” — edits re-enter moderation.';
+      document.getElementById('f-name').value = 'Morning coffee opener';
+      ta.value = 'Good morning! I just made my coffee and wondered how your day started…';
+      cnt.textContent = ta.value.length;
+      submit.textContent = 'Save & resubmit';
+    } else if (st === 'validation') {
+      title.textContent = 'New template';
+      document.getElementById('f-name').closest('.field').classList.add('has-error');
+      ta.closest('.field').classList.add('has-error');
+    } else if (st === 'submitting') {
+      submit.disabled = true;
+      submit.innerHTML = '<span class="spinner" style="width:16px;height:16px;border-width:2px"></span>Submitting…';
+      document.getElementById('f-type').disabled = true;
+      ta.disabled = true;
+    }
+  }
+  new MutationObserver(function (m) {
+    m.forEach(function (r) { if (r.attributeName === 'data-state') applyVariant(); });
+  }).observe(document.documentElement, { attributes: true });
+  applyVariant();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add new administrator — Flow (design copy)</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="assets/tokens.css">
+</head>
+<body data-od-id="page" data-od-label="Administrator / Administrators / New">
+  <header class="appheader" data-od-id="appheader">
+    <div class="appheader__left">
+      <img class="appheader__logo" src="assets/logos/flow.svg" alt="Flow">
+      <div class="account-info">
+        <span class="account-info__role">Main admin</span>
+        <span class="account-info__data">
+          <span class="account-info__name">Flow Root</span>
+          <span class="account-info__id">FL-ROOT-01</span>
+        </span>
+      </div>
+    </div>
+    <div class="appheader__right">
+      <ul class="appmenu">
+        <li><a href="omniscience.html" title="Omniscience" aria-label="Omniscience"><span class="ic ic--lightning"></span></a></li>
+        <li><a class="is-active" href="admin-dashboard.html" title="Administrator" aria-label="Administrator" aria-current="page"><span class="ic ic--crown"></span></a></li>
+        <li><a href="tools.html" title="Tools" aria-label="Tools"><span class="ic ic--settings"></span></a></li>
+      </ul>
+      <div class="logout">
+        <button type="button" data-logout-toggle aria-expanded="false" aria-label="Account menu"><span class="ic ic--more"></span></button>
+        <div class="logout__menu" role="menu">
+          <button type="button" role="menuitem" onclick="flowToast('Logged out (prototype)')"><span class="ic ic--logout"></span><span>Log out</span></button>
+          <button type="button" role="menuitem" onclick="flowToast('Log out of all devices (prototype)')"><span class="ic ic--logout-all"></span><span>Log out of all devices</span></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="admin-wrap">
+    <aside class="sidebar" data-od-id="admin-sidebar">
+      <nav class="sidebar__nav">
+        <ul>
+          <li><a href="admin-dashboard.html"><img src="assets/icons/dashboard.svg" alt=""><span class="sidebar__text">Dashboard</span></a></li>
+          <li><a class="is-active" href="admin-administrators.html"><img src="assets/icons/administrators.svg" alt=""><span class="sidebar__text">Administrators</span></a></li>
+          <li><a href="admin-accounts.html"><img src="assets/icons/accounts.svg" alt=""><span class="sidebar__text">Accounts</span></a></li>
+          <li><a href="admin-lady-profiles.html"><img src="assets/icons/lady_profiles.svg" alt=""><span class="sidebar__text">Lady Profiles</span></a></li>
+          <li><a href="admin-schedules.html"><img src="assets/icons/schedules.svg" alt=""><span class="sidebar__text">Schedules</span></a></li>
+        </ul>
+      </nav>
+      <button type="button" class="sidebar__collapse" data-sidebar-toggle aria-label="Toggle sidebar">
+        <svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 11L7 6L12 1M6 11L1 6L6 0.999999" stroke="#fff" opacity=".5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </aside>
+
+    <main class="admin-main">
+      <div class="content-card">
+        <div class="form-card">
+          <h1>Add new administrator</h1>
+          <form onsubmit="return false">
+            <div class="field" style="margin-bottom:10px">
+              <label for="f-name">Name</label>
+              <input class="input input--fill" type="text" id="f-name" autocomplete="off">
+            </div>
+            <div class="field" style="margin-bottom:10px">
+              <label for="f-email">Email</label>
+              <input class="input input--fill" type="text" id="f-email" autocomplete="off">
+            </div>
+            <div class="field" style="margin-bottom:10px">
+              <label for="f-password">Password</label>
+              <div class="input-wrap">
+                <input class="input input--fill" type="password" id="f-password" autocomplete="new-password">
+                <button type="button" class="icon-btn" aria-label="Show password"
+                        onclick="var i=this.previousElementSibling;i.type=i.type==='password'?'text':'password';this.setAttribute('aria-label',i.type==='password'?'Show password':'Hide password')">
+                  <span class="ic ic--eye"></span>
+                </button>
+              </div>
+              <span class="hint">8–20 characters, lowercase + uppercase letters, numbers, special characters !, @, #, $, %.</span>
+            </div>
+            <div class="form-actions">
+              <a class="btn btn--ghost" href="admin-administrators.html">Cancel</a>
+              <button type="submit" class="btn btn--primary" onclick="flowToast('Administrator created (prototype)')">Save</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>

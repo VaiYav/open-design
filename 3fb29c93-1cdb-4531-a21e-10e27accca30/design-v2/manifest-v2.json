@@ -1,0 +1,775 @@
+{
+  "prototype": "Flow v2 — inbox-first operator workspace",
+  "baseline": "../design-copy/",
+  "entry": "index.html",
+  "screens": 42,
+  "states": 239,
+  "v1Routes": 67,
+  "vision": 11,
+  "zones": [
+    {
+      "id": "public",
+      "label": "Public",
+      "screens": [
+        {
+          "id": "login",
+          "file": "login.html",
+          "title": "Login",
+          "states": [
+            "default",
+            "error",
+            "loading",
+            "forgot",
+            "locked",
+            "success"
+          ],
+          "v1": [
+            "/login"
+          ],
+          "v1File": "login.html"
+        }
+      ]
+    },
+    {
+      "id": "workspace",
+      "label": "Workspace",
+      "screens": [
+        {
+          "id": "chats",
+          "file": "chats.html",
+          "title": "Chats — 3-pane",
+          "states": [
+            "loaded",
+            "copilot",
+            "send-failed",
+            "no-selection",
+            "loading",
+            "error",
+            "fb-default",
+            "fb-saving",
+            "fb-comment",
+            "fb-comment-limit",
+            "fb-expired",
+            "fb-conflict",
+            "fb-error",
+            "fb-lineage",
+            "fb-no-perm"
+          ],
+          "v1": [
+            "/account",
+            "/account/:lady_id",
+            "/account/:lady_id/:male_id"
+          ],
+          "v1File": "chats.html"
+        },
+        {
+          "id": "mails",
+          "file": "mails.html",
+          "title": "Mails — 3-pane",
+          "states": [
+            "loaded",
+            "send-failed",
+            "no-selection",
+            "loading",
+            "error",
+            "fb-default",
+            "fb-saving",
+            "fb-comment",
+            "fb-comment-limit",
+            "fb-expired",
+            "fb-conflict",
+            "fb-error",
+            "fb-lineage",
+            "fb-no-perm"
+          ],
+          "v1": [
+            "/mails",
+            "/mails/:lady_id",
+            "/mails/:lady_id/:male_id"
+          ],
+          "v1File": "mails.html"
+        },
+        {
+          "id": "history",
+          "file": "history.html",
+          "title": "History",
+          "states": [
+            "populated",
+            "conversation",
+            "loading",
+            "empty",
+            "error"
+          ],
+          "v1": [
+            "/history",
+            "/history/:lady_id/:male_id"
+          ],
+          "v1File": "history.html"
+        },
+        {
+          "id": "omniscience",
+          "file": "omniscience.html",
+          "title": "Omniscience (AI chat)",
+          "states": [
+            "loaded",
+            "ab",
+            "empty",
+            "loading",
+            "error",
+            "fb-default",
+            "fb-saving",
+            "fb-comment",
+            "fb-comment-limit",
+            "fb-expired",
+            "fb-conflict",
+            "fb-error",
+            "fb-lineage",
+            "fb-regfail",
+            "fb-no-perm"
+          ],
+          "v1": [
+            "/omniscience (dev/stage only)"
+          ],
+          "v1File": "omniscience.html"
+        },
+        {
+          "id": "statistics",
+          "file": "statistics.html",
+          "title": "Statistics",
+          "states": [
+            "populated",
+            "loading",
+            "empty",
+            "error"
+          ],
+          "v1": [
+            "/statistics"
+          ],
+          "v1File": "statistics.html"
+        },
+        {
+          "id": "scorecard",
+          "file": "scorecard.html",
+          "title": "My scorecard",
+          "vision": true,
+          "states": [
+            "populated",
+            "loading",
+            "empty",
+            "error"
+          ],
+          "v1": [],
+          "v1File": null
+        }
+      ]
+    },
+    {
+      "id": "campaigns",
+      "label": "Campaigns",
+      "screens": [
+        {
+          "id": "campaigns",
+          "file": "campaigns.html",
+          "title": "Campaigns overview",
+          "states": [
+            "populated",
+            "loading",
+            "empty",
+            "error"
+          ],
+          "v1": [
+            "/auto_sendings",
+            "/icebreakers/messages",
+            "/icebreakers/mails",
+            "/invites/chat_invite",
+            "/invites/mail_invite",
+            "/invites/chat_post_invite",
+            "/newsfeeds"
+          ],
+          "v1File": "auto-sendings.html"
+        },
+        {
+          "id": "campaigns-templates",
+          "file": "campaigns-templates.html",
+          "title": "Templates — per lady",
+          "states": [
+            "templates",
+            "moderation",
+            "moods",
+            "declined",
+            "loading",
+            "empty",
+            "error",
+            "fb-default",
+            "fb-saving",
+            "fb-comment",
+            "fb-expired",
+            "fb-error",
+            "fb-lineage",
+            "fb-no-perm"
+          ],
+          "v1": [
+            "/auto_sendings/:lady_id/chat_invites",
+            "/auto_sendings/:lady_id/welcome_letters",
+            "/icebreakers/:lady_id/messages/templates",
+            "/icebreakers/:lady_id/messages/on_moderation",
+            "/icebreakers/:lady_id/messages/suggested_moods",
+            "/icebreakers/:lady_id/messages/declined",
+            "/icebreakers/:lady_id/mails/templates",
+            "/icebreakers/:lady_id/mails/on_moderation",
+            "/icebreakers/:lady_id/mails/declined",
+            "/invites/chat_invite/:lady_id/templates",
+            "/invites/chat_invite/:lady_id/templates/:template_id/edit"
+          ],
+          "v1File": "icebreakers-lady-messages.html"
+        },
+        {
+          "id": "campaigns-groups",
+          "file": "campaigns-groups.html",
+          "title": "Message groups",
+          "states": [
+            "populated",
+            "create",
+            "loading",
+            "empty",
+            "error"
+          ],
+          "v1": [
+            "/icebreakers/:lady_id/groups",
+            "/icebreakers/:lady_id/groups/create"
+          ],
+          "v1File": "icebreakers-lady-groups.html"
+        },
+        {
+          "id": "campaigns-create",
+          "file": "campaigns-create.html",
+          "title": "Create / edit template",
+          "states": [
+            "default",
+            "edit",
+            "validation",
+            "submitting",
+            "success"
+          ],
+          "v1": [
+            "/icebreakers/:lady_id/messages/create",
+            "/icebreakers/:lady_id/mails/create",
+            "/invites/chat_invite/:lady_id/templates/create"
+          ],
+          "v1File": "invites-lady-create.html"
+        },
+        {
+          "id": "campaigns-posts",
+          "file": "campaigns-posts.html",
+          "title": "Newsfeed posts",
+          "states": [
+            "moderation",
+            "approved",
+            "declined",
+            "sent",
+            "loading",
+            "empty",
+            "error"
+          ],
+          "v1": [
+            "/newsfeeds/:lady_id/on_moderation",
+            "/newsfeeds/:lady_id/approved",
+            "/newsfeeds/:lady_id/declined",
+            "/newsfeeds/:lady_id/sent",
+            "/newsfeeds/:lady_id/create"
+          ],
+          "v1File": "newsfeeds-lady.html"
+        },
+        {
+          "id": "campaigns-history",
+          "file": "campaigns-history.html",
+          "title": "Send history",
+          "states": [
+            "populated",
+            "loading",
+            "empty",
+            "error"
+          ],
+          "v1": [
+            "/invites/chat_invite/:lady_id/history"
+          ],
+          "v1File": "invites-lady-history.html"
+        },
+        {
+          "id": "campaigns-performance",
+          "file": "campaigns-performance.html",
+          "title": "Performance",
+          "vision": true,
+          "states": [
+            "populated",
+            "loading",
+            "empty",
+            "error"
+          ],
+          "v1": [],
+          "v1File": null
+        },
+        {
+          "id": "planner",
+          "file": "planner.html",
+          "title": "Planner",
+          "vision": true,
+          "states": [
+            "populated",
+            "loading",
+            "empty",
+            "error"
+          ],
+          "v1": [],
+          "v1File": null
+        }
+      ]
+    },
+    {
+      "id": "tools",
+      "label": "Tools",
+      "screens": [
+        {
+          "id": "tools",
+          "file": "tools.html",
+          "title": "Tools — lady index",
+          "states": [
+            "populated",
+            "loading",
+            "empty",
+            "error"
+          ],
+          "v1": [
+            "/tools"
+          ],
+          "v1File": "tools.html"
+        },
+        {
+          "id": "tools-autoreplies",
+          "file": "tools-autoreplies.html",
+          "title": "Autoreplies (God Hand)",
+          "states": [
+            "populated",
+            "loading",
+            "empty",
+            "error",
+            "fb-default",
+            "fb-saving",
+            "fb-comment",
+            "fb-comment-limit",
+            "fb-expired",
+            "fb-conflict",
+            "fb-error",
+            "fb-lineage",
+            "fb-no-perm"
+          ],
+          "v1": [
+            "/tools/:lady_id/autoreplies"
+          ],
+          "v1File": "tools-lady-autoreplies.html"
+        },
+        {
+          "id": "tools-mailing",
+          "file": "tools-mailing.html",
+          "title": "Mailing",
+          "vision": true,
+          "states": [
+            "populated",
+            "loading",
+            "empty",
+            "error"
+          ],
+          "v1": [
+            "/tools/:lady_id/mailing"
+          ],
+          "v1File": null
+        },
+        {
+          "id": "tools-presets",
+          "file": "tools-presets.html",
+          "title": "Presets",
+          "states": [
+            "populated",
+            "edit",
+            "loading",
+            "empty",
+            "error",
+            "fb-default",
+            "fb-saving",
+            "fb-comment",
+            "fb-comment-limit",
+            "fb-expired",
+            "fb-conflict",
+            "fb-error",
+            "fb-lineage",
+            "fb-no-perm"
+          ],
+          "v1": [
+            "/tools/:lady_id/presets"
+          ],
+          "v1File": "tools-lady-presets.html"
+        },
+        {
+          "id": "tools-blacklists",
+          "file": "tools-blacklists.html",
+          "title": "Blacklists",
+          "states": [
+            "chat",
+            "mail",
+            "posts",
+            "bookmarked",
+            "credit",
+            "loading",
+            "empty",
+            "error"
+          ],
+          "v1": [
+            "/tools/:lady_id/blacklists",
+            "/tools/:lady_id/blacklists (FindBride lady)",
+            "/tools/:lady_id/blacklists (LiveBeam lady)",
+            "/tools/:lady_id/bookmarked_blacklists",
+            "/tools/:lady_id/mail_blacklists",
+            "/tools/:lady_id/chat_post_blacklists",
+            "/tools/:lady_id/male_credit_history_blacklists"
+          ],
+          "v1File": "tools-lady-blacklists.html"
+        },
+        {
+          "id": "tools-blacklist-new",
+          "file": "tools-blacklist-new.html",
+          "title": "Add to blacklist",
+          "states": [
+            "verify-step",
+            "validation",
+            "commit-step",
+            "success"
+          ],
+          "v1": [
+            "/tools/:lady_id/blacklists/new"
+          ],
+          "v1File": "tools-lady-blacklist-new.html"
+        },
+        {
+          "id": "lady-360",
+          "file": "lady-360.html",
+          "title": "Lady 360",
+          "vision": true,
+          "states": [
+            "populated",
+            "loading",
+            "empty",
+            "error"
+          ],
+          "v1": [],
+          "v1File": null
+        }
+      ]
+    },
+    {
+      "id": "admin",
+      "label": "Admin",
+      "screens": [
+        {
+          "id": "admin",
+          "file": "admin.html",
+          "title": "Dashboard",
+          "states": [
+            "populated",
+            "loading",
+            "empty",
+            "error"
+          ],
+          "v1": [
+            "/administrator"
+          ],
+          "v1File": "admin-dashboard.html"
+        },
+        {
+          "id": "admin-administrators",
+          "file": "admin-administrators.html",
+          "title": "Administrators",
+          "states": [
+            "populated",
+            "loading",
+            "empty",
+            "error"
+          ],
+          "v1": [
+            "/administrator/administrators"
+          ],
+          "v1File": "admin-administrators.html"
+        },
+        {
+          "id": "admin-admin-new",
+          "file": "admin-admin-new.html",
+          "title": "New person",
+          "states": [
+            "default",
+            "validation",
+            "success"
+          ],
+          "v1": [
+            "/administrator/administrators/new"
+          ],
+          "v1File": "admin-administrator-new.html"
+        },
+        {
+          "id": "admin-admin-edit",
+          "file": "admin-admin-edit.html",
+          "title": "Edit person",
+          "states": [
+            "default",
+            "success"
+          ],
+          "v1": [
+            "/administrator/administrators/:id/edit"
+          ],
+          "v1File": "admin-administrator-new.html"
+        },
+        {
+          "id": "admin-accounts",
+          "file": "admin-accounts.html",
+          "title": "Accounts",
+          "states": [
+            "populated",
+            "loading",
+            "empty",
+            "error"
+          ],
+          "v1": [
+            "/administrator/accounts"
+          ],
+          "v1File": "admin-accounts.html"
+        },
+        {
+          "id": "admin-account-new",
+          "file": "admin-account-new.html",
+          "title": "Create account",
+          "states": [
+            "default",
+            "validation",
+            "success"
+          ],
+          "v1": [
+            "/administrator/accounts/new"
+          ],
+          "v1File": "admin-account-new.html"
+        },
+        {
+          "id": "admin-account-edit",
+          "file": "admin-account-edit.html",
+          "title": "Edit account",
+          "states": [
+            "default",
+            "success"
+          ],
+          "v1": [
+            "/administrator/accounts/:account_id/edit"
+          ],
+          "v1File": "admin-account-edit.html"
+        },
+        {
+          "id": "admin-lady-profiles",
+          "file": "admin-lady-profiles.html",
+          "title": "Lady profiles",
+          "states": [
+            "populated",
+            "loading",
+            "empty",
+            "error"
+          ],
+          "v1": [
+            "/administrator/lady_profiles"
+          ],
+          "v1File": "admin-lady-profiles.html"
+        },
+        {
+          "id": "admin-lady-verify",
+          "file": "admin-lady-verify.html",
+          "title": "Verify lady profile",
+          "states": [
+            "verify-step",
+            "checking",
+            "not-found",
+            "verified"
+          ],
+          "v1": [
+            "/administrator/lady_profiles/new (verify)"
+          ],
+          "v1File": "admin-lady-profile-new.html"
+        },
+        {
+          "id": "admin-lady-commit",
+          "file": "admin-lady-commit.html",
+          "title": "Commit lady profile",
+          "states": [
+            "commit-step",
+            "success",
+            "error"
+          ],
+          "v1": [
+            "/administrator/lady_profiles/new (commit)"
+          ],
+          "v1File": "admin-lady-profile-create.html"
+        },
+        {
+          "id": "admin-lady-edit",
+          "file": "admin-lady-edit.html",
+          "title": "Edit lady profile",
+          "states": [
+            "default",
+            "success"
+          ],
+          "v1": [
+            "/administrator/lady_profiles/:lady_id/edit"
+          ],
+          "v1File": "admin-lady-profile-edit.html"
+        },
+        {
+          "id": "admin-lady-group-edit",
+          "file": "admin-lady-group-edit.html",
+          "title": "Edit lady group",
+          "states": [
+            "populated",
+            "success"
+          ],
+          "v1": [
+            "/administrator/lady_profiles/:group_id/edit_lady_group"
+          ],
+          "v1File": "admin-lady-group-edit.html"
+        },
+        {
+          "id": "admin-schedules",
+          "file": "admin-schedules.html",
+          "title": "Schedules",
+          "states": [
+            "populated",
+            "loading",
+            "empty",
+            "error"
+          ],
+          "v1": [
+            "/administrator/schedules"
+          ],
+          "v1File": "admin-schedules.html"
+        },
+        {
+          "id": "admin-schedule-new",
+          "file": "admin-schedule-new.html",
+          "title": "Create schedule",
+          "states": [
+            "default",
+            "validation",
+            "success"
+          ],
+          "v1": [
+            "/administrator/schedules/new"
+          ],
+          "v1File": "admin-schedule-new.html"
+        },
+        {
+          "id": "admin-message-feedback",
+          "file": "admin-message-feedback.html",
+          "title": "Message feedback",
+          "vision": true,
+          "states": [
+            "overview",
+            "weak-cases",
+            "loading",
+            "empty",
+            "maturing",
+            "small-sample",
+            "error",
+            "invalid-range",
+            "weak-empty",
+            "weak-error"
+          ],
+          "v1": [
+            "/administrator/message_feedback"
+          ],
+          "v1File": null
+        },
+        {
+          "id": "admin-coverage",
+          "file": "admin-coverage.html",
+          "title": "Coverage map",
+          "vision": true,
+          "states": [
+            "populated",
+            "loading",
+            "empty",
+            "error"
+          ],
+          "v1": [],
+          "v1File": null
+        },
+        {
+          "id": "monitor",
+          "file": "monitor.html",
+          "title": "Live monitor",
+          "vision": true,
+          "states": [
+            "live",
+            "paused",
+            "loading",
+            "error"
+          ],
+          "v1": [],
+          "v1File": null
+        }
+      ]
+    },
+    {
+      "id": "vision",
+      "label": "New in v2",
+      "screens": [
+        {
+          "id": "home",
+          "file": "home.html",
+          "title": "Home — Command Center",
+          "vision": true,
+          "states": [
+            "populated",
+            "loading",
+            "empty",
+            "error"
+          ],
+          "v1": [],
+          "v1File": null
+        },
+        {
+          "id": "inbox",
+          "file": "inbox.html",
+          "title": "Unified Inbox",
+          "vision": true,
+          "states": [
+            "populated",
+            "loading",
+            "empty",
+            "error"
+          ],
+          "v1": [],
+          "v1File": null
+        },
+        {
+          "id": "alerts",
+          "file": "alerts.html",
+          "title": "Alerts center",
+          "vision": true,
+          "states": [
+            "delivery",
+            "limits",
+            "blacklists",
+            "moderation",
+            "feedback",
+            "loading",
+            "empty",
+            "error"
+          ],
+          "v1": [],
+          "v1File": null
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planner · Flow v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+<style>
+  .week { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 10px; }
+  .day { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md); min-height: 210px; display: flex; flex-direction: column; overflow: hidden; }
+  .day__h { padding: 9px 11px 8px; border-bottom: 1px solid var(--border); display: flex; align-items: baseline; justify-content: space-between; gap: 6px; }
+  .day__h .d { font-weight: 700; font-size: 12.5px; }
+  .day__h .n { font: 400 10.5px/1 var(--mono); color: var(--faint); }
+  .day.today .day__h { background: var(--accent-soft); }
+  .day.today .day__h .d { color: var(--accent-txt); }
+  .day__body { padding: 8px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+  .plan-item { border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 8px; padding: 7px 9px; font-size: 11.5px; background: var(--bg); cursor: pointer; transition: border-color var(--t-fast), box-shadow var(--t-fast); }
+  .plan-item:hover { border-color: var(--accent); box-shadow: var(--shadow-sm); }
+  .plan-item .t { font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .plan-item .m { color: var(--muted); font-size: 10.5px; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .plan-item--mail { border-left-color: var(--accent-2); }
+  .plan-item--post { border-left-color: var(--success); }
+  .plan-item--quiet { border: 1px dashed var(--border); border-left-style: dashed; background: none; color: var(--faint); cursor: default; }
+  .plan-item--quiet:hover { border-color: var(--border); box-shadow: none; }
+  .cap { height: 5px; background: var(--surface-3); }
+  .cap i { display: block; height: 100%; background: var(--accent); }
+  .cap i.hot { background: var(--warning); }
+  @media (max-width: 1100px) { .week { grid-template-columns: repeat(2, minmax(0,1fr)); } .day { min-height: 140px; } }
+</style>
+</head>
+<body data-od-id="page" data-od-label="Campaign planner">
+<main class="v2-main" id="page">
+
+  <div data-view="populated">
+    <div class="page-head">
+      <div class="page-head__t"><h1>Planner</h1><p class="sub">Week of Sep 8–14 — scheduled sends across all campaign types.</p></div>
+      <div class="page-head__actions">
+        <div class="seg seg--sq"><button type="button" data-toast="Previous week" aria-label="Previous week">‹</button><button type="button" class="is-active">This week</button><button type="button" data-toast="Next week" aria-label="Next week">›</button></div>
+        <a class="btn btn--primary" href="campaigns-create.html"><span class="ic ic--plus"></span>Schedule send</a>
+      </div>
+    </div>
+
+    <div class="week mb-3" data-od-id="planner-week" id="planner-week"></div>
+
+    <div class="grid" style="grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);align-items:start">
+      <div class="card" data-od-id="planner-drafts">
+        <div class="card__head"><h2>Unscheduled drafts</h2><span class="badge badge--muted">4</span></div>
+        <div id="planner-drafts"></div>
+      </div>
+      <div class="card card--pad" data-od-id="planner-notes">
+        <h3 class="mb-2" style="font-size:14px">Reading the board</h3>
+        <p class="small muted" style="line-height:1.7">Border colour marks the send type: <strong style="color:var(--accent-txt)">chat</strong>, <strong style="color:var(--accent-2)">mail</strong>, <strong style="color:var(--success)">newsfeed</strong>. The thin bar under each day is its send capacity — amber means the day is near platform limits. Quiet hours (00:00–08:00) are blocked automatically.</p>
+      </div>
+    </div>
+  </div>
+
+  <div data-view="loading" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Planner</h1><p class="sub">Week of Sep 8–14.</p></div></div>
+    <div class="week"><div class="skeleton" style="height:210px;border-radius:14px"></div><div class="skeleton" style="height:210px;border-radius:14px"></div><div class="skeleton" style="height:210px;border-radius:14px"></div><div class="skeleton" style="height:210px;border-radius:14px"></div><div class="skeleton" style="height:210px;border-radius:14px"></div><div class="skeleton" style="height:210px;border-radius:14px"></div><div class="skeleton" style="height:210px;border-radius:14px"></div></div>
+  </div>
+  <div data-view="empty" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Planner</h1><p class="sub">Week of Sep 8–14.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon"><span class="ic ic--schedules ic--lg"></span></div><h2>Nothing scheduled this week</h2><p>Schedule your first send to see it on the board.</p><a class="btn btn--soft" href="campaigns-create.html">Schedule send</a></div></div>
+  </div>
+  <div data-view="error" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Planner</h1><p class="sub">Week of Sep 8–14.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon state__icon--danger"><span class="ic ic--warn ic--lg"></span></div><h2>Planner failed to load</h2><p>The schedule could not be fetched.</p><button type="button" class="btn btn--ghost" data-reload>Try again</button></div></div>
+  </div>
+
+</main>
+<script src="assets/fixtures.js"></script>
+<script src="assets/components.js"></script>
+<script src="assets/stateful.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  FlowUI.mount({ nav: 'campaigns', zone: 'campaigns', sub: 'planner', title: 'Planner', lady: true, crumbs: ['Campaigns'] });
+
+  var days = [
+    { d: 'Mon', n: 'Sep 8', cap: 62, items: [
+      { k: 'chat', t: 'Chat invites · Anna S.', m: '40 sends · 09:00' },
+      { k: 'post', t: 'Newsfeed “Morning run”', m: 'Lena T. · 12:00' }] },
+    { d: 'Tue', n: 'Sep 9', cap: 78, items: [
+      { k: 'mail', t: 'Welcome letters batch', m: 'FindBride · 60 mails' },
+      { k: 'chat', t: 'Icebreakers · Olga D.', m: '25 sends · 15:00' }] },
+    { d: 'Wed', n: 'Sep 10', cap: 91, items: [
+      { k: 'chat', t: 'Chat invites · Lena T.', m: '55 sends · 10:00' },
+      { k: 'chat', t: 'Icebreakers · Anna S.', m: '30 sends · 14:00' },
+      { k: 'post', t: 'Newsfeed “Sunday snapshot”', m: 'Anna S. · 18:00' }] },
+    { d: 'Thu', n: 'Sep 11', cap: 45, today: true, items: [
+      { k: 'mail', t: 'Mailing batch · week 2', m: 'TalkyTimes · 80 mails' },
+      { k: 'quiet', t: 'Quiet hours', m: '00:00–08:00 blocked' }] },
+    { d: 'Fri', n: 'Sep 12', cap: 70, items: [
+      { k: 'chat', t: 'Re-engagement wave', m: 'All ladies · 90 sends' }] },
+    { d: 'Sat', n: 'Sep 13', cap: 30, items: [
+      { k: 'post', t: 'Weekend newsfeed set', m: 'Vera P. · 11:00' }] },
+    { d: 'Sun', n: 'Sep 14', cap: 22, items: [
+      { k: 'quiet', t: 'Quiet hours', m: '00:00–08:00 blocked' }] }
+  ];
+
+  document.getElementById('planner-week').innerHTML = days.map(function (day) {
+    var items = day.items.map(function (it) {
+      var cls = it.k === 'quiet' ? ' plan-item--quiet' : (it.k === 'mail' ? ' plan-item--mail' : (it.k === 'post' ? ' plan-item--post' : ''));
+      var ic = it.k === 'quiet' ? 'clock' : (it.k === 'mail' ? 'mail' : (it.k === 'post' ? 'newsfeed' : 'chat'));
+      return '<div class="plan-item' + cls + '"' + (it.k === 'quiet' ? '' : ' data-toast="Open send details (prototype)"') + '><div class="t"><span class="ic ic--' + ic + ' ic--sm" style="vertical-align:-2px;margin-right:5px"></span>' + it.t + '</div><div class="m">' + it.m + '</div></div>';
+    }).join('');
+    return '<div class="day' + (day.today ? ' today' : '') + '"><div class="day__h"><span class="d">' + day.d + '</span><span class="n">' + day.n + '</span></div><div class="cap"><i style="width:' + day.cap + '%"' + (day.cap > 85 ? ' class="hot"' : '') + '></i></div><div class="day__body">' + items + '</div></div>';
+  }).join('');
+
+  document.getElementById('planner-drafts').innerHTML = [
+    { t: '“Autumn evening” chat invite', m: 'Anna S. · ready since Sep 9', k: 'chat' },
+    { t: 'Welcome letter — new photos', m: 'Marina K. · draft', k: 'mail' },
+    { t: 'Icebreaker “Concert question”', m: 'Olga D. · needs review', k: 'chat' },
+    { t: 'Newsfeed “Rainy weekend”', m: 'Elena V. · waiting for approval', k: 'post' }
+  ].map(function (d) {
+    var ic = d.k === 'mail' ? 'mail' : (d.k === 'post' ? 'newsfeed' : 'chat');
+    return '<div class="lrow"><span class="ic ic--' + ic + '" style="color:var(--muted)"></span><div class="main"><div class="t1">' + d.t + '</div><div class="t2">' + d.m + '</div></div><button type="button" class="btn btn--ghost btn--sm" data-toast="Pick a slot (prototype)">Schedule</button></div>';
+  }).join('');
+})();
+</script>
+</body>
+</html>

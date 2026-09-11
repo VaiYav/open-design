@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "design-copy/omniscience.html",
+  "entry": "design-copy/omniscience.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-09-10T18:09:13.232Z",
+  "updatedAt": "2026-09-10T18:09:13.232Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campaigns · Flow v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+</head>
+<body data-od-id="page" data-od-label="Campaigns overview">
+<main class="v2-main" id="page">
+
+  <div data-view="populated">
+    <div class="page-head">
+      <div class="page-head__t">
+        <h1>Campaigns</h1>
+        <p class="sub">All outbound content — chat invites, welcome letters, icebreakers and newsfeed posts — in one place, per lady.</p>
+      </div>
+      <div class="page-head__actions">
+        <a class="btn btn--ghost" href="campaigns-performance.html"><span class="ic ic--stats"></span>Performance</a>
+        <a class="btn btn--primary" href="campaigns-create.html"><span class="ic ic--plus"></span>New template</a>
+      </div>
+    </div>
+
+    <div class="grid cols-4 mb-3" data-od-id="campaign-kpis">
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--campaigns ic--sm"></span>Sent today</div><div class="kpi__num">412</div><div class="kpi__delta kpi__delta--up">▲ 12% vs yesterday</div></div>
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--reply ic--sm"></span>Reply rate</div><div class="kpi__num">23.4<span class="unit">%</span></div><div class="kpi__delta kpi__delta--up">▲ 2.1 pts</div></div>
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--clock ic--sm"></span>On moderation</div><div class="kpi__num">17</div><div class="kpi__delta" style="color:var(--muted)">avg wait 3h</div></div>
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--declined ic--sm"></span>Declined</div><div class="kpi__num">6</div><div class="kpi__delta kpi__delta--down">needs rewrite</div></div>
+    </div>
+
+    <div class="grid cols-3 mb-3">
+      <a class="card card--pad" href="campaigns-templates.html" style="text-decoration:none;color:inherit" data-od-id="ct-invites">
+        <div class="row row--between"><span class="ic ic--invite" style="color:var(--accent)"></span><span class="badge badge--accent">2 types</span></div>
+        <h3 class="mt-2" style="font-size:16px">Invites &amp; welcome</h3>
+        <p class="small muted mt-1">Chat invites, mail invites, post invites and welcome letters — first-touch templates.</p>
+        <p class="tiny mono mt-2" style="color:var(--accent-txt)">38 templates · 5 ladies</p>
+      </a>
+      <a class="card card--pad" href="campaigns-templates.html" style="text-decoration:none;color:inherit" data-od-id="ct-icebreakers">
+        <div class="row row--between"><span class="ic ic--icebreakers" style="color:var(--accent)"></span><span class="badge badge--lav">2 channels</span></div>
+        <h3 class="mt-2" style="font-size:16px">Icebreakers</h3>
+        <p class="small muted mt-1">Message and mail icebreakers with mood tagging, moderation and groups.</p>
+        <p class="tiny mono mt-2" style="color:var(--accent-txt)">24 templates · 3 groups</p>
+      </a>
+      <a class="card card--pad" href="campaigns-posts.html" style="text-decoration:none;color:inherit" data-od-id="ct-newsfeed">
+        <div class="row row--between"><span class="ic ic--newsfeed" style="color:var(--accent)"></span><span class="badge badge--warning">2 pending</span></div>
+        <h3 class="mt-2" style="font-size:16px">Newsfeed posts</h3>
+        <p class="small muted mt-1">Story-style posts per lady profile with an approval queue and schedule.</p>
+        <p class="tiny mono mt-2" style="color:var(--accent-txt)">12 posts · 2 awaiting review</p>
+      </a>
+    </div>
+
+    <div class="card" data-od-id="campaigns-by-lady">
+      <div class="card__head"><h2>By lady</h2><div class="search" style="min-width:220px"><span class="ic ic--search"></span><input class="input" type="search" placeholder="Search lady" aria-label="Search lady" id="camp-q"></div></div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Lady</th><th>Platform</th><th>Active templates</th><th>On moderation</th><th>Sent (7d)</th><th>Reply rate</th><th style="text-align:right">Open</th></tr></thead>
+          <tbody id="camp-rows"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div data-view="loading" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Campaigns</h1><p class="sub">All outbound content in one place.</p></div></div>
+    <div class="grid cols-4 mb-3"><div class="skeleton" style="height:110px;border-radius:16px"></div><div class="skeleton" style="height:110px;border-radius:16px"></div><div class="skeleton" style="height:110px;border-radius:16px"></div><div class="skeleton" style="height:110px;border-radius:16px"></div></div>
+    <div class="card"><div id="camp-sk"></div></div>
+  </div>
+
+  <div data-view="empty" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Campaigns</h1><p class="sub">All outbound content in one place.</p></div></div>
+    <div class="card"><div class="state">
+      <div class="state__icon"><span class="ic ic--campaigns ic--lg"></span></div>
+      <h2>No campaigns yet</h2>
+      <p>Create the first template — a chat invite or welcome letter — and it will appear here with live stats.</p>
+      <a class="btn btn--primary" href="campaigns-create.html">New template</a>
+    </div></div>
+  </div>
+
+  <div data-view="error" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Campaigns</h1><p class="sub">All outbound content in one place.</p></div></div>
+    <div class="card"><div class="state">
+      <div class="state__icon state__icon--danger"><span class="ic ic--warn ic--lg"></span></div>
+      <h2>Campaigns failed to load</h2>
+      <p>The campaigns service did not respond. Your drafts are safe — retry to reload.</p>
+      <button type="button" class="btn btn--ghost" data-reload>Try again</button>
+    </div></div>
+  </div>
+
+</main>
+<script src="assets/fixtures.js"></script>
+<script src="assets/components.js"></script>
+<script src="assets/stateful.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  FlowUI.mount({ nav: 'campaigns', zone: 'campaigns', sub: 'campaigns.html', title: 'Campaigns', lady: true });
+  var F = window.Fixtures;
+  var tbody = document.getElementById('camp-rows');
+  tbody.innerHTML = F.LADIES.map(function (l, i) {
+    var mods = [2, 0, 1, 4, 0, 1][i % 6];
+    var sent = [88, 41, 156, 63, 12, 29][i % 6];
+    var rate = ['26%', '19%', '31%', '22%', '8%', '17%'][i % 6];
+    return '<tr>' +
+      '<td><span class="row"><span class="avatar avatar--sm">' + l.initials + '</span><span><span class="strong">' + l.name + '</span><br><span class="tiny muted mono">' + l.id + '</span></span></span></td>' +
+      '<td>' + FlowUI.platformTag(l.platform) + '</td>' +
+      '<td class="num">' + (l.chats + 4) + '</td>' +
+      '<td>' + (mods ? '<span class="badge badge--warning">' + mods + '</span>' : '<span class="muted">—</span>') + '</td>' +
+      '<td class="num">' + sent + '</td><td class="num">' + rate + '</td>' +
+      '<td class="t-actions"><a class="btn btn--ghost btn--sm" href="campaigns-templates.html">Templates</a> <a class="btn btn--quiet btn--sm" href="campaigns-history.html">History</a></td></tr>';
+  }).join('');
+  document.getElementById('camp-q').addEventListener('input', function (e) {
+    var qv = e.target.value.trim().toLowerCase();
+    tbody.querySelectorAll('tr').forEach(function (tr) { tr.style.display = tr.textContent.toLowerCase().indexOf(qv) !== -1 ? '' : 'none'; });
+  });
+  var sk = '';
+  for (var i = 0; i < 5; i++) sk += '<div class="sk-row"><span class="skeleton" style="width:32px;height:32px;border-radius:50%"></span><span class="skeleton" style="width:20%;height:13px"></span><span style="flex:1"></span><span class="skeleton" style="width:140px;height:30px;border-radius:6px"></span></div>';
+  document.getElementById('camp-sk').innerHTML = sk;
+})();
+</script>
+</body>
+</html>

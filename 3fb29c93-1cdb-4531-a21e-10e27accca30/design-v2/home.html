@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home · Flow v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+</head>
+<body data-od-id="page" data-od-label="Command center">
+<main class="v2-main" id="page">
+
+  <div data-view="populated">
+    <div class="page-head">
+      <div class="page-head__t"><h1>Good morning, Katerina</h1><p class="sub">Command center — what's on fire, what's waiting, what's next.</p></div>
+      <div class="page-head__actions"><a class="btn btn--cta" href="chats.html"><span class="ic ic--chat"></span>Open chats</a></div>
+    </div>
+
+    <div class="grid cols-4 mb-3" data-od-id="home-kpis">
+      <a class="kpi" href="chats.html?state=loaded" style="text-decoration:none;color:inherit"><div class="kpi__lbl"><span class="ic ic--chat ic--sm"></span>Unread chats</div><div class="kpi__num">23</div><div class="kpi__delta kpi__delta--down">2 older than 4h</div></a>
+      <a class="kpi" href="mails.html" style="text-decoration:none;color:inherit"><div class="kpi__lbl"><span class="ic ic--mail ic--sm"></span>Unread mails</div><div class="kpi__num">7</div><div class="kpi__delta" style="color:var(--muted)">all under 2h</div></a>
+      <a class="kpi" href="campaigns-templates.html?state=moderation" style="text-decoration:none;color:inherit"><div class="kpi__lbl"><span class="ic ic--clock ic--sm"></span>On moderation</div><div class="kpi__num">17</div><div class="kpi__delta" style="color:var(--muted)">avg wait 3h</div></a>
+      <a class="kpi" href="alerts.html" style="text-decoration:none;color:inherit"><div class="kpi__lbl"><span class="ic ic--alert ic--sm"></span>Alerts</div><div class="kpi__num">4</div><div class="kpi__delta kpi__delta--down">1 critical</div></a>
+    </div>
+
+    <div class="grid" style="grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);align-items:start">
+      <div class="card" data-od-id="home-queue">
+        <div class="card__head"><h2>Needs you now</h2><span class="badge badge--danger">4</span></div>
+        <div id="home-queue-rows"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card">
+          <div class="card__head"><h2>Beloved brief</h2><span class="badge badge--accent"><span class="ic ic--omni"></span>AI</span></div>
+          <div class="card__body" style="display:flex;flex-direction:column;gap:10px">
+            <p class="small" style="line-height:1.6">Overnight summary: RealLoves replies are up 12%. Andrey K. asked twice about meeting — he's warm; answer within the hour. LiveBeam account is still erroring; autoreplies stay paused until it recovers.</p>
+            <a class="btn btn--soft btn--sm" href="chats.html?state=copilot" style="align-self:flex-start"><span class="ic ic--omni"></span>Open copilot</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card__head"><h2>Your ladies</h2><a class="btn btn--quiet btn--sm" href="tools.html">Tools</a></div>
+          <div id="home-ladies"></div>
+        </div>
+        <div class="card card--pad">
+          <h3 class="mb-2" style="font-size:14px">Shift</h3>
+          <p class="small muted">On duty until <strong class="mono" style="color:var(--fg)">18:00</strong> Europe/Kyiv. Sofia L. takes over — handover note pinned in Omniscience.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div data-view="loading" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Command center</h1><p class="sub">What's on fire, what's waiting, what's next.</p></div></div>
+    <div class="grid cols-4 mb-3"><div class="skeleton" style="height:110px;border-radius:16px"></div><div class="skeleton" style="height:110px;border-radius:16px"></div><div class="skeleton" style="height:110px;border-radius:16px"></div><div class="skeleton" style="height:110px;border-radius:16px"></div></div>
+    <div class="card"><div id="home-sk"></div></div>
+  </div>
+  <div data-view="empty" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Command center</h1><p class="sub">What's on fire, what's waiting, what's next.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon"><span class="ic ic--home ic--lg"></span></div><h2>All clear</h2><p>Nothing needs you right now — inbox zero, moderation zero, alerts zero.</p></div></div>
+  </div>
+  <div data-view="error" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Command center</h1><p class="sub">What's on fire, what's waiting, what's next.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon state__icon--danger"><span class="ic ic--warn ic--lg"></span></div><h2>Dashboard failed to load</h2><p>Retry in a moment.</p><button type="button" class="btn btn--ghost" data-reload>Try again</button></div></div>
+  </div>
+
+</main>
+<script src="assets/fixtures.js"></script>
+<script src="assets/components.js"></script>
+<script src="assets/stateful.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  FlowUI.mount({ nav: 'home', zone: 'home', title: 'Home', lady: true });
+  var F = window.Fixtures;
+  var queue = [
+    { icon: 'chat', color: 'var(--danger)', t1: 'Andrey K. waiting 4h 20m', t2: 'RealLoves · asked about meeting twice — warm lead', href: 'chats.html?state=loaded' },
+    { icon: 'alert', color: 'var(--danger)', t1: 'Send limit hit on RealLoves', t2: 'RL-884217 · invites paused until 14:00 reset', href: 'alerts.html' },
+    { icon: 'warn', color: 'var(--warning)', t1: 'Elena V. account erroring', t2: 'LiveBeam · God Hand paused — check credentials', href: 'admin-account-edit.html' },
+    { icon: 'mail', color: 'var(--warning)', t1: '2 mails over 2h unread', t2: 'FindBride inbox for Svetlana R.', href: 'mails.html' }
+  ];
+  document.getElementById('home-queue-rows').innerHTML = queue.map(function (q) {
+    return '<a class="lrow" href="' + q.href + '" style="text-decoration:none;color:inherit"><span class="ic ic--' + q.icon + '" style="color:' + q.color + '"></span>' +
+      '<div class="main"><div class="t1">' + q.t1 + '</div><div class="t2">' + q.t2 + '</div></div>' +
+      '<span class="ic ic--chev-r" style="color:var(--faint)"></span></a>';
+  }).join('');
+  document.getElementById('home-ladies').innerHTML = F.LADIES.slice(0, 4).map(function (l) {
+    return '<div class="lrow"><span class="avatar avatar--sm">' + l.initials + '</span><div class="main"><div class="t1">' + l.name + '</div><div class="t2">' + F.PLATFORMS[l.platform].name + ' · ' + l.unread + ' unread</div></div>' + FlowUI.dot(l.status) + '</div>';
+  }).join('');
+  var sk = '';
+  for (var i = 0; i < 4; i++) sk += '<div class="sk-row"><span class="skeleton" style="width:30px;height:30px;border-radius:8px"></span><span style="flex:1"><span class="skeleton" style="display:block;width:50%;height:12px"></span><span class="skeleton" style="display:block;width:70%;height:10px;margin-top:6px"></span></span></div>';
+  document.getElementById('home-sk').innerHTML = sk;
+})();
+</script>
+</body>
+</html>

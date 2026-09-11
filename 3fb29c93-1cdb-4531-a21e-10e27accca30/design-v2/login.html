@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign in · Flow v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+<style>
+  body[data-shell] .v2-side { display: none; }
+  .login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+  .login-card { width: 100%; max-width: 420px; }
+  .login-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 26px; }
+  .login-brand img { height: 34px; }
+  .login-brand .dot-sep { width: 5px; height: 5px; border-radius: 50%; background: var(--faint); }
+  .login-brand .t2 { font-weight: 800; letter-spacing: 0.08em; font-size: 13px; color: var(--fg-2); text-transform: uppercase; }
+</style>
+</head>
+<body data-od-id="page" data-od-label="Sign in" data-shell>
+<main id="page">
+<div class="login-wrap">
+  <div class="login-card">
+    <div class="login-brand">
+      <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iNDIiIGhlaWdodD0iNTciIHZpZXdCb3g9IjAgMCA0MiA1NyI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImxpbmVhci1ncmFkaWVudCIgeDE9IjEuNjciIHkxPSIwLjE4NCIgeDI9IjIuNjg4IiB5Mj0iMC4xODQiIGdyYWRpZW50VW5pdHM9Im9iamVjdEJvdW5kaW5nQm94Ij4KICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjM2I0MmI4Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzE4MWI4OSIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0ibGluZWFyLWdyYWRpZW50LTIiIHgxPSIwLjM3MyIgeTE9IjEuNDA0IiB4Mj0iMC4zNzMiIHkyPSIwLjE2OSIgeGxpbms6aHJlZj0iI2xpbmVhci1ncmFkaWVudCIvPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJsaW5lYXItZ3JhZGllbnQtMyIgeDE9IjEuNzM1IiB5MT0iMS4wMjMiIHgyPSIxLjczNSIgeTI9Ii0wLjI3OSIgZ3JhZGllbnRVbml0cz0ib2JqZWN0Qm91bmRpbmdCb3giPgogICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM1ODYyZGUiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjOTE2N2ZmIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJsaW5lYXItZ3JhZGllbnQtNCIgeDE9IjEuODM1IiB5MT0iMS43OTgiIHgyPSIxLjgzNSIgeTI9IjAuMjQzIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iIzU4NjJkZSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNlYzUwZmYiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxnIGlkPSJmbG93X2xvZ28iIHRyYW5zZm9ybT0idHJhbnNsYXRlKC03NTguMTUgLTE3OS42MTEpIj4KICAgIDxwYXRoIGlkPSJQYXRoXzEiIGRhdGEtbmFtZT0iUGF0aCAxIiBkPSJNNzU5LjE1LDI0OC4yNDJsMjAsNXYtMTZsLTIxLTZ2MTVDNzU4LjE1LDI0Ny4xNCw3NTguMjgzLDI0OC4wMSw3NTkuMTUsMjQ4LjI0MloiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAgLTE2LjYzMSkiIGZpbGw9InVybCgjbGluZWFyLWdyYWRpZW50KSIvPgogICAgPHBhdGggaWQ9IlBhdGhfMiIgZGF0YS1uYW1lPSJQYXRoIDIiIGQ9Ik03OTAuMTUsMjEwLjJ2MTVsLTMxLTEwYy0uODMtLjI1Ny0xLTEuMTMxLTEtMnYtMTRsMzAsOUM3ODguOTgsMjA4LjQ1OCw3OTAuMTUsMjA5LjMzMiw3OTAuMTUsMjEwLjJaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwIC02LjU5KSIgZmlsbD0idXJsKCNsaW5lYXItZ3JhZGllbnQtMikiLz4KICAgIDxwYXRoIGlkPSJQYXRoXzMiIGRhdGEtbmFtZT0iUGF0aCAzIiBkPSJNNzkwLjE1LDIxNS45MTV2MTRjMCwuOS0xLjEzMywxLjc2Ny0yLDJsLTMwLDh2LTE0YzAtLjkuMTMzLTEuNzY4LDEtMloiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAgLTExLjMwNCkiIGZpbGw9InVybCgjbGluZWFyLWdyYWRpZW50LTMpIi8+CiAgICA8cGF0aCBpZD0iUGF0aF80IiBkYXRhLW5hbWU9IlBhdGggNCIgZD0iTTgwMC4xNSwxNzkuNjExdjE0YzAsLjktLjEzMywxLjc2Ny0xLDJsLTQxLDExdi0xNGMwLS45LjEzMy0xLjc2OCwxLTJaIiBmaWxsPSJ1cmwoI2xpbmVhci1ncmFkaWVudC00KSIvPgogIDwvZz4KPC9zdmc+Cg==" alt="Flow">
+      <span class="dot-sep"></span>
+      <span class="t2">Operator workspace</span>
+    </div>
+
+    <div data-view="default,error,loading">
+      <div class="card"><div class="card__body">
+        <h1 style="font-size:22px;margin-bottom:4px">Sign in</h1>
+        <p class="small muted mb-3">Use the email your administrator invited.</p>
+        <div class="notice notice--danger mb-3" data-view="error" hidden role="alert"><span class="ic ic--warn"></span><div><span class="t">Sign-in failed.</span> Wrong email or password — 2 attempts left before a 10-min lock.</div></div>
+        <form data-form="validate" novalidate id="login-form">
+          <div class="field"><label for="l-email">Email</label><input class="input" id="l-email" type="email" required placeholder="name@agency.com" autocomplete="username"><span class="err"><span class="ic ic--warn ic--sm"></span>Valid email is required</span></div>
+          <div class="field"><label for="l-pass">Password</label><input class="input" id="l-pass" type="password" required placeholder="••••••••" autocomplete="current-password"><span class="err"><span class="ic ic--warn ic--sm"></span>Password is required</span></div>
+          <div class="row row--between mb-2">
+            <label class="check"><input type="checkbox" checked data-demo><span class="box"></span>Keep me signed in</label>
+            <a href="login.html?state=forgot" class="small" style="color:var(--accent-txt)">Forgot?</a>
+          </div>
+          <button type="submit" class="btn btn--primary" style="width:100%;justify-content:center;height:46px" id="l-btn">Sign in</button>
+        </form>
+      </div></div>
+      <p class="tiny muted" style="text-align:center;margin-top:16px">Protected by rate-limiting · v2 prototype</p>
+    </div>
+
+    <div data-view="forgot" hidden>
+      <div class="card"><div class="card__body">
+        <h1 style="font-size:22px;margin-bottom:4px">Reset password</h1>
+        <p class="small muted mb-3">We'll send a reset link to the invited email.</p>
+        <form data-form="validate" data-success="Reset link sent" novalidate>
+          <div class="field"><label for="r-email">Email</label><input class="input" id="r-email" type="email" required placeholder="name@agency.com"><span class="err"><span class="ic ic--warn ic--sm"></span>Valid email is required</span></div>
+          <button type="submit" class="btn btn--primary" style="width:100%;justify-content:center;height:46px">Send reset link</button>
+        </form>
+        <p class="small mt-2" style="text-align:center"><a href="login.html" style="color:var(--accent-txt)">Back to sign in</a></p>
+      </div></div>
+    </div>
+
+    <div data-view="locked" hidden>
+      <div class="card"><div class="card__body"><div class="state">
+        <div class="state__icon state__icon--danger"><span class="ic ic--warn ic--lg"></span></div>
+        <h2>Too many attempts</h2>
+        <p>Sign-in is locked for 10 minutes. The admin can unlock the account early.</p>
+        <a class="btn btn--ghost" href="login.html">Back to sign in</a>
+      </div></div></div>
+    </div>
+
+    <div data-view="success" hidden>
+      <div class="card"><div class="card__body"><div class="state">
+        <div class="state__icon" style="background:var(--success-soft);color:var(--success)"><span class="ic ic--check ic--lg"></span></div>
+        <h2>Welcome back</h2>
+        <p>Signed in — redirecting to the workspace…</p>
+        <a class="btn btn--primary" href="home.html">Open workspace</a>
+      </div></div></div>
+    </div>
+  </div>
+</div>
+</main>
+<script src="assets/fixtures.js"></script>
+<script src="assets/components.js"></script>
+<script src="assets/stateful.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  /* no shell on the public screen — just theme + states */
+  var btn = document.getElementById('l-btn');
+  function applyVariant() {
+    var st = document.documentElement.getAttribute('data-state');
+    if (st === 'loading') {
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner" style="width:16px;height:16px;border-width:2px"></span>Signing in…';
+    } else { btn.disabled = false; btn.textContent = 'Sign in'; }
+  }
+  new MutationObserver(function (m) { m.forEach(function (r) { if (r.attributeName === 'data-state') applyVariant(); }); }).observe(document.documentElement, { attributes: true });
+  applyVariant();
+})();
+</script>
+</body>
+</html>

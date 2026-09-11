@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "design-v2/campaigns-performance.html",
+  "entry": "design-v2/campaigns-performance.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-09-10T20:16:53.952Z",
+  "updatedAt": "2026-09-10T20:16:53.952Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

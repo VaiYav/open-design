@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>New schedule · Flow v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+</head>
+<body data-od-id="page" data-od-label="New schedule">
+<main class="v2-main" id="page">
+
+  <div class="page-head"><div class="page-head__t"><h1>New schedule</h1><p class="sub">A staffed window — sends pause outside it.</p></div></div>
+
+  <div data-view="default,validation">
+    <div class="card" style="max-width:680px"><div class="card__body">
+      <form class="form-grid" data-form="validate" data-success="Schedule created" novalidate>
+        <div class="field"><label for="s-lady">Lady</label><select class="select" id="s-lady"><option>Anna S.</option><option>Elena V.</option><option>Irina K.</option><option>Maria D.</option></select></div>
+        <div class="field"><label for="s-op">Operator</label><select class="select" id="s-op"><option>Katerina V.</option><option>Igor B.</option><option>Sofia L.</option></select></div>
+        <div class="field"><label for="s-from">From</label><input class="input" id="s-from" type="time" required value="09:00"><span class="err"><span class="ic ic--warn ic--sm"></span>Required</span></div>
+        <div class="field"><label for="s-to">To</label><input class="input" id="s-to" type="time" required value="18:00"><span class="err"><span class="ic ic--warn ic--sm"></span>Required</span></div>
+        <div class="field span-2"><label>Days</label>
+          <div class="row wrap" data-chip-group style="gap:6px">
+            <button type="button" class="chip is-active" data-chip>Mon</button><button type="button" class="chip is-active" data-chip>Tue</button><button type="button" class="chip is-active" data-chip>Wed</button><button type="button" class="chip is-active" data-chip>Thu</button><button type="button" class="chip is-active" data-chip>Fri</button><button type="button" class="chip" data-chip>Sat</button><button type="button" class="chip" data-chip>Sun</button>
+          </div>
+        </div>
+        <div class="field"><label for="s-tz">Timezone</label><select class="select" id="s-tz"><option>Europe/Kyiv</option><option>UTC</option><option>Europe/Warsaw</option></select></div>
+        <div class="span-2 row" style="justify-content:flex-end">
+          <a class="btn btn--quiet" href="admin-schedules.html">Cancel</a>
+          <button type="submit" class="btn btn--primary">Create schedule</button>
+        </div>
+      </form>
+    </div></div>
+  </div>
+
+  <div data-view="success" hidden>
+    <div class="card" style="max-width:640px;margin:40px auto"><div class="state">
+      <div class="state__icon" style="background:var(--success-soft);color:var(--success)"><span class="ic ic--check ic--lg"></span></div>
+      <h2>Schedule created</h2><p>Anna S. is staffed Mon–Fri 09:00–18:00 Europe/Kyiv — sends fire inside that window.</p>
+      <div class="row mt-2"><a class="btn btn--primary" href="admin-schedules.html">All schedules</a><a class="btn btn--ghost" href="admin-schedule-new.html">Add another</a></div>
+    </div></div>
+  </div>
+
+</main>
+<script src="assets/fixtures.js"></script>
+<script src="assets/components.js"></script>
+<script src="assets/stateful.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  FlowUI.mount({ nav: 'admin', zone: 'admin', sub: 'admin-schedules.html', title: 'New schedule', crumbs: ['Admin', 'Schedules'], role: 'admin' });
+  function applyVariant() {
+    var st = document.documentElement.getAttribute('data-state');
+    ['s-from', 's-to'].forEach(function (id) {
+      document.getElementById(id).closest('.field').classList.toggle('has-error', st === 'validation');
+    });
+  }
+  new MutationObserver(function (m) { m.forEach(function (r) { if (r.attributeName === 'data-state') applyVariant(); }); }).observe(document.documentElement, { attributes: true });
+  applyVariant();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "design-v2/home.html",
+  "entry": "design-v2/home.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-09-10T20:15:46.388Z",
+  "updatedAt": "2026-09-10T20:15:46.388Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

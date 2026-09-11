@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "design-v2/campaigns-posts.html",
+  "entry": "design-v2/campaigns-posts.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-09-10T20:06:49.259Z",
+  "updatedAt": "2026-09-10T20:06:49.259Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

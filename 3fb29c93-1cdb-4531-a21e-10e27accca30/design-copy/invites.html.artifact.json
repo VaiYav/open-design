@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "design-copy/invites.html",
+  "entry": "design-copy/invites.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-09-10T18:18:30.870Z",
+  "updatedAt": "2026-09-10T18:18:30.870Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

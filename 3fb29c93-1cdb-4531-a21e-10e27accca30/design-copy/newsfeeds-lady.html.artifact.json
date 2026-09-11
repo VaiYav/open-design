@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "design-copy/newsfeeds-lady.html",
+  "entry": "design-copy/newsfeeds-lady.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-09-10T18:18:30.874Z",
+  "updatedAt": "2026-09-10T18:18:30.874Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

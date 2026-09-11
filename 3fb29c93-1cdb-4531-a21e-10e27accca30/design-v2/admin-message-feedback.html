@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Message feedback · Flow v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+</head>
+<body data-od-id="page" data-od-label="Message feedback">
+<main class="v2-main" id="page">
+
+  <div class="page-head">
+    <div class="page-head__t">
+      <div class="fb-eyebrow" data-od-id="fb-eyebrow">Production learning loop</div>
+      <h1>Message feedback</h1>
+      <p class="sub">Quality signals from real conversations. Votes and product outcome windows are reported separately — unknown or pending coverage is never counted as a negative result. Admin and Main Admin only.</p>
+    </div>
+    <div class="page-head__actions">
+      <span class="tiny muted" id="fb-updated"></span>
+      <button type="button" class="btn btn--ghost btn--sm" data-toast="Summary refresh queued"><span class="ic ic--clock"></span>Refresh</button>
+    </div>
+  </div>
+
+  <div class="card card--pad mb-2" data-od-id="fb-filters">
+    <div class="form-grid" style="grid-template-columns:repeat(5,minmax(0,1fr))">
+      <div class="field"><label for="fb-from">From</label><input class="input" id="fb-from" type="date" value="2026-09-01"></div>
+      <div class="field" id="fb-to-field"><label for="fb-to">To</label><input class="input" id="fb-to" type="date" value="2026-09-10" aria-describedby="fb-to-err"><span class="err" id="fb-to-err"><span class="ic ic--warn ic--sm"></span>End date must be after the start date.</span></div>
+      <div class="field"><label for="fb-platform">Platform</label><select class="select" id="fb-platform"><option>All platforms</option><option>CouldSee / RealLoves</option><option>FindBride</option><option>ChatsHouse</option><option>TalkyTimes</option><option>LiveBeam</option></select></div>
+      <div class="field"><label for="fb-origin">Origin</label><select class="select" id="fb-origin"><option>All</option><option>AI</option><option>Template</option><option>Manual</option><option>Unknown</option></select></div>
+      <div class="field"><label for="fb-mode">Review mode</label><select class="select" id="fb-mode"><option>All</option><option>AI output quality</option><option>Message review</option></select></div>
+    </div>
+    <div class="row mt-2">
+      <button type="button" class="btn btn--primary btn--sm" data-toast="Filters applied — tab preserved">Apply filters</button>
+      <button type="button" class="btn btn--quiet btn--sm" data-toast="Filters reset">Reset</button>
+      <button type="button" class="btn btn--quiet btn--sm" id="fb-copylink"><span class="ic ic--copy"></span>Copy link</button>
+      <span class="tiny muted">Filters refresh data through the API and keep the current tab. Filter state lives in the URL — a copied link lands on the same view.</span>
+    </div>
+  </div>
+
+  <div class="card" data-tab-scope data-od-id="fb-tabs-card">
+    <div class="tabs tabs--card" id="fb-tabs" role="tablist">
+      <button type="button" data-tab="overview" class="is-active" role="tab" aria-selected="true">Overview</button>
+      <button type="button" data-tab="weak" role="tab" aria-selected="false">Weak cases <span class="cnt" id="weak-cnt">9</span></button>
+    </div>
+    <div class="card__body">
+
+      <!-- ==================== OVERVIEW ==================== -->
+      <div data-view="overview,invalid-range" data-tab-panel="overview" data-od-id="fb-overview">
+        <div class="fb-grp" data-od-id="fb-grp-quality">Message quality <span class="note">what reviewers marked — coverage first</span></div>
+        <div class="grid cols-3">
+          <div class="kpi"><div class="kpi__lbl">Rated messages</div><div class="kpi__num" id="k-rated"></div><div class="kpi__meter"><i id="k-rated-bar"></i></div><div class="kpi__delta" id="k-rated-n"></div></div>
+          <div class="kpi"><div class="kpi__lbl">Positive votes</div><div class="kpi__num" id="k-pos"></div><div class="kpi__delta kpi__delta--up" id="k-pos-w"></div></div>
+          <div class="kpi"><div class="kpi__lbl">AI output — positive</div><div class="kpi__num" id="k-ai"></div><div class="kpi__delta" id="k-ai-d"></div></div>
+          <div class="kpi"><div class="kpi__lbl">Template / manual — positive</div><div class="kpi__num" id="k-man"></div><div class="kpi__delta" id="k-man-n"></div></div>
+          <div class="kpi"><div class="kpi__lbl">Comments attached</div><div class="kpi__num" id="k-cmt"></div><div class="kpi__delta" id="k-cmt-n"></div></div>
+          <div class="kpi"><div class="kpi__lbl">Reviewers active</div><div class="kpi__num" id="k-rev"></div><div class="kpi__delta" id="k-rev-n"></div></div>
+        </div>
+        <div class="fb-grp" data-od-id="fb-grp-out">Outcomes <span class="note">did the recipient respond or stay — mature windows only</span></div>
+        <div class="grid cols-3">
+          <div class="kpi"><div class="kpi__lbl">Reply ≤ 24h</div><div class="kpi__num" id="k-r24"></div><div class="kpi__delta" id="k-r24n"></div></div>
+          <div class="kpi"><div class="kpi__lbl">Reply ≤ 72h</div><div class="kpi__num" id="k-r72"></div><div class="kpi__delta" id="k-r72n"></div></div>
+          <div class="kpi"><div class="kpi__lbl">Retention D1 / D7</div><div class="kpi__num" id="k-ret"></div><div class="kpi__delta" id="k-retn"></div></div>
+        </div>
+
+        <div class="fb-cover-note mt-2" data-od-id="fb-coverage">
+          <span class="ic ic--info"></span>
+          <div><span class="n">268</span> verified AI lineage · <span class="n">61</span> lineage pending · <span class="n">83</span> non-AI (template/manual). Rows without confirmed lineage are retained in raw counts but <strong>excluded from verified AI quality KPIs</strong>.</div>
+        </div>
+
+        <div class="grid cols-2 mt-3">
+          <div class="card card--pad" data-od-id="fb-chart-daily">
+            <h3 style="font-size:14px;margin-bottom:4px">Feedback over time</h3>
+            <p class="tiny muted" style="margin-bottom:10px">Votes per day · hatched cap is pending / unknown — reported, never scored as negative</p>
+            <div class="fchart" id="ch-daily"></div>
+            <div class="fchart-x" id="ch-daily-x"></div>
+            <div class="flegend mt-2"><span><i class="sw-p"></i>Positive</span><span><i class="sw-n"></i>Negative</span><span><i class="sw-x"></i>Pending / unknown</span></div>
+            <details class="data-table"><summary>Data table</summary><div class="tbl-wrap mt-1"><table class="tbl" id="tb-daily"></table></div></details>
+          </div>
+          <div class="card card--pad" data-od-id="fb-chart-reply">
+            <h3 style="font-size:14px;margin-bottom:4px">Reply rate</h3>
+            <p class="tiny muted" style="margin-bottom:10px">Share of rated messages with a reply inside the window</p>
+            <div id="ch-reply"></div>
+            <div class="flegend mt-2"><span><i class="sw-24"></i>Within 24h</span><span><i class="sw-72"></i>Within 72h</span></div>
+            <details class="data-table"><summary>Data table</summary><div class="tbl-wrap mt-1"><table class="tbl" id="tb-reply"></table></div></details>
+          </div>
+        </div>
+
+        <div class="fb-grp" data-od-id="fb-grp-depth">Review depth <span class="note">how fast and how structured the signal is</span></div>
+        <div class="grid cols-2">
+          <div class="card card--pad" data-od-id="fb-ttf">
+            <h3 style="font-size:14px;margin-bottom:4px">Send → vote lag</h3>
+            <p class="tiny muted" style="margin-bottom:8px">Fresher votes change reviewer behaviour; older ones feed analysis — both are useful</p>
+            <div id="fb-ttf-bars"></div>
+            <div class="ttf-median"><span class="ic ic--clock"></span>Median <b id="fb-ttf-med"></b> between send and vote</div>
+          </div>
+          <div class="card card--pad" data-od-id="fb-models">
+            <h3 style="font-size:14px;margin-bottom:4px">Positive rate by model</h3>
+            <p class="tiny muted" style="margin-bottom:8px">Verified AI lineage only — Δ is measured against the fleet AI rate, not the manual baseline</p>
+            <div class="tbl-wrap"><table class="tbl" id="tb-models"></table></div>
+          </div>
+        </div>
+
+        <div class="grid cols-2 mt-3">
+          <div class="card card--pad" data-od-id="fb-reasons">
+            <h3 style="font-size:14px;margin-bottom:4px">Top negative reasons</h3>
+            <p class="tiny muted" style="margin-bottom:8px">Structured chips from the comment editor — <span class="mono">89 / 126</span> negative votes carry a reason</p>
+            <div id="fb-reason-bars"></div>
+          </div>
+          <div class="card card--pad" data-od-id="fb-reviewers">
+            <h3 style="font-size:14px;margin-bottom:4px">Reviewer coverage</h3>
+            <p class="tiny muted" style="margin-bottom:8px">Agreement is measured on double-rated messages — it tracks rater consistency, not message truth</p>
+            <div class="tbl-wrap"><table class="tbl" id="tb-reviewers"></table></div>
+          </div>
+        </div>
+
+        <div class="card card--pad mt-3" data-od-id="fb-slice">
+          <h3 style="font-size:14px;margin-bottom:4px">Positive rate by platform × origin</h3>
+          <p class="tiny muted" style="margin-bottom:10px">Where AI output holds up and where it slips — exact % and n shown, cells without coverage are marked, never zeroed</p>
+          <div class="tbl-wrap"><table class="tbl" id="tb-slice"></table></div>
+        </div>
+
+        <div class="card card--pad mt-3" data-od-id="fb-chart-ret">
+          <h3 style="font-size:14px;margin-bottom:4px">Cohort retention</h3>
+          <p class="tiny muted" style="margin-bottom:10px">D1 / D7 by send-date cohort — immature windows are marked pending or unknown, never 0%</p>
+          <div class="grid cols-2" style="align-items:start">
+            <div>
+              <div id="ch-ret"></div>
+              <div class="flegend mt-2"><span><i class="sw-d1"></i>D1</span><span><i class="sw-d7"></i>D7</span></div>
+            </div>
+            <div class="tbl-wrap"><table class="tbl" id="tb-cohorts"></table></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ small sample ============ -->
+      <div data-view="small-sample" data-tab-panel="overview" hidden>
+        <div class="notice notice--info mb-2"><span class="ic ic--info"></span><div><span class="t">Small sample — directional only.</span> Exact counts are shown; rates over <span class="mono">N=7</span> are not statistically meaningful.</div></div>
+        <div class="grid cols-3">
+          <div class="kpi"><div class="kpi__lbl">Rated messages</div><div class="kpi__num">7 <span class="unit">/ 9 eligible</span></div><div class="kpi__delta">78% of eligible</div></div>
+          <div class="kpi"><div class="kpi__lbl">Positive votes</div><div class="kpi__num">5 <span class="unit">/ 7</span></div><div class="kpi__delta kpi__delta--up">directional</div></div>
+          <div class="kpi"><div class="kpi__lbl">Reply ≤ 24h</div><div class="kpi__num">4 <span class="unit">/ 7</span></div><div class="kpi__delta">directional</div></div>
+        </div>
+        <div class="fb-cover-note mt-2"><span class="ic ic--info"></span><div>Trend charts need at least <span class="n">30</span> rated messages in range — they stay hidden until then. Exact counts above remain accurate.</div></div>
+      </div>
+
+      <!-- ============ maturing windows ============ -->
+      <div data-view="maturing" data-tab-panel="overview" hidden>
+        <div class="grid cols-5">
+          <div class="kpi"><div class="kpi__lbl">Rated messages</div><div class="kpi__num">18 <span class="unit">/ 22</span></div><div class="kpi__delta">of eligible</div></div>
+          <div class="kpi"><div class="kpi__lbl">Positive votes</div><div class="kpi__num">13 <span class="unit">/ 18</span></div><div class="kpi__delta kpi__delta--up">of all votes</div></div>
+          <div class="kpi"><div class="kpi__lbl">Reply ≤ 24h</div><div class="kpi__num">—</div><div class="kpi__delta" style="color:var(--muted)">window maturing</div></div>
+          <div class="kpi"><div class="kpi__lbl">Reply ≤ 72h</div><div class="kpi__num">—</div><div class="kpi__delta" style="color:var(--muted)">window maturing</div></div>
+          <div class="kpi"><div class="kpi__lbl">Retention D1 / D7</div><div class="kpi__num">— / —</div><div class="kpi__delta" style="color:var(--muted)">cohorts maturing</div></div>
+        </div>
+        <div class="fb-cover-note mt-2"><span class="ic ic--clock"></span><div>Reply and retention windows are <strong>still maturing</strong> for this range. Votes are live now; outcome rates appear once the 24h / 72h / D1 / D7 windows close — a window that has not closed is never reported as 0%.</div></div>
+      </div>
+
+      <!-- ============ loading ============ -->
+      <div data-view="loading" data-tab-panel="overview" role="status" aria-busy="true" hidden>
+        <div class="grid cols-5">
+          <div class="kpi"><span class="skeleton" style="width:60%;height:11px"></span><span class="skeleton" style="display:block;width:45%;height:26px;margin-top:10px"></span></div>
+          <div class="kpi"><span class="skeleton" style="width:60%;height:11px"></span><span class="skeleton" style="display:block;width:45%;height:26px;margin-top:10px"></span></div>
+          <div class="kpi"><span class="skeleton" style="width:60%;height:11px"></span><span class="skeleton" style="display:block;width:45%;height:26px;margin-top:10px"></span></div>
+          <div class="kpi"><span class="skeleton" style="width:60%;height:11px"></span><span class="skeleton" style="display:block;width:45%;height:26px;margin-top:10px"></span></div>
+          <div class="kpi"><span class="skeleton" style="width:60%;height:11px"></span><span class="skeleton" style="display:block;width:45%;height:26px;margin-top:10px"></span></div>
+        </div>
+        <div class="card card--pad mt-3" style="box-shadow:none"><span class="skeleton" style="display:block;height:180px"></span></div>
+      </div>
+
+      <!-- ============ empty ============ -->
+      <div data-view="empty" data-tab-panel="overview" hidden>
+        <div class="state">
+          <div class="state__icon"><span class="ic ic--thumb-up ic--lg"></span></div>
+          <h2>No feedback yet</h2>
+          <p>Nothing is missing — no votes have been recorded in this range. Rate a delivered message with the thumbs control under it in Chats or Mails; the first records appear here after the next summary refresh.</p>
+          <div class="row mt-2"><a class="btn btn--primary" href="chats.html">Open chats</a><a class="btn btn--ghost" href="omniscience.html">Omniscience review</a></div>
+        </div>
+      </div>
+
+      <!-- ============ error ============ -->
+      <div data-view="error" data-tab-panel="overview" hidden>
+        <div class="state">
+          <div class="state__icon state__icon--danger"><span class="ic ic--warn ic--lg"></span></div>
+          <h2>Summary is temporarily unavailable</h2>
+          <p>The feedback service did not respond. Your filters are preserved — retry in a moment.</p>
+          <button type="button" class="btn btn--ghost" data-reload>Try again</button>
+        </div>
+      </div>
+
+      <!-- ==================== WEAK CASES ==================== -->
+      <div data-view="weak-cases" data-tab-panel="weak" data-od-id="fb-weak" hidden>
+        <div class="fb-cover-note mb-2"><span class="ic ic--info"></span><div><strong>Review candidates, not verdicts.</strong> Negative feedback, confirmed no-reply windows, and confirmed D7 misses are listed as separate reasons. A missing response is not a quality label unless the observation window is mature and coverage is complete.</div></div>
+        <div class="tbl-wrap" style="border:1px solid var(--border);border-radius:var(--r-md)">
+          <table class="tbl tbl--wrap" id="tb-weak">
+            <thead><tr><th>Reason</th><th>Platform</th><th style="min-width:190px">Message / content</th><th style="min-width:160px">Review comment</th><th>Profile / recipient</th><th>Event date</th><th>Coverage</th><th style="width:76px"><span class="sr-only">Actions</span></th></tr></thead>
+            <tbody id="weak-rows"></tbody>
+          </table>
+        </div>
+        <div class="row mt-2" style="justify-content:center">
+          <button type="button" class="btn btn--ghost btn--sm" id="weak-more">Load more cases</button>
+          <span class="tiny muted" id="weak-more-note"></span>
+        </div>
+      </div>
+
+      <div data-view="weak-empty" data-tab-panel="weak" hidden>
+        <div class="state">
+          <div class="state__icon state__icon--muted"><span class="ic ic--check ic--lg"></span></div>
+          <h2>No weak cases match these filters.</h2>
+          <p>Widen the date range or clear the platform / origin filters to see more candidates.</p>
+        </div>
+      </div>
+
+      <div data-view="weak-error" data-tab-panel="weak" hidden>
+        <div class="state">
+          <div class="state__icon state__icon--danger"><span class="ic ic--warn ic--lg"></span></div>
+          <h2>Cases are temporarily unavailable.</h2>
+          <p>The list could not be fetched. Filters are preserved — retry in a moment.</p>
+          <button type="button" class="btn btn--ghost" data-reload>Try again</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<!-- Create fix task — closes the loop from a weak case to a human-owned task.
+     Not an adjudication or dataset-acceptance action. -->
+<div class="modal-backdrop" id="fix-modal" role="dialog" aria-modal="true" aria-labelledby="fix-t" data-od-id="fix-modal">
+  <div class="modal">
+    <div class="modal__head"><h3 id="fix-t">Create fix task</h3><button type="button" class="icon-btn" data-fix-close aria-label="Close"><span class="ic ic--cross"></span></button></div>
+    <div class="modal__body">
+      <div class="field"><label for="fix-title">Title</label><input class="input" id="fix-title"></div>
+      <div class="field mt-2"><label for="fix-ref">Message reference</label><input class="input mono" id="fix-ref" readonly></div>
+      <div class="field mt-2"><label for="fix-reason">Reason</label><select class="select" id="fix-reason"><option>Unnatural tone</option><option>Ignored context</option><option>Wrong language</option><option>Too pushy</option><option>Timing off</option><option>Outcome window — not a quality label</option></select></div>
+      <div class="field mt-2"><label for="fix-notes">Notes</label><textarea class="input" id="fix-notes" rows="3" placeholder="What should change — prompt, template, timing…"></textarea></div>
+    </div>
+    <div class="modal__foot"><button type="button" class="btn btn--quiet" data-fix-close>Cancel</button><button type="button" class="btn btn--primary" id="fix-create">Create task</button></div>
+  </div>
+</div>
+
+<script src="assets/fixtures.js"></script>
+<script src="assets/components.js"></script>
+<script src="assets/stateful.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  FlowUI.mount({ nav: 'admin', zone: 'admin', sub: 'admin-message-feedback.html', title: 'Message feedback', crumbs: ['Admin'] });
+  var F = window.Fixtures;
+  var S = F.FB_SUM;
+  document.getElementById('fb-updated').textContent = 'Updated ' + S.updated;
+
+  /* ---------- summary cards ---------- */
+  var pct = function (n, d) { return Math.round(n / d * 100) + '%'; };
+  var cov = Math.round(S.rated / S.eligible * 100);
+  document.getElementById('k-rated').innerHTML = S.rated + ' <span class="unit">/ ' + S.eligible + ' eligible</span>';
+  document.getElementById('k-rated-bar').style.width = cov + '%';
+  document.getElementById('k-rated-n').innerHTML = cov + '% coverage <span class="delta-pill delta-pill--up" style="margin-left:4px">' + S.wowRated + ' WoW</span>';
+  document.getElementById('k-pos').innerHTML = pct(S.pos, S.rated) + ' <span class="unit">' + S.pos + ' / ' + S.rated + '</span>';
+  document.getElementById('k-pos-w').innerHTML = 'of all votes <span class="delta-pill delta-pill--up" style="margin-left:4px">' + S.wowPos + ' WoW</span>';
+  var aiP = pct(S.aiPos, S.aiN), manP = pct(S.manPos, S.manN);
+  var pp = Math.round((S.aiPos / S.aiN - S.manPos / S.manN) * 100);
+  document.getElementById('k-ai').innerHTML = aiP + ' <span class="unit">' + S.aiPos + ' / ' + S.aiN + '</span>';
+  document.getElementById('k-ai-d').innerHTML = 'verified lineage <span class="delta-pill ' + (pp >= 0 ? 'delta-pill--up' : 'delta-pill--down') + '" style="margin-left:4px">' + (pp >= 0 ? '+' : '') + pp + 'pp vs manual</span>';
+  document.getElementById('k-man').innerHTML = manP + ' <span class="unit">' + S.manPos + ' / ' + S.manN + '</span>';
+  document.getElementById('k-man-n').textContent = 'baseline for the pilot';
+  document.getElementById('k-cmt').innerHTML = pct(S.commented, S.rated) + ' <span class="unit">' + S.commented + ' / ' + S.rated + '</span>';
+  document.getElementById('k-cmt-n').innerHTML = 'of votes carry a comment · <span class="mono">' + S.negWithReason + '/' + S.negTotal + '</span> negatives have a reason';
+  document.getElementById('k-rev').innerHTML = S.reviewersActive + ' <span class="unit">/ ' + S.reviewersTotal + '</span>';
+  document.getElementById('k-rev-n').textContent = 'median send → vote ' + S.medTtf;
+  document.getElementById('k-r24').innerHTML = pct(S.r24, S.rated) + ' <span class="unit">' + S.r24 + ' / ' + S.rated + '</span>';
+  document.getElementById('k-r24n').textContent = 'of rated';
+  document.getElementById('k-r72').innerHTML = pct(S.r72, S.rated) + ' <span class="unit">' + S.r72 + ' / ' + S.rated + '</span>';
+  document.getElementById('k-r72n').textContent = 'of rated';
+  document.getElementById('k-ret').innerHTML = S.d1 + '% <span class="unit">/ ' + S.d7 + '%</span>';
+  document.getElementById('k-retn').textContent = '6 complete · 2 maturing cohorts';
+
+  /* ---------- feedback-over-time stacked bars ---------- */
+  var maxD = Math.max.apply(null, F.FB_DAILY.map(function (d) { return d.pos + d.neg + d.pending + d.unknown; }));
+  var chDaily = document.getElementById('ch-daily');
+  chDaily.style.setProperty('--max', maxD);
+  chDaily.innerHTML = F.FB_DAILY.map(function (d) {
+    var x = d.pending + d.unknown;
+    return '<div class="fcol" style="--p:' + d.pos + ';--n:' + d.neg + ';--x:' + x + '">' +
+      '<span class="fcol-tip"><b>+' + d.pos + '</b> positive · <span class="n">−' + d.neg + ' neg</span><br><span class="n">' + d.pending + ' pending · ' + d.unknown + ' unknown</span></span>' +
+      (x ? '<i class="seg-x" title="Pending + unknown — not scored"></i>' : '') +
+      (d.neg ? '<i class="seg-n"></i>' : '') + (d.pos ? '<i class="seg-p"></i>' : '') + '</div>';
+  }).join('');
+  document.getElementById('ch-daily-x').innerHTML = F.FB_DAILY.map(function (d) { return '<span>' + d.d + '</span>'; }).join('');
+  document.getElementById('tb-daily').innerHTML = '<thead><tr><th>Date</th><th class="num">Positive</th><th class="num">Negative</th><th class="num">Pending</th><th class="num">Unknown</th></tr></thead><tbody>' +
+    F.FB_DAILY.map(function (d) { return '<tr><td>' + d.d + '</td><td class="num">' + d.pos + '</td><td class="num">' + d.neg + '</td><td class="num">' + d.pending + '</td><td class="num">' + d.unknown + '</td></tr>'; }).join('') + '</tbody>';
+
+  /* ---------- send → vote lag + per-model quality ---------- */
+  var maxT = Math.max.apply(null, F.FB_TTF.map(function (t) { return t.n; }));
+  document.getElementById('fb-ttf-bars').innerHTML = F.FB_TTF.map(function (t) {
+    return '<div class="ttf-bar"><span class="l">' + t.l + '</span><span class="t"><i style="width:' + (t.n / maxT * 100).toFixed(1) + '%" title="' + t.n + ' votes"></i></span><span class="v">' + t.n + '</span></div>';
+  }).join('');
+  document.getElementById('fb-ttf-med').textContent = S.medTtf;
+
+  var fleetP = S.aiPos / S.aiN * 100;
+  document.getElementById('tb-models').innerHTML = '<thead><tr><th>Model</th><th class="num">Rated</th><th class="num">Positive</th><th class="num" style="width:110px">vs fleet</th></tr></thead><tbody>' +
+    F.FB_MODELS.map(function (m) {
+      var d = Math.round(m.pos - fleetP);
+      return '<tr><td class="model-d">' + m.name + '</td><td class="num">' + m.n + '</td><td class="num">' + m.pos + '%</td>' +
+        '<td class="num"><span class="delta-pill ' + (d >= 0 ? 'delta-pill--up' : 'delta-pill--down') + '">' + (d >= 0 ? '+' : '') + d + 'pp</span></td></tr>';
+    }).join('') +
+    '<tr><td class="muted">Fleet (verified AI)</td><td class="num muted">' + S.aiN + '</td><td class="num muted">' + Math.round(fleetP) + '%</td><td class="num muted">—</td></tr></tbody>';
+
+  /* ---------- line chart helper (no interpolation over null) ---------- */
+  var chartUid = 0;
+  function smoothPath(pts) {
+    /* Catmull-Rom → cubic bezier; pts: [[x,y,…],…] inside one contiguous run */
+    var f = function (p) { return p[0].toFixed(1) + ',' + p[1].toFixed(1); };
+    if (pts.length < 3) return 'M' + pts.map(f).join(' L');
+    var d = 'M' + f(pts[0]);
+    for (var i = 0; i < pts.length - 1; i++) {
+      var p0 = pts[i - 1] || pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] || p2;
+      var c1x = p1[0] + (p2[0] - p0[0]) / 6, c1y = p1[1] + (p2[1] - p0[1]) / 6;
+      var c2x = p2[0] - (p3[0] - p1[0]) / 6, c2y = p2[1] - (p3[1] - p1[1]) / 6;
+      d += 'C' + c1x.toFixed(1) + ',' + c1y.toFixed(1) + ' ' + c2x.toFixed(1) + ',' + c2y.toFixed(1) + ' ' + f(p2);
+    }
+    return d;
+  }
+  function lineChart(el, rows, series, opts) {
+    opts = opts || {};
+    var W = 640, H = 178, pl = 34, pr = 40, pt = 12, pb = 24, min = 30, max = 100;
+    var n = rows.length;
+    var x = function (i) { return pl + i * (W - pl - pr) / (n - 1); };
+    var y = function (v) { return pt + (max - v) / (max - min) * (H - pt - pb); };
+    var uid = 'lg' + (++chartUid);
+    var s = '<defs>' +
+      '<linearGradient id="' + uid + 'a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--accent)" stop-opacity=".14"/><stop offset="1" stop-color="var(--accent)" stop-opacity="0"/></linearGradient>' +
+      '<linearGradient id="' + uid + 'b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--accent-2)" stop-opacity=".10"/><stop offset="1" stop-color="var(--accent-2)" stop-opacity="0"/></linearGradient></defs>';
+    [40, 60, 80, 100].forEach(function (g) {
+      s += '<line class="gl" x1="' + pl + '" y1="' + y(g) + '" x2="' + (W - pr) + '" y2="' + y(g) + '"/><text class="ax-t" x="4" y="' + (y(g) + 3) + '">' + g + '%</text>';
+    });
+    if (opts.bandFrom != null) {
+      var bx = x(opts.bandFrom) - (x(1) - x(0)) / 2;
+      s += '<rect class="band" x="' + bx + '" y="' + pt + '" width="' + (W - pr - bx) + '" height="' + (H - pt - pb) + '"/>' +
+           '<text class="band-t" x="' + (bx + 8) + '" y="' + (pt + 12) + '">maturing</text>';
+    }
+    series.forEach(function (sr, si) {
+      var cls = si === 0 ? 'a' : 'b';
+      var run = [], runs = [];
+      rows.forEach(function (r, i) {
+        var v = r[sr.k];
+        if (v == null) { if (run.length) runs.push(run); run = []; return; }
+        run.push([x(i), y(v), i]);
+      });
+      if (run.length) runs.push(run);
+      runs.forEach(function (rpts) {
+        var line = smoothPath(rpts);
+        if (rpts.length > 1) {
+          s += '<path d="' + line + ' L' + rpts[rpts.length - 1][0].toFixed(1) + ',' + (H - pb) + ' L' + rpts[0][0].toFixed(1) + ',' + (H - pb) + ' Z" fill="url(#' + uid + cls + ')" stroke="none"/>';
+        }
+        s += '<path class="ln-' + cls + '" d="' + line + '"/>';
+      });
+      /* last real point carries an end label */
+      for (var li = rows.length - 1; li >= 0; li--) {
+        if (rows[li][sr.k] != null) {
+          s += '<text class="ax-v" x="' + (W - pr + 8) + '" y="' + (y(rows[li][sr.k]) + 3) + '">' + rows[li][sr.k] + '%</text>';
+          break;
+        }
+      }
+      rows.forEach(function (r, i) {
+        var v = r[sr.k];
+        if (v == null) return;
+        s += '<circle class="pt-' + cls + '" cx="' + x(i).toFixed(1) + '" cy="' + y(v).toFixed(1) + '" r="4"><title>' + r.d + ' — ' + sr.label + ' ' + v + '% (n=' + r.n + ', pending ' + r.pending + ', unknown ' + r.unknown + ')</title></circle>';
+      });
+    });
+    rows.forEach(function (r, i) { s += '<text class="ax-t" x="' + x(i) + '" y="' + (H - 8) + '" text-anchor="middle">' + r.d + '</text>'; });
+    el.innerHTML = '<svg class="lchart" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + (opts.aria || 'chart') + '">' + s + '</svg>';
+  }
+
+  lineChart(document.getElementById('ch-reply'), F.FB_REPLY, [
+    { k: 'h24', label: '≤24h' }, { k: 'h72', label: '≤72h' }
+  ], { aria: 'Reply rate within 24 and 72 hours' });
+
+  document.getElementById('tb-reply').innerHTML = '<thead><tr><th>Date</th><th class="num">≤24h</th><th class="num">≤72h</th><th class="num">N</th><th class="num">Pending</th><th class="num">Unknown</th></tr></thead><tbody>' +
+    F.FB_REPLY.map(function (r) { return '<tr><td>' + r.d + '</td><td class="num">' + r.h24 + '%</td><td class="num">' + (r.h72 == null ? 'pending' : r.h72 + '%') + '</td><td class="num">' + r.n + '</td><td class="num">' + r.pending + '</td><td class="num">' + r.unknown + '</td></tr>'; }).join('') + '</tbody>';
+
+  /* retention chart — band over pending/unknown cohorts */
+  var bandFrom = null;
+  F.FB_COHORTS.forEach(function (c, i) { if (c.cov !== 'complete' && bandFrom == null) bandFrom = i; });
+  lineChart(document.getElementById('ch-ret'), F.FB_COHORTS, [
+    { k: 'd1', label: 'D1' }, { k: 'd7', label: 'D7' }
+  ], { aria: 'D1 and D7 retention by cohort', bandFrom: bandFrom });
+
+  var COV = {
+    complete: '<span class="cov cov--complete"><span class="ic ic--check"></span>Complete</span>',
+    pending: '<span class="cov cov--pending"><span class="ic ic--clock"></span>Pending</span>',
+    unknown: '<span class="cov cov--unknown"><span class="ic ic--info"></span>Unknown</span>'
+  };
+  function cellRet(v, size) { return v == null ? '<span class="muted">pending</span>' : v + '% <span class="tiny muted mono">' + Math.round(v * size / 100) + '/' + size + '</span>'; }
+  document.getElementById('tb-cohorts').innerHTML = '<thead><tr><th>Date</th><th class="num">Cohort</th><th class="num">D1</th><th class="num">D7</th><th>Coverage</th></tr></thead><tbody>' +
+    F.FB_COHORTS.map(function (c) {
+      return '<tr><td class="strong">' + c.d + '</td><td class="num">' + c.size + '</td><td class="num">' + cellRet(c.d1, c.size) + '</td><td class="num">' + cellRet(c.d7, c.size) + '</td><td>' + COV[c.cov] + '</td></tr>';
+    }).join('') + '</tbody>';
+
+  /* ---------- v1.1: reason bars / reviewers / slice matrix ---------- */
+  var rMax = Math.max.apply(null, F.FB_REASONS.map(function (r) { return r.n; }));
+  document.getElementById('fb-reason-bars').innerHTML = F.FB_REASONS.map(function (r) {
+    return '<div class="rbar"><span class="rbar__l" title="' + r.l + '">' + r.l + '</span><span class="rbar__t"><i style="width:' + Math.round(r.n / rMax * 100) + '%"></i></span><span class="rbar__v">' + r.n + '</span></div>';
+  }).join('');
+
+  document.getElementById('tb-reviewers').innerHTML = '<thead><tr><th>Reviewer</th><th class="num">Rated</th><th class="num">% pos</th><th class="num">Agreement</th></tr></thead><tbody>' +
+    F.FB_REVIEWERS.map(function (r) {
+      return '<tr><td><div class="strong">' + r.name + '</div><div class="tiny muted">' + r.role + '</div></td><td class="num">' + r.rated + '</td><td class="num">' + r.pos + '%</td><td class="num" title="' + r.dbl + ' double-rated messages">' + r.agr + '% <span class="tiny muted mono">n=' + r.dbl + '</span></td></tr>';
+    }).join('') + '</tbody>';
+
+  function sliceCell(c) {
+    if (!c) return '<td class="slice-cell"><span class="slice-v"><b class="muted">—</b><small>no coverage</small></span></td>';
+    var tone = c.v >= 75 ? 'var(--success)' : c.v >= 65 ? 'var(--warning)' : 'var(--danger)';
+    var alpha = Math.max(0.06, Math.min(0.22, c.v / 100 * 0.26)).toFixed(2);
+    return '<td class="slice-cell"><span class="slice-v" style="background:oklch(from ' + tone + ' l c h / ' + alpha + ')" title="' + c.v + '% positive · n=' + c.n + '"><b>' + c.v + '%</b><small>n=' + c.n + '</small></span></td>';
+  }
+  document.getElementById('tb-slice').innerHTML = '<thead><tr><th>Platform</th><th class="num" style="text-align:center">AI output</th><th class="num" style="text-align:center">Template</th><th class="num" style="text-align:center">Manual</th></tr></thead><tbody>' +
+    F.FB_SLICE.map(function (r) {
+      return '<tr><td>' + FlowUI.platformTag(r.p, { nameOnly: true }) + '</td>' + sliceCell(r.ai) + sliceCell(r.tpl) + sliceCell(r.man) + '</tr>';
+    }).join('') + '</tbody>';
+
+  /* ---------- weak cases ---------- */
+  var REASON = {
+    neg: '<span class="badge badge--danger"><span class="ic ic--thumb-up" style="transform:scaleY(-1)"></span>Negative feedback</span>',
+    noreply: '<span class="badge badge--warning"><span class="ic ic--clock"></span>No reply — confirmed</span>',
+    d7: '<span class="badge badge--muted"><span class="ic ic--history ic--sm"></span>D7 miss</span>'
+  };
+  function weakRow(w, i) {
+    var msg = w.expired ? '<span class="muted" style="font-style:italic">Content expired</span>' : '<a href="' + w.href + '" style="color:var(--accent-txt);font-weight:600">' + w.msg + '</a>';
+    var cmt = w.comment ? '<span style="color:var(--fg-2)">' + w.comment + '</span>' : '<span class="muted">—</span>';
+    return '<tr data-wi="' + i + '"><td>' + REASON[w.reason] + '</td><td>' + FlowUI.platformTag(w.platform, { nameOnly: true }) + '</td><td style="white-space:normal">' + msg + '</td><td style="white-space:normal">' + cmt + '</td><td class="small">' + w.who + '</td><td class="mono small">' + w.date + '</td><td>' + COV[w.cov] + '</td>' +
+      '<td><div class="wk-act">' +
+        '<button type="button" class="icon-btn" data-rv="' + i + '" aria-pressed="false" title="Mark reviewed — personal queue marker, not a verdict" aria-label="Mark reviewed"><span class="ic ic--check"></span></button>' +
+        '<button type="button" class="icon-btn" data-fix="' + i + '" title="Create fix task" aria-label="Create fix task"><span class="ic ic--plus"></span></button>' +
+      '</div></td></tr>';
+  }
+  var rowsEl = document.getElementById('weak-rows');
+  rowsEl.innerHTML = F.FB_WEAK.map(weakRow).join('');
+  var moreBtn = document.getElementById('weak-more');
+  var moreNote = document.getElementById('weak-more-note');
+  var loadedMore = false;
+  moreBtn.addEventListener('click', function () {
+    if (loadedMore) return;
+    loadedMore = true;
+    var older = F.FB_WEAK.slice(2, 5).map(function (w) { return Object.assign({}, w, { date: 'Aug 22–26 · older' }); });
+    rowsEl.insertAdjacentHTML('beforeend', older.map(weakRow).join(''));
+    document.getElementById('weak-cnt').textContent = '12';
+    moreBtn.disabled = true;
+    moreNote.textContent = 'All matching cases loaded — filters unchanged.';
+  });
+
+  /* ---------- weak-case actions: personal "reviewed" + fix task ---------- */
+  var reviewedSet = {};
+  rowsEl.parentElement.addEventListener('click', function (e) {
+    var rv = e.target.closest('[data-rv]');
+    if (rv) {
+      var tr = rv.closest('tr');
+      var on = !tr.classList.contains('is-reviewed');
+      tr.classList.toggle('is-reviewed', on);
+      rv.setAttribute('aria-pressed', String(on));
+      rv.classList.toggle('is-on', on);
+      reviewedSet[rv.getAttribute('data-rv')] = on;
+      if (window.flowToast) flowToast(on ? 'Marked reviewed — visible only to you' : 'Reviewed mark removed');
+      return;
+    }
+    var fx = e.target.closest('[data-fix]');
+    if (fx) {
+      var w = F.FB_WEAK[+fx.getAttribute('data-fix')] || {};
+      document.getElementById('fix-title').value = 'Fix ' + (w.reasonTxt || 'weak case').toLowerCase() + ' — ' + (w.platform || '');
+      document.getElementById('fix-ref').value = (w.href || '').split('?msg=')[1] || 'msg-unknown';
+      document.getElementById('fix-notes').value = w.comment || '';
+      document.getElementById('fix-modal').classList.add('is-open');
+      return;
+    }
+  });
+  document.querySelectorAll('[data-fix-close]').forEach(function (b) {
+    b.addEventListener('click', function () { document.getElementById('fix-modal').classList.remove('is-open'); });
+  });
+  document.getElementById('fix-create').addEventListener('click', function () {
+    document.getElementById('fix-modal').classList.remove('is-open');
+    if (window.flowToast) flowToast('Fix task created — linked to ' + document.getElementById('fix-ref').value);
+  });
+  document.getElementById('fix-modal').addEventListener('click', function (e) {
+    if (e.target === this) this.classList.remove('is-open');
+  });
+
+  /* ---------- copy shareable link ---------- */
+  document.getElementById('fb-copylink').addEventListener('click', function () {
+    var q = new URLSearchParams({
+      from: document.getElementById('fb-from').value,
+      to: document.getElementById('fb-to').value,
+      platform: document.getElementById('fb-platform').value,
+      origin: document.getElementById('fb-origin').value,
+      mode: document.getElementById('fb-mode').value
+    });
+    var url = 'admin-message-feedback.html?' + q.toString();
+    try { navigator.clipboard.writeText(url); } catch (_) {}
+    if (window.flowToast) flowToast('Link copied — filters are in the URL');
+  });
+
+  /* ---------- tabs → states (isolated from generic tab handler) ---------- */
+  var tabs = document.getElementById('fb-tabs');
+  tabs.addEventListener('click', function (e) {
+    var t = e.target.closest('[data-tab]');
+    if (!t) return;
+    e.stopPropagation();
+    e.preventDefault();
+    if (window.FlowState) FlowState.set(t.getAttribute('data-tab') === 'weak' ? 'weak-cases' : 'overview');
+  });
+
+  /* ---------- invalid date range ---------- */
+  var toField = document.getElementById('fb-to-field');
+  var lastS = null;
+  new MutationObserver(function () {
+    var s = document.documentElement.getAttribute('data-state');
+    if (s === lastS) return;
+    lastS = s;
+    toField.classList.toggle('has-error', s === 'invalid-range');
+    if (s === 'invalid-range') document.getElementById('fb-to').setAttribute('aria-invalid', 'true');
+    else document.getElementById('fb-to').removeAttribute('aria-invalid');
+  }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-state'] });
+  if (document.documentElement.getAttribute('data-state') === 'invalid-range') toField.classList.add('has-error');
+})();
+</script>
+</body>
+</html>

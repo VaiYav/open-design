@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mailing · Flow v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+</head>
+<body data-od-id="page" data-od-label="Mailing">
+<main class="v2-main" id="page">
+
+  <div data-view="populated">
+    <div class="page-head">
+      <div class="page-head__t"><h1>Mailing — Anna S.</h1><p class="sub">One-shot sends to a picked audience — for promos, re-engagement and announcements. Replaces the old stub route.</p></div>
+      <div class="page-head__actions"><button type="button" class="btn btn--primary" data-modal-open="mailing-modal"><span class="ic ic--plus"></span>New mailing</button></div>
+    </div>
+
+    <div class="grid" style="grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);align-items:start">
+      <div class="card tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Mailing</th><th>Audience</th><th>Sent</th><th>Status</th><th>Reply rate</th><th style="text-align:right">Actions</th></tr></thead>
+          <tbody>
+            <tr><td class="strong">Weekend promo — 2× credits<br><span class="tiny muted mono">ML-41</span></td><td class="small">Active contacts · 214</td><td class="num">214</td><td><span class="badge badge--success">Done</span></td><td class="num">19%</td><td class="t-actions"><button type="button" class="icon-btn" title="Duplicate" data-toast="Duplicated as draft"><span class="ic ic--copy"></span></button></td></tr>
+            <tr><td class="strong">Re-engagement — 14d silent<br><span class="tiny muted mono">ML-42</span></td><td class="small">Silent 14d+ · 67</td><td class="num">—</td><td><span class="badge badge--warning">Scheduled Fri 18:00</span></td><td class="num">—</td><td class="t-actions"><button type="button" class="icon-btn" title="Edit" data-toast="Editor opened (prototype)"><span class="ic ic--pencil"></span></button><button type="button" class="icon-btn" title="Cancel" data-toast="Mailing cancelled"><span class="ic ic--close"></span></button></td></tr>
+            <tr><td class="strong">New photos up<br><span class="tiny muted mono">ML-43</span></td><td class="small">Opened last mail · 96</td><td class="num">34 / 96</td><td><span class="badge badge--accent">Sending 35%</span></td><td class="num">11%</td><td class="t-actions"><button type="button" class="icon-btn" title="Pause" data-toast="Paused"><span class="ic ic--stop"></span></button></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card card--pad">
+          <h3 class="mb-2" style="font-size:14px">Audience builder</h3>
+          <div class="field mb-1"><label>Who receives it</label>
+            <div class="row wrap" data-chip-group style="gap:6px">
+              <button type="button" class="chip is-active" data-chip>Active contacts</button>
+              <button type="button" class="chip" data-chip>Silent 7d+</button>
+              <button type="button" class="chip" data-chip>Credit history</button>
+              <button type="button" class="chip" data-chip>New this week</button>
+            </div>
+          </div>
+          <p class="small muted">Estimate updates live — currently <strong class="mono" style="color:var(--accent-txt)">214 contacts</strong>.</p>
+        </div>
+        <div class="notice notice--warning"><span class="ic ic--warn-o"></span><div><span class="t">Platform limits apply.</span> RealLoves caps at 60 sends/hour — larger audiences send in waves automatically.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div data-view="loading" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Mailing</h1><p class="sub">One-shot sends to a picked audience.</p></div></div>
+    <div class="card"><div id="ml-sk"></div></div>
+  </div>
+  <div data-view="empty" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Mailing</h1><p class="sub">One-shot sends to a picked audience.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon"><span class="ic ic--mailing ic--lg"></span></div><h2>No mailings yet</h2><p>Pick an audience, write one message, and send it in waves under the platform's hourly limit.</p><button type="button" class="btn btn--primary" data-modal-open="mailing-modal">New mailing</button></div></div>
+  </div>
+  <div data-view="error" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Mailing</h1><p class="sub">One-shot sends to a picked audience.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon state__icon--danger"><span class="ic ic--warn ic--lg"></span></div><h2>Mailing failed to load</h2><p>Retry in a moment.</p><button type="button" class="btn btn--ghost" data-reload>Try again</button></div></div>
+  </div>
+
+  <div class="modal-backdrop" id="mailing-modal" role="dialog" aria-modal="true" aria-labelledby="mailing-modal-t">
+    <div class="modal">
+      <div class="modal__head"><h3 id="mailing-modal-t">New mailing</h3><button type="button" class="icon-btn" data-modal-close aria-label="Close"><span class="ic ic--close"></span></button></div>
+      <div class="modal__body">
+        <form class="form-grid" data-form="validate" data-success="Mailing scheduled" novalidate>
+          <div class="field"><label for="ml-name">Name</label><input class="input" id="ml-name" required placeholder="e.g. Weekend promo"><span class="err"><span class="ic ic--warn ic--sm"></span>Name is required</span></div>
+          <div class="field"><label for="ml-aud">Audience</label><select class="select" id="ml-aud"><option>Active contacts (214)</option><option>Silent 7d+ (88)</option><option>Credit history (52)</option></select></div>
+          <div class="field span-2"><label for="ml-text">Message</label><textarea class="textarea" id="ml-text" required maxlength="300" placeholder="The message every selected contact receives…"></textarea><span class="err"><span class="ic ic--warn ic--sm"></span>Message is required</span></div>
+          <div class="field span-2"><label for="ml-when">Send</label><select class="select" id="ml-when"><option>Now, in hourly-limit waves</option><option>Schedule for later</option></select></div>
+          <div class="span-2 row" style="justify-content:flex-end"><button type="button" class="btn btn--quiet" data-modal-close>Cancel</button><button type="submit" class="btn btn--primary">Schedule mailing</button></div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</main>
+<script src="assets/fixtures.js"></script>
+<script src="assets/components.js"></script>
+<script src="assets/stateful.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  FlowUI.mount({ nav: 'tools', zone: 'tools', sub: 'tools-mailing.html', title: 'Mailing', crumbs: ['Tools', 'Anna S.'], lady: true });
+  var sk = '';
+  for (var i = 0; i < 4; i++) sk += '<div class="sk-row"><span class="skeleton" style="width:24%;height:13px"></span><span class="skeleton" style="width:16%;height:12px"></span><span style="flex:1"></span><span class="skeleton" style="width:80px;height:22px;border-radius:999px"></span></div>';
+  document.getElementById('ml-sk').innerHTML = sk;
+})();
+</script>
+</body>
+</html>

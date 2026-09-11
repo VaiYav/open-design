@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit lady · Flow v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+</head>
+<body data-od-id="page" data-od-label="Edit lady profile">
+<main class="v2-main" id="page">
+
+  <div class="page-head"><div class="page-head__t"><h1>Edit — Anna S.</h1><p class="sub">RealLoves · ID 884217 · verified Aug 12.</p></div>
+    <div class="page-head__actions"><a class="btn btn--ghost" href="admin-lady-group-edit.html"><span class="ic ic--groups"></span>Groups</a></div>
+  </div>
+
+  <div data-view="default">
+    <div class="grid" style="grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);align-items:start">
+      <div class="card"><div class="card__body">
+        <form class="form-grid" data-form="validate" data-success="Profile saved" novalidate>
+          <div class="field"><label for="le-name">Display name</label><input class="input" id="le-name" required value="Anna S."><span class="err"><span class="ic ic--warn ic--sm"></span>Name is required</span></div>
+          <div class="field"><label for="le-age">Age</label><input class="input" id="le-age" type="number" value="29" min="18"></div>
+          <div class="field"><label for="le-city">City</label><input class="input" id="le-city" value="Kyiv"></div>
+          <div class="field"><label for="le-op">Operator</label><select class="select" id="le-op"><option selected>Katerina V.</option><option>Igor B.</option><option>Sofia L.</option></select></div>
+          <div class="field span-2"><label for="le-bio">Bio</label><textarea class="textarea" id="le-bio" maxlength="300">Florist, morning runner, hopeless romantic about old cities.</textarea></div>
+          <div class="field span-2"><label class="check"><input type="checkbox" checked data-demo><span class="box"></span>Profile active (receives sends)</label>
+          <label class="check"><input type="checkbox" checked data-demo><span class="box"></span>God Hand enabled</label></div>
+          <div class="span-2 row" style="justify-content:flex-end"><a class="btn btn--quiet" href="admin-lady-profiles.html">Cancel</a><button type="submit" class="btn btn--primary">Save changes</button></div>
+        </form>
+      </div></div>
+      <div class="card card--pad">
+        <h3 class="mb-2" style="font-size:14px">Media</h3>
+        <div class="media-grid">
+          <div class="media-tile"><span class="ic ic--media"></span><span class="badge badge--accent">Main</span></div>
+          <div class="media-tile"><span class="ic ic--media"></span></div>
+          <div class="media-tile"><span class="ic ic--media"></span></div>
+          <div class="media-tile media-tile--empty"><div style="text-align:center"><span class="ic ic--upload ic--lg"></span><p class="tiny muted">Add</p></div></div>
+        </div>
+        <p class="tiny muted mt-2">214 photos on platform · syncs nightly.</p>
+      </div>
+    </div>
+  </div>
+
+  <div data-view="success" hidden>
+    <div class="card" style="max-width:640px;margin:40px auto"><div class="state">
+      <div class="state__icon" style="background:var(--success-soft);color:var(--success)"><span class="ic ic--check ic--lg"></span></div>
+      <h2>Profile saved</h2><p>Changes are live — public fields sync to the platform within the hour.</p>
+      <div class="row mt-2"><a class="btn btn--primary" href="admin-lady-profiles.html">All profiles</a></div>
+    </div></div>
+  </div>
+
+</main>
+<script src="assets/fixtures.js"></script>
+<script src="assets/components.js"></script>
+<script src="assets/stateful.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () { FlowUI.mount({ nav: 'admin', zone: 'admin', sub: 'admin-lady-profiles.html', title: 'Edit lady', crumbs: ['Admin', 'Lady profiles'], role: 'admin' }); })();
+</script>
+</body>
+</html>

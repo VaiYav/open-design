@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Schedules · Flow v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+</head>
+<body data-od-id="page" data-od-label="Schedules">
+<main class="v2-main" id="page">
+
+  <div data-view="populated">
+    <div class="page-head">
+      <div class="page-head__t"><h1>Schedules</h1><p class="sub">Operator shifts per lady — sends only fire inside a staffed window.</p></div>
+      <div class="page-head__actions"><a class="btn btn--primary" href="admin-schedule-new.html"><span class="ic ic--plus"></span>New schedule</a></div>
+    </div>
+    <div class="card tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>Lady</th><th>Operator</th><th>Days</th><th>Window</th><th>Timezone</th><th>Status</th><th style="text-align:right">Actions</th></tr></thead>
+        <tbody id="sch-rows"></tbody>
+      </table>
+    </div>
+    <div class="notice notice--warning mt-3"><span class="ic ic--warn-o"></span><div><span class="t">Coverage gap tomorrow 06:00–09:00.</span> No operator is scheduled for Anna S. — sends queue until the window opens. See <a href="admin-coverage.html" style="color:var(--accent-txt)">coverage</a>.</div></div>
+  </div>
+
+  <div data-view="loading" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Schedules</h1><p class="sub">Operator shifts per lady.</p></div></div>
+    <div class="card"><div id="sch-sk"></div></div>
+  </div>
+  <div data-view="empty" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Schedules</h1><p class="sub">Operator shifts per lady.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon"><span class="ic ic--clock ic--lg"></span></div><h2>No schedules</h2><p>Without a schedule, a lady's sends only fire while someone is manually online.</p><a class="btn btn--primary" href="admin-schedule-new.html">New schedule</a></div></div>
+  </div>
+  <div data-view="error" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Schedules</h1><p class="sub">Operator shifts per lady.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon state__icon--danger"><span class="ic ic--warn ic--lg"></span></div><h2>Schedules failed to load</h2><p>Retry in a moment.</p><button type="button" class="btn btn--ghost" data-reload>Try again</button></div></div>
+  </div>
+
+</main>
+<script src="assets/fixtures.js"></script>
+<script src="assets/components.js"></script>
+<script src="assets/stateful.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  FlowUI.mount({ nav: 'admin', zone: 'admin', sub: 'admin-schedules.html', title: 'Schedules', crumbs: ['Admin'], role: 'admin' });
+  var F = window.Fixtures;
+  document.getElementById('sch-rows').innerHTML = F.SCHEDULES.map(function (s) {
+    var badge = s.status === 'active' ? '<span class="badge badge--success">Active</span>' : '<span class="badge badge--muted">Paused</span>';
+    return '<tr><td class="strong">' + s.lady + '</td><td class="muted">' + s.operator + '</td><td class="mono small">' + s.days + '</td><td class="mono">' + s.window + '</td><td class="muted small">' + s.tz + '</td><td>' + badge + '</td>' +
+      '<td class="t-actions"><button type="button" class="icon-btn" title="Edit" data-toast="Editor opened (prototype)"><span class="ic ic--pencil"></span></button><button type="button" class="icon-btn" title="Delete" data-toast="Schedule deleted"><span class="ic ic--trash"></span></button></td></tr>';
+  }).join('');
+  var sk = '';
+  for (var i = 0; i < 5; i++) sk += '<div class="sk-row"><span class="skeleton" style="width:16%;height:13px"></span><span class="skeleton" style="width:14%;height:12px"></span><span class="skeleton" style="width:12%;height:12px"></span><span style="flex:1"></span><span class="skeleton" style="width:80px;height:22px;border-radius:999px"></span></div>';
+  document.getElementById('sch-sk').innerHTML = sk;
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "design-copy/admin-account-new.html",
+  "entry": "design-copy/admin-account-new.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-09-10T18:02:44.590Z",
+  "updatedAt": "2026-09-10T18:02:44.590Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

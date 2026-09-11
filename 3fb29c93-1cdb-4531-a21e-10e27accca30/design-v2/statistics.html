@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Statistics · Flow v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens-v2.css">
+</head>
+<body data-od-id="page" data-od-label="Statistics">
+<main class="v2-main" id="page">
+
+  <div data-view="populated">
+    <div class="page-head">
+      <div class="page-head__t"><h1>Statistics</h1><p class="sub">Workspace-wide roll-up — sends, replies and revenue per lady and platform.</p></div>
+      <div class="page-head__actions">
+        <select class="select" style="width:150px;height:40px" data-demo aria-label="Period"><option>Last 7 days</option><option selected>Last 30 days</option><option>August</option></select>
+        <button type="button" class="btn btn--ghost" data-toast="Report export started (prototype)"><span class="ic ic--download"></span>Export</button>
+      </div>
+    </div>
+
+    <div class="grid cols-4 mb-3">
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--send ic--sm"></span>Sends</div><div class="kpi__num">8 412</div><div class="kpi__delta kpi__delta--up">▲ 9% vs prev.</div></div>
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--reply ic--sm"></span>Replies</div><div class="kpi__num">1 968</div><div class="kpi__delta kpi__delta--up">▲ 4%</div></div>
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--mailing ic--sm"></span>Mails opened</div><div class="kpi__num">61.2<span class="unit">%</span></div><div class="kpi__delta" style="color:var(--muted)">of 1 140 sent</div></div>
+      <div class="kpi"><div class="kpi__lbl"><span class="ic ic--stats ic--sm"></span>Revenue</div><div class="kpi__num">$4 210</div><div class="kpi__delta kpi__delta--up">▲ 11%</div></div>
+    </div>
+
+    <div class="grid" style="grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);align-items:start">
+      <div class="card tbl-wrap" data-od-id="stats-table">
+        <table class="tbl">
+          <thead><tr><th>Lady</th><th>Platform</th><th>Sends</th><th>Replies</th><th>Rate</th><th>Revenue</th><th>Trend</th></tr></thead>
+          <tbody id="st-rows"></tbody>
+        </table>
+      </div>
+      <div class="card card--pad">
+        <h3 class="mb-2" style="font-size:14px">Reply rate by platform</h3>
+        <div id="st-bars" style="display:flex;flex-direction:column;gap:12px"></div>
+      </div>
+    </div>
+  </div>
+
+  <div data-view="loading" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Statistics</h1><p class="sub">Workspace-wide roll-up.</p></div></div>
+    <div class="grid cols-4 mb-3"><div class="skeleton" style="height:110px;border-radius:16px"></div><div class="skeleton" style="height:110px;border-radius:16px"></div><div class="skeleton" style="height:110px;border-radius:16px"></div><div class="skeleton" style="height:110px;border-radius:16px"></div></div>
+    <div class="card"><div id="st-sk"></div></div>
+  </div>
+  <div data-view="empty" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Statistics</h1><p class="sub">Workspace-wide roll-up.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon"><span class="ic ic--stats ic--lg"></span></div><h2>No data yet</h2><p>Statistics appear after the first sends land.</p></div></div>
+  </div>
+  <div data-view="error" hidden>
+    <div class="page-head"><div class="page-head__t"><h1>Statistics</h1><p class="sub">Workspace-wide roll-up.</p></div></div>
+    <div class="card"><div class="state"><div class="state__icon state__icon--danger"><span class="ic ic--warn ic--lg"></span></div><h2>Statistics failed to load</h2><p>Retry in a moment.</p><button type="button" class="btn btn--ghost" data-reload>Try again</button></div></div>
+  </div>
+
+</main>
+<script src="assets/fixtures.js"></script>
+<script src="assets/components.js"></script>
+<script src="assets/stateful.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  FlowUI.mount({ nav: 'stats', zone: 'workspace', title: 'Statistics', lady: false });
+  var F = window.Fixtures;
+  var data = [
+    { sends: 2140, replies: 556, rev: 1180 }, { sends: 890, replies: 169, rev: 402 },
+    { sends: 3021, replies: 937, rev: 1440 }, { sends: 1451, replies: 319, rev: 690 },
+    { sends: 310, replies: 25, rev: 98 }, { sends: 600, replies: 102, rev: 300 }
+  ];
+  document.getElementById('st-rows').innerHTML = F.LADIES.map(function (l, i) {
+    var d = data[i];
+    var rate = Math.round(d.replies / d.sends * 100) + '%';
+    var trend = i % 3 === 0 ? '<span class="kpi__delta kpi__delta--up">▲</span>' : '<span class="kpi__delta" style="color:var(--muted)">—</span>';
+    return '<tr><td><span class="row"><span class="avatar avatar--sm">' + l.initials + '</span><span class="strong">' + l.name + '</span></span></td>' +
+      '<td>' + FlowUI.platformTag(l.platform) + '</td><td class="num">' + d.sends.toLocaleString() + '</td><td class="num">' + d.replies.toLocaleString() + '</td>' +
+      '<td class="num">' + rate + '</td><td class="num">$' + d.rev + '</td><td>' + trend + '</td></tr>';
+  }).join('');
+  var plats = [['RealLoves', 26], ['LiveBeam', 31], ['TalkyTimes', 22], ['ChatsHouse', 18], ['FindBride', 9]];
+  document.getElementById('st-bars').innerHTML = plats.map(function (p) {
+    return '<div><div class="row row--between" style="font-size:12.5px;margin-bottom:5px"><span>' + p[0] + '</span><span class="mono">' + p[1] + '%</span></div>' +
+      '<div style="height:8px;border-radius:999px;background:var(--surface-2)"><div style="height:100%;width:' + p[1] * 3 + '%;border-radius:999px;background:var(--accent-grad)"></div></div></div>';
+  }).join('');
+  var sk = '';
+  for (var i = 0; i < 6; i++) sk += '<div class="sk-row"><span class="skeleton" style="width:32px;height:32px;border-radius:50%"></span><span class="skeleton" style="width:18%;height:13px"></span><span class="skeleton" style="width:12%;height:12px"></span><span style="flex:1"></span></div>';
+  document.getElementById('st-sk').innerHTML = sk;
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,609 @@
+<!doctype html>
+<html lang="ru" data-od-deck-protocol="1">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Flow v2 — питч редизайна</title>
+  <style>
+    /* ===========================================================
+       Deck framework — DO NOT EDIT the rules in this <style> block.
+       Edit only inside the second <style> block below (per-deck
+       styles) and inside <section class="slide"> bodies.
+
+       Contract this framework provides:
+         - 1920×1080 fixed canvas, scaled to fit the viewport
+         - Only .slide.active is visible at a time
+         - Programmatic prev/next + counter elements kept outside the scaled
+           stage but hidden by default so the host can render the UI chrome
+         - OD Deck Protocol v1 absolute navigation + slide-state events
+         - Keyboard (← → space PgUp PgDn Home End R), half-slide click, and stored
+           position survive iframe focus quirks
+         - "Save as PDF" produces a multi-page vertical PDF, one slide
+           per page, by toggling every slide visible under @media print
+       =========================================================== */
+    :root {
+      /* SLOT: theme tokens — the only top-level CSS the agent edits.
+         Add or override --bg / --fg / --accent / etc. here. */
+      --bg: #ffffff;
+      --fg: #111827;
+      --muted: #6b7280;
+      --faint: #9ca3af;
+      --border: #e5e7eb;
+      --surface: #f8fafc;
+      --surface-2: #f3f4f6;
+      --accent: #5862de;
+      --accent-2: #9f63ca;
+      --accent-soft: rgba(88, 98, 222, 0.09);
+      --success: #15803d;
+      --warning: #b45309;
+      --danger: #dc2626;
+      --shell: #0d0e17;
+      --mono: ui-monospace, 'SF Mono', Monaco, 'Cascadia Code', monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: var(--shell);
+      color: var(--fg);
+      font: 18px/1.5 'Open Sans', -apple-system, system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    .deck-shell {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+    }
+    .deck-stage {
+      width: 1920px;
+      height: 1080px;
+      background: var(--bg);
+      position: relative;
+      transform-origin: top left;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+    }
+    .slide {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+    .slide:not(.active) { display: none !important; }
+    :where(.slide.active) { display: flex; flex-direction: column; }
+
+    .deck-counter {
+      position: fixed;
+      bottom: 22px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: none;
+      align-items: center;
+      gap: 4px;
+      background: rgba(10, 14, 26, 0.92);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #fff;
+      font: 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+      letter-spacing: 0.18em;
+      z-index: 1000;
+    }
+    .deck-counter button {
+      width: 36px; height: 36px;
+      background: transparent;
+      color: #fff;
+      border: 0;
+      border-radius: 50%;
+      font-size: 18px;
+      line-height: 1;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: background 0.15s;
+    }
+    .deck-counter button:hover { background: rgba(255, 255, 255, 0.12); }
+    .deck-counter button[disabled] { opacity: 0.3; cursor: default; }
+    .deck-counter .deck-count {
+      padding: 0 14px;
+      letter-spacing: 0.22em;
+    }
+    .deck-counter .deck-count .total { color: rgba(255, 255, 255, 0.5); }
+    .deck-hint {
+      position: fixed;
+      bottom: 26px;
+      right: 28px;
+      color: rgba(255, 255, 255, 0.4);
+      font: 11px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      z-index: 999;
+      pointer-events: none;
+      display: none;
+    }
+
+    @media print {
+      @page { size: 1920px 1080px; margin: 0; }
+      html, body {
+        width: 1920px !important;
+        height: auto !important;
+        overflow: visible !important;
+        background: #fff !important;
+      }
+      .deck-shell {
+        position: static !important;
+        display: block !important;
+        inset: auto !important;
+      }
+      .deck-stage {
+        width: 1920px !important;
+        height: auto !important;
+        transform: none !important;
+        box-shadow: none !important;
+        position: static !important;
+      }
+      .slide {
+        display: flex !important;
+        position: relative !important;
+        inset: auto !important;
+        width: 1920px !important;
+        height: 1080px !important;
+        page-break-after: always;
+        break-after: page;
+      }
+      .slide:last-child { page-break-after: auto; break-after: auto; }
+      .deck-counter, .deck-hint { display: none !important; }
+    }
+  </style>
+  <style>
+    /* SLOT: per-deck styles — Flow v2 pitch, Russian copy. */
+    .slide { padding: 84px 96px; }
+    .eyebrow { font: 700 13px/1 var(--mono); letter-spacing: .22em; text-transform: uppercase; color: var(--accent); margin-bottom: 22px; }
+    .h-xl { font-size: 118px; font-weight: 800; letter-spacing: -0.035em; line-height: 1.02; }
+    .h-lg { font-size: 64px; font-weight: 800; letter-spacing: -0.028em; line-height: 1.06; }
+    .h-md { font-size: 44px; font-weight: 800; letter-spacing: -0.022em; line-height: 1.1; }
+    .lead { font-size: 26px; line-height: 1.5; color: var(--muted); max-width: 62ch; }
+    .foot { position: absolute; left: 96px; right: 96px; bottom: 48px; display: flex; justify-content: space-between; align-items: center; font: 600 13px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--faint); }
+    .foot a { color: var(--accent); text-decoration: none; }
+    .accent-word { color: var(--accent); }
+    .grad-word { background: linear-gradient(100deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+    .cols { display: grid; gap: 28px; }
+    .cols-2 { grid-template-columns: 1fr 1fr; }
+    .cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .cols-4 { grid-template-columns: repeat(4, 1fr); }
+
+    .pcard { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 30px 32px; }
+    .pcard h3 { font-size: 22px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.01em; }
+    .pcard p { font-size: 17.5px; line-height: 1.55; color: var(--muted); }
+    .pcard .n { font: 800 15px/1 var(--mono); color: var(--accent); display: block; margin-bottom: 14px; }
+
+    .stat { }
+    .stat .v { font-size: 74px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; font-variant-numeric: tabular-nums; }
+    .stat .v em { font-style: normal; color: var(--accent); }
+    .stat .l { font-size: 16px; font-weight: 600; color: var(--muted); margin-top: 12px; }
+
+    .mini-tbl { width: 100%; border-collapse: collapse; font-size: 17px; }
+    .mini-tbl th { text-align: left; font: 700 12px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--faint); padding: 12px 18px; border-bottom: 1px solid var(--border); }
+    .mini-tbl td { padding: 15px 18px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .mini-tbl tr:last-child td { border-bottom: 0; }
+    .mini-tbl .old { color: var(--muted); }
+    .mini-tbl .new { font-weight: 700; }
+    .mini-tbl .arrow { color: var(--accent); font-weight: 700; }
+
+    .tag { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); font-size: 16px; font-weight: 600; }
+    .tag .d { width: 8px; height: 8px; border-radius: 50%; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 12px; }
+
+    .bar-row { display: flex; align-items: center; gap: 18px; margin-bottom: 16px; }
+    .bar-row .bl { width: 300px; font-size: 16.5px; font-weight: 600; flex: 0 0 auto; }
+    .bar-row .bt { flex: 1; height: 34px; background: var(--surface-2); border-radius: 8px; overflow: hidden; }
+    .bar-row .bt i { display: block; height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); border-radius: 8px; }
+    .bar-row .bv { width: 130px; font: 700 15px/1 var(--mono); color: var(--fg); flex: 0 0 auto; text-align: right; }
+    .bar-row.muted-row .bt i { background: var(--surface-3); }
+    .bar-row.muted-row .bv { color: var(--muted); }
+
+    .screen-link { display: inline-flex; align-items: center; gap: 10px; color: var(--accent); font-weight: 700; font-size: 17px; text-decoration: none; border-bottom: 2px solid var(--accent-soft); padding-bottom: 2px; }
+    .screen-link:hover { border-bottom-color: var(--accent); }
+
+    .flow { display: flex; align-items: center; gap: 14px; }
+    .flow .node { padding: 14px 20px; border-radius: 14px; border: 1px solid var(--border); background: var(--surface); font-weight: 700; font-size: 17.5px; white-space: nowrap; }
+    .flow .node.hot { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .flow .arr { color: var(--faint); font-size: 22px; font-weight: 700; }
+
+    .quote { font-size: 34px; font-weight: 700; line-height: 1.35; letter-spacing: -0.015em; max-width: 46ch; }
+    .quote small { display: block; margin-top: 18px; font: 600 15px/1.5 var(--mono); color: var(--muted); letter-spacing: .04em; }
+
+    .big-list { list-style: none; }
+    .big-list li { display: flex; gap: 20px; padding: 20px 0; border-bottom: 1px solid var(--border); font-size: 21px; line-height: 1.45; align-items: baseline; }
+    .big-list li:last-child { border-bottom: 0; }
+    .big-list .k { font: 800 15px/1 var(--mono); color: var(--accent); flex: 0 0 44px; }
+    .big-list b { font-weight: 700; }
+    .big-list span { color: var(--muted); font-size: 18px; display: block; margin-top: 4px; }
+
+    .mock { border: 1px solid var(--border); border-radius: 16px; background: var(--surface); overflow: hidden; }
+    .mock__bar { height: 34px; background: var(--surface-2); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 6px; padding: 0 14px; }
+    .mock__bar i { width: 9px; height: 9px; border-radius: 50%; background: var(--border); }
+    .mock__body { display: grid; height: 340px; }
+    .mock__pane { border-right: 1px solid var(--border); padding: 14px; }
+    .mock__pane:last-child { border-right: 0; }
+    .skl { display: block; height: 10px; border-radius: 5px; background: var(--border); margin-bottom: 9px; }
+    .skl.acc { background: var(--accent); opacity: .75; }
+    .skl.lav { background: var(--accent-2); opacity: .5; }
+    .bub { border-radius: 14px; padding: 9px 13px; font-size: 12px; margin-bottom: 8px; max-width: 78%; background: var(--surface-2); color: var(--fg); }
+    .bub.me { margin-left: auto; background: var(--accent); color: #fff; }
+  </style>
+</head>
+<body>
+  <div class="deck-shell">
+    <div class="deck-stage" id="deck-stage">
+
+      <section class="slide active" data-screen-label="01 Титул" style="justify-content:center">
+        <div class="eyebrow">Flow · дизайн-питч · сентябрь 2026</div>
+        <h1 class="h-xl">Flow <span class="grad-word">v2</span></h1>
+        <p class="lead" style="margin-top:34px">Редизайн операторского воркспейса: один визуальный язык, inbox-first архитектура и петля качества сообщений — на всех 42 экранах продукта.</p>
+        <div class="tag-row" style="margin-top:46px">
+          <span class="tag"><span class="d" style="background:var(--accent)"></span>42 экрана</span>
+          <span class="tag"><span class="d" style="background:var(--accent-2)"></span>239 состояний</span>
+          <span class="tag"><span class="d" style="background:var(--success)"></span>Светлая + тёмная темы</span>
+          <span class="tag"><span class="d" style="background:var(--warning)"></span>66/66 роутов v1 покрыты</span>
+        </div>
+        <div class="foot"><span>Flow v2 · pitch</span><a href="index.html" target="_blank" rel="noopener">index.html — атлас экранов ↗</a></div>
+      </section>
+
+      <section class="slide" data-screen-label="02 Проблема">
+        <div class="eyebrow">Зачем редизайн</div>
+        <h2 class="h-lg">Сейчас продуктом <span class="accent-word">тяжело</span> пользоваться</h2>
+        <div class="cols cols-2" style="margin-top:56px">
+          <div class="pcard"><span class="n">01</span><h3>Два языка в одном окне</h3><p>Угловатый shell 5px поверх «glass»-чата 18px. Синий #5862de и индиго #6366f1 конфликтуют в одних компонентах — визуальный шум на каждом экране.</p></div>
+          <div class="pcard"><span class="n">02</span><h3>Информационная архитектура размножена</h3><p>Четыре зоны кампаний — клоны одной структуры «пивот → леди → табы → create». 27 из 59 экранов делают одно и то же.</p></div>
+          <div class="pcard"><span class="n">03</span><h3>Работа оператора разорвана</h3><p>Ответ в чате, письмо и история — три отдельных входа. Контекст «кому я отвечаю» теряется при каждом переключении.</p></div>
+          <div class="pcard"><span class="n">04</span><h3>Нет петли качества</h3><p>AI-генерации и ручные ответы уходят без оценки. Ошибки тона узнаём по молчанию собеседника — постфактум и без причины.</p></div>
+        </div>
+        <div class="foot"><span>Проблема</span><span>02</span></div>
+      </section>
+
+      <section class="slide" data-screen-label="03 Подход">
+        <div class="eyebrow">Подход</div>
+        <h2 class="h-lg">Три структурных хода</h2>
+        <ul class="big-list" style="margin-top:44px;max-width:1400px">
+          <li><span class="k">A</span><div><b>Один язык вместо двух слоёв.</b><span>Уточнённая геометрия чат-слоя (радиусы 14–18px, pill-кнопки, мягкие тени) становится базой всего продукта. Бренд-палитра #5862de + #9f63ca и Open Sans сохранены — меняется исполнение, не айдентика.</span></div></li>
+          <li><span class="k">B</span><div><b>Inbox-first: продукт строится вокруг очереди.</b><span>Home — командный центр смены; Unified Inbox собирает чаты и письма всех платформ в один поток с инлайн-ответом. Оператор отвечает, не уходя из очереди.</span></div></li>
+          <li><span class="k">C</span><div><b>Стейт-машина как артефакт.</b><span>Каждый экран — один файл со всеми состояниями внутри; атлас листает их чипами и deep-link'ами. 239 состояний доступны ревьюеру без бэкенда.</span></div></li>
+        </ul>
+        <div class="foot"><span>Подход</span><span>03</span></div>
+      </section>
+
+      <section class="slide" data-screen-label="04 IA">
+        <div class="eyebrow">Информационная архитектура</div>
+        <h2 class="h-md">Было 59 файлов-клонов — стало 42 осмысленных экрана</h2>
+        <table class="mini-tbl" style="margin-top:44px">
+          <thead><tr><th style="width:34%">Зона v1</th><th style="width:8%"></th><th>Зона v2</th><th style="width:22%">Что изменилось</th></tr></thead>
+          <tbody>
+            <tr><td class="old">account, mails, history — раздельно</td><td class="arrow">→</td><td class="new">Workspace: Chats / Mails / History + Inbox</td><td class="old">единая очередь входящих</td></tr>
+            <tr><td class="old">auto_sendings + icebreakers + invites + newsfeeds</td><td class="arrow">→</td><td class="new">Campaigns — одна зона, общий per-lady shell</td><td class="old">27 файлов → 7 экранов</td></tr>
+            <tr><td class="old">tools/:lady/* — пять типов блэклистов</td><td class="arrow">→</td><td class="new">Tools + Lady 360</td><td class="old">типы блэклистов = состояния</td></tr>
+            <tr><td class="old">administrator/* — плоский список</td><td class="arrow">→</td><td class="new">Admin + Feedback + Coverage + Monitor</td><td class="old">добавлены метрики качества</td></tr>
+            <tr><td class="old">omniscience — dev-чат</td><td class="arrow">→</td><td class="new">Omniscience + A/B ревью генераций</td><td class="old">dev/stage, admin-only</td></tr>
+          </tbody>
+        </table>
+        <div class="foot"><span>Карта</span><a href="manifest-v2.json" target="_blank" rel="noopener">manifest-v2.json ↗</a><span>04</span></div>
+      </section>
+
+      <section class="slide" data-screen-label="05 Workspace">
+        <div class="eyebrow">Флагман · операторский workspace</div>
+        <h2 class="h-md">Чат — три панели, ноль потерянного контекста</h2>
+        <div class="cols" style="grid-template-columns:1.15fr 1fr; margin-top:40px; align-items:start">
+          <div class="mock">
+            <div class="mock__bar"><i></i><i></i><i></i></div>
+            <div class="mock__body" style="grid-template-columns: 1.1fr 1.6fr 1fr">
+              <div class="mock__pane">
+                <span class="skl" style="width:52%"></span><span class="skl acc" style="width:86%"></span><span class="skl" style="width:74%"></span><span class="skl" style="width:88%"></span><span class="skl" style="width:64%"></span><span class="skl" style="width:80%"></span><span class="skl" style="width:58%"></span>
+              </div>
+              <div class="mock__pane">
+                <div class="bub">Fancy meeting this week?</div>
+                <div class="bub me">Quiet spot by the river — Thu 7pm?</div>
+                <div class="bub">Deal ☕</div>
+                <span class="skl" style="width:70%;margin-top:14px"></span>
+              </div>
+              <div class="mock__pane" style="background:var(--accent-soft)">
+                <span class="skl lav" style="width:60%"></span><span class="skl" style="width:90%"></span><span class="skl" style="width:80%"></span><span class="skl acc" style="width:44%"></span><span class="skl" style="width:86%"></span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <ul class="big-list">
+              <li><span class="k">1</span><div><b>Левая колонка — очередь</b><span>платформа, статус, флаги unanswered/failed, SLA-чипы</span></div></li>
+              <li><span class="k">2</span><div><b>Центр — тред</b><span>пузыри, доставка/прочитано, инлайн-фидбек на исходящих</span></div></li>
+              <li><span class="k">3</span><div><b>Правая — Beloved copilot</b><span>саммари треда, черновик ответа, следующая подсказка — по запросу</span></div></li>
+            </ul>
+            <p style="margin-top:26px"><a class="screen-link" href="chats.html?state=copilot" target="_blank" rel="noopener">Открыть chats?state=copilot ↗</a></p>
+          </div>
+        </div>
+        <div class="foot"><span>Workspace</span><span>05</span></div>
+      </section>
+
+      <section class="slide" data-screen-label="06 Inbox + Home">
+        <div class="eyebrow">Флагман · очередь и командный центр</div>
+        <h2 class="h-md">Два новых входа в рабочий день</h2>
+        <div class="cols cols-2" style="margin-top:44px">
+          <div class="pcard" style="padding:34px 36px">
+            <h3 style="font-size:26px">Home — Command Center</h3>
+            <p style="margin-top:10px">Первый экран после логина. «Что горит»: непрочитанные, просроченные SLA, модерация, алерты — одним списком. Бриф Beloved за ночь и карточки своих леди.</p>
+            <p style="margin-top:18px"><a class="screen-link" href="home.html" target="_blank" rel="noopener">home.html ↗</a></p>
+          </div>
+          <div class="pcard" style="padding:34px 36px">
+            <h3 style="font-size:26px">Unified Inbox</h3>
+            <p style="margin-top:10px">Все платформы и все леди в одном триаж-потоке, сгруппированном по контексту. Тред справа, быстрый ответ — прямо из очереди, без перехода в чат.</p>
+            <p style="margin-top:18px"><a class="screen-link" href="inbox.html" target="_blank" rel="noopener">inbox.html ↗</a></p>
+          </div>
+        </div>
+        <div class="pcard" style="margin-top:28px;border-left:4px solid var(--accent)">
+          <p style="color:var(--fg);font-size:19px"><b>Принцип:</b> оператор больше не «ходит по разделам» — очередь сама приходит к нему. Разделы остаются для глубокой работы, Inbox — для потока.</p>
+        </div>
+        <div class="foot"><span>Workspace</span><span>06</span></div>
+      </section>
+
+      <section class="slide" data-screen-label="07 Кампании">
+        <div class="eyebrow">Консолидация · кампании</div>
+        <h2 class="h-md">Одна зона вместо четырёх клонов</h2>
+        <div class="flow" style="margin-top:48px">
+          <span class="node">auto_sendings</span><span class="arr">+</span>
+          <span class="node">icebreakers</span><span class="arr">+</span>
+          <span class="node">invites</span><span class="arr">+</span>
+          <span class="node">newsfeeds</span><span class="arr">→</span>
+          <span class="node hot">Campaigns</span>
+        </div>
+        <div class="cols cols-3" style="margin-top:44px">
+          <div class="pcard"><span class="n">27 → 7</span><h3>Меньше файлов — больше смысла</h3><p>Тип рассылки — переключатель внутри экрана, не отдельная зона. Шаблоны, группы, посты, история, производительность — в одном per-lady shell'е.</p></div>
+          <div class="pcard"><span class="n">moods</span><h3>AI-подсказки как состояние</h3><p>Suggested moods — отдельный таб модерации с approve/decline и оценкой качества подсказки, а не ещё одна копия таблицы.</p></div>
+          <div class="pcard"><span class="n">+2</span><h3>Planner и Performance</h3><p>Недельный календарь отправок с capacity-днями и метрики по шаблонам/платформам — чего в v1 не было вообще.</p></div>
+        </div>
+        <div class="foot"><span>Campaigns</span><a href="campaigns.html" target="_blank" rel="noopener">campaigns.html ↗</a><span>07</span></div>
+      </section>
+
+      <section class="slide" data-screen-label="08 Feedback loop">
+        <div class="eyebrow">FLOW-8555 · петля качества</div>
+        <h2 class="h-md">Каждое исходящее сообщение можно оценить</h2>
+        <div class="cols" style="grid-template-columns:1fr 1.2fr; margin-top:42px; align-items:start">
+          <div>
+            <ul class="big-list">
+              <li><span class="k">👍</span><div><b>Один клик — голос записан.</b><span>Компактный контрол под пузырём: AI output / Message review, undo 6 сек, next-unrated.</span></div></li>
+              <li><span class="k">💬</span><div><b>Комментарий — опционально, ≤200 графем.</b><span>Reason-чипы: unnatural tone, ignored context, too pushy, timing off, wrong language.</span></div></li>
+              <li><span class="k">⏱</span><div><b>Окно — один календарный месяц.</b><span>Потом «Feedback window closed». Lineage pending не блокирует голос.</span></div></li>
+            </ul>
+            <p style="margin-top:22px"><a class="screen-link" href="feedback-spec.md" target="_blank" rel="noopener">feedback-spec.md — handoff ↗</a></p>
+          </div>
+          <div class="pcard" style="padding:30px 34px">
+            <h3 style="margin-bottom:18px">Что видит админ — Overview</h3>
+            <div class="bar-row"><span class="bl">Rated / eligible</span><div class="bt"><i style="width:79%"></i></div><span class="bv">412 / 518</span></div>
+            <div class="bar-row"><span class="bl">Positive votes</span><div class="bt"><i style="width:69%"></i></div><span class="bv">69%</span></div>
+            <div class="bar-row"><span class="bl">AI output positive</span><div class="bt"><i style="width:76%"></i></div><span class="bv">76.5% · Δ+3pp</span></div>
+            <div class="bar-row muted-row"><span class="bl">Template / manual</span><div class="bt"><i style="width:79%;background:var(--border)"></i></div><span class="bv">79.5%</span></div>
+            <div class="bar-row muted-row" style="margin-bottom:0"><span class="bl">Lineage pending</span><div class="bt"><i style="width:12%;background:repeating-linear-gradient(45deg,var(--border) 0 4px,transparent 4px 8px)"></i></div><span class="bv">61</span></div>
+            <p class="tiny" style="color:var(--muted);font-size:14px;margin-top:16px">Рейтинг отделён от исходов (reply ≤24/72h, retention): 👍 — про качество текста, не про результат. Unknown никогда не рисуется как 0%.</p>
+          </div>
+        </div>
+        <div class="foot"><span>Message Feedback</span><a href="admin-message-feedback.html" target="_blank" rel="noopener">admin-message-feedback.html ↗</a><span>08</span></div>
+      </section>
+
+      <section class="slide" data-screen-label="09 Vision">
+        <div class="eyebrow">New in v2 · vision-слой</div>
+        <h2 class="h-md">Одиннадцать экранов, которых не было в v1</h2>
+        <div class="cols cols-3" style="margin-top:40px">
+          <div class="pcard"><span class="n">ops</span><h3>Live monitor</h3><p>Здоровье 5 платформ, sends/час, поток событий, кто на смене — ops-борд реального времени. <a class="screen-link" href="monitor.html" target="_blank" rel="noopener">↗</a></p></div>
+          <div class="pcard"><span class="n">ops</span><h3>Coverage map</h3><p>Теплокарта покрытия смен операторами — дыры видны до того, как они станут пропущенными сообщениями. <a class="screen-link" href="admin-coverage.html" target="_blank" rel="noopener">↗</a></p></div>
+          <div class="pcard"><span class="n">ops</span><h3>Alerts center</h3><p>Доставка, лимиты, блэклисты, модерация, фидбек-дайджест — один центр событий вместо разрозненных баннеров. <a class="screen-link" href="alerts.html" target="_blank" rel="noopener">↗</a></p></div>
+          <div class="pcard"><span class="n">lady</span><h3>Lady 360</h3><p>Всё про леди на одном экране: аккаунты, расписание, блэклисты, покрытие кампаниями, свежие оценки её сообщений. <a class="screen-link" href="lady-360.html" target="_blank" rel="noopener">↗</a></p></div>
+          <div class="pcard"><span class="n">growth</span><h3>My scorecard</h3><p>Личная карточка оператора: темп смены, скорость первого ответа, оценки его отправок, сравнение с медианой команды. <a class="screen-link" href="scorecard.html" target="_blank" rel="noopener">↗</a></p></div>
+          <div class="pcard"><span class="n">plan</span><h3>Planner + Performance</h3><p>Календарь кампаний с capacity-метрами и аналитика по шаблонам — кампании перестают быть «настройкой где-то там». <a class="screen-link" href="planner.html" target="_blank" rel="noopener">↗</a></p></div>
+        </div>
+        <div class="foot"><span>Vision</span><span>+ Beloved copilot, A/B ревью моделей, Feedback</span><span>09</span></div>
+      </section>
+
+      <section class="slide" data-screen-label="10 Тёмная тема">
+        <div class="eyebrow">Темы</div>
+        <h2 class="h-md">Тёмная тема — не инверсия, а вторая палитра</h2>
+        <div class="cols cols-2" style="margin-top:44px">
+          <div class="pcard" style="background:var(--surface)">
+            <h3>Выведена из токенов, а не придумана</h3>
+            <p>Каждый тёмный цвет — <code style="font-family:var(--mono);font-size:15px">oklch(from var(--c-*) …)</code> от зарегистрированной палитры. Ни одного нового hex: дрейф между темами невозможен по построению.</p>
+          </div>
+          <div class="pcard" style="background:#14142a;border-color:#2a2a45;color:#eceef8">
+            <h3 style="color:#fff">Проверяется в обеих</h3>
+            <p style="color:#aab">Тогл в шелле и в атласе, <code style="font-family:var(--mono);font-size:15px">?theme=dark</code> в deep-link, матрица состояний считается зелёной только ×2 темы, контраст — в обеих.</p>
+          </div>
+        </div>
+        <div class="foot"><span>Dark theme</span><a href="index.html?theme=dark" target="_blank" rel="noopener">index.html?theme=dark ↗</a><span>10</span></div>
+      </section>
+
+      <section class="slide" data-screen-label="11 Стейт-машина">
+        <div class="eyebrow">Как это ревьюить</div>
+        <h2 class="h-md">Атлас: каждый экран × каждое состояние</h2>
+        <div class="cols" style="grid-template-columns:1.1fr 1fr; margin-top:42px; align-items:start">
+          <div>
+            <ul class="big-list">
+              <li><span class="k">→</span><div><b>index.html — лаунчер-атлас.</b><span>Дерево зон, чипы состояний, переключатель темы и вьюпорта (fill / 1440 / 1280 / 768 / 390).</span></div></li>
+              <li><span class="k">#</span><div><b>Deep-link на любое состояние.</b><span><code style="font-family:var(--mono);font-size:16px">?screen=chats&state=fb-comment&theme=dark</code> — ссылку можно кинуть в тред.</span></div></li>
+              <li><span class="k">⇄</span><div><b>v1 рядом.</b><span>У каждого экрана — ссылка «v1 copy» на бейзлайн design-copy для before/after.</span></div></li>
+              <li><span class="k">▣</span><div><b>Состояния = данные.</b><span>populated / loading / empty / error + доменные: fb-*, moderation, weak-cases, copilot, ab.</span></div></li>
+            </ul>
+          </div>
+          <div class="pcard" style="padding:34px 36px">
+            <div class="stat"><div class="v">42</div><div class="l">экрана v2</div></div>
+            <div style="display:flex;gap:34px;margin-top:26px">
+              <div class="stat"><div class="v"><em>239</em></div><div class="l">состояний</div></div>
+              <div class="stat"><div class="v"><em>×2</em></div><div class="l">темы</div></div>
+              <div class="stat"><div class="v"><em>66/66</em></div><div class="l">роутов v1</div></div>
+            </div>
+            <p style="margin-top:26px"><a class="screen-link" href="index.html" target="_blank" rel="noopener">Открыть атлас ↗</a></p>
+          </div>
+        </div>
+        <div class="foot"><span>Atlas</span><span>11</span></div>
+      </section>
+
+      <section class="slide" data-screen-label="12 Проверено">
+        <div class="eyebrow">Верификация</div>
+        <h2 class="h-md">Что уже проверено, а не «на глаз»</h2>
+        <div class="cols cols-2" style="margin-top:44px">
+          <div class="pcard"><span class="n">smoke</span><h3>195+ pageviews без ошибок</h3><p>Все экраны × все состояния × обе темы в headless-браузере: 0 console-ошибок, 0 pageerror, 0 битых ассетов, 0 undefined/NaN.</p></div>
+          <div class="pcard"><span class="n">a11y</span><h3>Контраст — числами</h3><p>Аудит пар «текст × фон» по токенам в обеих темах, цель ≥4.5:1. Слабые места (--faint, success/danger на светлом) подтянуты и зафиксированы.</p></div>
+          <div class="pcard"><span class="n">links</span><h3>0 битых ссылок и иконок</h3><p>Все href/src резолвятся, иконки и логотипы встроены data-URI — экраны самодостаточны и открываются из любого контекста.</p></div>
+          <div class="pcard"><span class="n">flow</span><h3>fb-no-perm = 0 контролов</h3><p>Без права администратора фидбек-контролы не рендерятся — проверено на всех шести поверхностях генерации.</p></div>
+        </div>
+        <div class="foot"><span>Verification</span><span>12</span></div>
+      </section>
+
+      <section class="slide" data-screen-label="13 Дальше" style="justify-content:center">
+        <div class="eyebrow">Что дальше</div>
+        <h2 class="h-lg">От питча — к <span class="accent-word">продакшну</span></h2>
+        <div class="cols cols-3" style="margin-top:52px;max-width:1500px">
+          <div class="pcard"><span class="n">1</span><h3>Handoff</h3><p>Токены, компоненты и стейт-контракт уже задокументированы. По FLOW-8555 есть готовая спека для бэкенда и фронта.</p></div>
+          <div class="pcard"><span class="n">2</span><h3>Пилот</h3><p>Сначала operator-workspace (chats / inbox / home), затем кампании и админ. Каждая зона — отдельный релиз, роуты v1 маппятся 1:1.</p></div>
+          <div class="pcard"><span class="n">3</span><h3>Измерение</h3><p>Скорость первого ответа, покрытие оценками, positive-rate AI vs manual — петля качества начнёт мерить сама себя.</p></div>
+        </div>
+        <p style="margin-top:54px"><a class="screen-link" href="index.html" target="_blank" rel="noopener" style="font-size:22px">index.html — открыть атлас Flow v2 ↗</a></p>
+        <div class="foot"><span>Flow v2 · pitch</span><span>13</span></div>
+      </section>
+
+    </div>
+  </div>
+
+  <nav class="deck-counter" role="navigation" aria-label="Deck navigation">
+    <button type="button" id="deck-prev" aria-label="Previous slide">‹</button>
+    <span class="deck-count"><span id="deck-cur">01</span> <span class="total">/ <span id="deck-total">01</span></span></span>
+    <button type="button" id="deck-next" aria-label="Next slide">›</button>
+  </nav>
+  <div class="deck-hint">← / → · space · R reset</div>
+
+  <script>
+    (function () {
+      var stage = document.getElementById('deck-stage');
+      var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+      var prev = document.getElementById('deck-prev');
+      var next = document.getElementById('deck-next');
+      var cur = document.getElementById('deck-cur');
+      var total = document.getElementById('deck-total');
+      var STORE = 'deck:idx:' + (location.pathname || '/');
+      var idx = 0;
+
+      function fit() {
+        var sw = window.innerWidth;
+        var sh = window.innerHeight;
+        var pad = 32;
+        var s = Math.min((sw - pad) / 1920, (sh - pad) / 1080);
+        if (!isFinite(s) || s <= 0) s = 1;
+        var tx = (sw - 1920 * s) / 2;
+        var ty = (sh - 1080 * s) / 2;
+        stage.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + s + ')';
+      }
+
+      function pad2(n) { return (n < 10 ? '0' : '') + n; }
+      function paint() {
+        slides.forEach(function (el, i) { el.classList.toggle('active', i === idx); });
+        if (cur) cur.textContent = pad2(idx + 1);
+        if (total) total.textContent = pad2(slides.length);
+        if (prev) prev.toggleAttribute('disabled', idx <= 0);
+        if (next) next.toggleAttribute('disabled', idx >= slides.length - 1);
+        postDeckState();
+      }
+      function go(i) {
+        idx = Math.max(0, Math.min(slides.length - 1, i));
+        paint();
+        try { localStorage.setItem(STORE, String(idx)); } catch (_) {}
+      }
+      var OD_DECK_PROTOCOL_VERSION = 1;
+      function postDeckState() {
+        try {
+          window.parent.postMessage({
+            type: 'od:slide-state',
+            protocolVersion: OD_DECK_PROTOCOL_VERSION,
+            active: idx,
+            count: slides.length
+          }, '*');
+        } catch (_) {}
+      }
+      function announceDeckProtocol() {
+        try {
+          window.parent.postMessage({
+            type: 'od:deck-ready',
+            protocolVersion: OD_DECK_PROTOCOL_VERSION,
+            capabilities: ["absolute-navigation","state-events"]
+          }, '*');
+        } catch (_) {}
+      }
+      window.addEventListener('message', function (event) {
+        var data = event && event.data;
+        if (!data || data.type !== 'od:slide') return;
+        if (data.protocolVersion != null && data.protocolVersion !== OD_DECK_PROTOCOL_VERSION) return;
+        var target = idx;
+        if (data.action === 'go') {
+          if (typeof data.index !== 'number' || !isFinite(data.index)) return;
+          target = Math.floor(data.index);
+        } else if (data.action === 'next') target = idx + 1;
+        else if (data.action === 'prev') target = idx - 1;
+        else if (data.action === 'first') target = 0;
+        else if (data.action === 'last') target = slides.length - 1;
+        else return;
+        go(target);
+      });
+      function onKey(e) {
+        if (e.__odDeckKeyHandled) return;
+        var t = e.target;
+        if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+        if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
+        if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.__odDeckKeyHandled = true; e.preventDefault(); go(idx + 1); }
+        else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.__odDeckKeyHandled = true; e.preventDefault(); go(idx - 1); }
+        else if (e.key === 'Home' || String(e.key).toLowerCase() === 'r') { e.__odDeckKeyHandled = true; e.preventDefault(); go(0); }
+        else if (e.key === 'End') { e.__odDeckKeyHandled = true; e.preventDefault(); go(slides.length - 1); }
+      }
+      window.addEventListener('keydown', onKey, true);
+      document.addEventListener('keydown', onKey, true);
+      if (prev) prev.addEventListener('click', function () { go(idx - 1); });
+      if (next) next.addEventListener('click', function () { go(idx + 1); });
+      document.addEventListener('click', function (e) {
+        if (e.defaultPrevented) return;
+        if (e.button !== undefined && e.button !== 0) return;
+        if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
+        var t = e.target;
+        while (t && t !== document.body && t !== document.documentElement) {
+          var tag = String(t.tagName || '').toUpperCase();
+          if (
+            tag === 'A' ||
+            tag === 'BUTTON' ||
+            tag === 'INPUT' ||
+            tag === 'TEXTAREA' ||
+            tag === 'SELECT' ||
+            t.isContentEditable ||
+            t.getAttribute('role') === 'button' ||
+            t.getAttribute('role') === 'link'
+          ) return;
+          t = t.parentElement;
+        }
+        focusDeck();
+        if (e.clientX < window.innerWidth / 2) go(idx - 1);
+        else go(idx + 1);
+      }, true);
+
+      document.body.setAttribute('tabindex', '-1');
+      document.body.style.outline = 'none';
+      function focusDeck() { try { window.focus(); document.body.focus({ preventScroll: true }); } catch (_) {} }
+      document.addEventListener('mousedown', focusDeck);
+      window.addEventListener('load', focusDeck);
+
+      try {
+        var saved = parseInt(localStorage.getItem(STORE) || '0', 10);
+        if (!isNaN(saved) && saved >= 0 && saved < slides.length) idx = saved;
+      } catch (_) {}
+
+      window.addEventListener('resize', fit);
+      announceDeckProtocol();
+      fit();
+      paint();
+      focusDeck();
+    })();
+  </script>
+</body>
+</html>
