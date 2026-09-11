@@ -89,13 +89,38 @@
       return;
     }
 
-    /* rail collapse */
+    /* rail collapse / expand (persisted; auto-compact handled in components.js) */
     var railBtn = t.closest('[data-rail-toggle]');
     if (railBtn) {
       var shell = railBtn.closest('.v2-shell');
       if (shell) {
-        var min = shell.classList.toggle('rail-min');
+        var min = !shell.classList.contains('rail-min');
         try { localStorage.setItem('v2-rail', min ? 'min' : 'full'); } catch (_) {}
+        if (window.FlowUI && window.FlowUI.syncRail) window.FlowUI.syncRail();
+        else shell.classList.toggle('rail-min', min);
+      }
+      return;
+    }
+
+    /* mobile nav drawer */
+    var navOpen = t.closest('[data-nav-open]');
+    if (navOpen) {
+      var sh = navOpen.closest('.v2-shell');
+      if (sh) {
+        sh.classList.add('nav-open');
+        navOpen.setAttribute('aria-expanded', 'true');
+        var first = sh.querySelector('.v2-rail__link.is-active') || sh.querySelector('.v2-rail__link');
+        if (first) first.focus({ preventScroll: true });
+      }
+      return;
+    }
+    var navClose = t.closest('[data-nav-close]');
+    if (navClose) {
+      var sh2 = navClose.closest('.v2-shell');
+      if (sh2) {
+        sh2.classList.remove('nav-open');
+        var ob = sh2.querySelector('[data-nav-open]');
+        if (ob) { ob.setAttribute('aria-expanded', 'false'); if (navClose.classList.contains('v2-rail__close')) ob.focus(); }
       }
       return;
     }
@@ -134,7 +159,49 @@
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
       document.querySelectorAll('.modal-backdrop.is-open,.menu.is-open').forEach(function (m) { m.classList.remove('is-open'); });
+      document.querySelectorAll('.v2-shell.nav-open').forEach(function (s) {
+        s.classList.remove('nav-open');
+        var b = s.querySelector('[data-nav-open]');
+        if (b) { b.setAttribute('aria-expanded', 'false'); b.focus(); }
+      });
+      return;
     }
+    /* `[` toggles the rail (not while typing) */
+    if (e.key === '[' && !e.metaKey && !e.ctrlKey && !e.altKey) {
+      var tg = e.target;
+      if (tg && (tg.tagName === 'INPUT' || tg.tagName === 'TEXTAREA' || tg.isContentEditable)) return;
+      var tb = document.querySelector('[data-rail-toggle]');
+      if (tb) { e.preventDefault(); tb.click(); }
+    }
+  });
+
+  /* collapsed-rail popovers: flyout subs + link tooltips are position:fixed
+     (nav scroll container clips absolute children) — set coords on hover/focus */
+  function placeRailPop(el) {
+    var shell = el.closest && el.closest('.rail-min');
+    if (!shell) return;
+    var g = el.closest('.v2-rail__group');
+    if (g) {
+      var sub = g.querySelector('.v2-rail__sub');
+      if (sub) {
+        var r = g.getBoundingClientRect();
+        var h = sub.querySelectorAll('a').length * 33 + 52;
+        var top = Math.max(8, Math.min(r.top - 4, window.innerHeight - h - 8));
+        sub.style.setProperty('--sub-left', Math.round(r.right + 8) + 'px');
+        sub.style.setProperty('--sub-top', Math.round(top) + 'px');
+      }
+    }
+    var link = el.closest('.v2-rail__link[data-tip]');
+    if (link) {
+      var lr = link.getBoundingClientRect();
+      link.style.setProperty('--tip-top', Math.round(lr.top + lr.height / 2) + 'px');
+    }
+  }
+  document.addEventListener('mouseover', function (e) {
+    if (e.target.closest) placeRailPop(e.target);
+  });
+  document.addEventListener('focusin', function (e) {
+    if (e.target.closest) placeRailPop(e.target);
   });
 
   document.addEventListener('change', function (e) {

@@ -41,6 +41,16 @@ Status: pitch/research version. Baseline for before/after diffs: `../design-copy
 - Contrast targets: ≥4.5:1 normal text, ≥3:1 large text (≥24px / ≥18.66px bold) — verified by `check-contrast.mjs` across all 474 pageviews (27.5k text elements): ALL PASS in both themes.
 - Pending/unknown data is text + icon, never red, never 0%.
 
+## Navigation (rail)
+
+Three modes, all driven by `.v2-shell` classes set in `components.js` `syncRail()`:
+
+- **Expanded** (216px, `var(--rail-w)`) — default ≥1081px. Grouped sections (`.v2-rail__sec`), icon+label+count links, zone sub-nav as indented tree (`.v2-rail__sub` + `.v2-rail__sublink`, hairline guide at icon center, tick on active item).
+- **Compact** (64px, `.rail-min`) — user pref `localStorage['v2-rail']='min'` **or** auto ≤1080px (pref `'full'` overrides auto). Icon-only links with styled tooltips (`data-tip` → fixed `::after`, positioned by `app.js` via `--tip-top`); counts become corner mini-badges; section headers become hairline dividers; zone sub-navs leave the flow and reopen as fixed flyouts (`--sub-left/--sub-top`, `:hover`/`:focus-within`); collapse button flips its arrow and swaps `aria-expanded`/`aria-label`. `[` hotkey toggles.
+- **Drawer** (≤780px) — rail leaves the grid (`position:fixed`, `translateX(-105%)`), opens via topbar burger (`data-nav-open`) into `.nav-open`, closes via scrim (`data-nav-close`), drawer ×, or ESC. Content inside is always expanded (labels visible, `.rail-min` removed by syncRail). `.v2-rail__foot` (collapse) is hidden in drawer mode.
+
+Fixed-position flyouts/tooltips exist because `.v2-rail__nav` is a scroll container — absolute children would be clipped on X. Never move them back to `position:absolute`.
+
 ## Assets
 
 Icons and platform marks are **embedded as data URIs** (CSS masks + `F.PLATFORMS.*.logo`). Screens are self-contained: they render from `file://`, `data:`, srcdoc, or the raw endpoint. After adding an asset reference, run `embed-assets.mjs`, then `check-embed.mjs` must report 0 relative refs. Platform logos come from `design-copy/assets/logos` — do not redraw or recolor.

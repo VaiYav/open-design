@@ -111,48 +111,43 @@
       '</div>';
   }
 
+  var SUBS = {
+    admin: { label: 'Admin', list: ADMIN_SUB },
+    tools: { label: 'Tools', list: TOOLS_SUB },
+    campaigns: { label: 'Campaigns', list: CAMPAIGNS_SUB }
+  };
+
   function railLink(item, activeId) {
     var cls = 'v2-rail__link' + (item.id === activeId ? ' is-active' : '');
     var inner = '<span class="ic ic--' + item.icon + '"></span><span class="lbl">' + esc(item.label) + '</span>' +
-      (item.cnt ? '<span class="cnt">' + item.cnt + '</span>' : '') +
-      (item.isNew ? '<span class="badge-new">new</span>' : '');
-    return '<a class="' + cls + '" href="' + item.href + '"' + (item.id === activeId ? ' aria-current="page"' : '') + '>' + inner + '</a>';
+      (item.cnt ? '<span class="cnt">' + item.cnt + '</span>' : '');
+    return '<a class="' + cls + '" data-tip="' + esc(item.label) + '" href="' + item.href + '"' +
+      (item.id === activeId ? ' aria-current="page"' : '') + '>' + inner + '</a>';
+  }
+
+  function subBlock(zone, cfg) {
+    var meta = SUBS[zone];
+    var h = '<div class="v2-rail__sub" role="group" aria-label="' + esc(meta.label) + '">' +
+      '<div class="v2-rail__subhead">' + esc(meta.label) + '</div>';
+    meta.list.forEach(function (s) {
+      var act = cfg.sub && s.href.indexOf(cfg.sub) === 0;
+      h += '<a class="v2-rail__sublink' + (act ? ' is-active' : '') + '" href="' + s.href + '"' +
+        (act ? ' aria-current="page"' : '') + '>' + esc(s.label) + '</a>';
+    });
+    return h + '</div>';
   }
 
   function buildRail(cfg) {
     var rail = document.createElement('aside');
     rail.className = 'v2-rail';
     rail.setAttribute('data-od-id', 'nav-rail');
-    var html = '<div class="v2-rail__brand"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iNDIiIGhlaWdodD0iNTciPgogIDxkZWZzPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJhIiB4MT0iMS43IiB4Mj0iMi43IiB5MT0iLjIiIHkyPSIuMiIgZ3JhZGllbnRVbml0cz0ib2JqZWN0Qm91bmRpbmdCb3giPgogICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiMzYjQyYjgiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMTgxYjg5Ii8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGxpbmVhckdyYWRpZW50IHhsaW5rOmhyZWY9IiNhIiBpZD0iYiIgeDE9Ii40IiB4Mj0iLjQiIHkxPSIxLjQiIHkyPSIuMiIvPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJjIiB4MT0iMS43IiB4Mj0iMS43IiB5MT0iMSIgeTI9Ii0uMyIgZ3JhZGllbnRVbml0cz0ib2JqZWN0Qm91bmRpbmdCb3giPgogICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM1ODYyZGUiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjOTE2N2ZmIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJkIiB4MT0iMS44IiB4Mj0iMS44IiB5MT0iMS44IiB5Mj0iLjIiIGdyYWRpZW50VW5pdHM9Im9iamVjdEJvdW5kaW5nQm94Ij4KICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjNTg2MmRlIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2VjNTBmZiIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHBhdGggZmlsbD0idXJsKCNhKSIgZD0ibTc1OS4xIDI0OC4yIDIwIDV2LTE2bC0yMS02djE1YzAgMSAuMiAxLjggMSAyWiIgZGF0YS1uYW1lPSJQYXRoIDEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC03NTguMSAtMTk2LjIpIi8+CiAgPHBhdGggZmlsbD0idXJsKCNiKSIgZD0iTTc5MC4xIDIxMC4ydjE1bC0zMS0xMGMtLjgtLjMtMS0xLjEtMS0ydi0xNGwzMCA5Yy45LjMgMiAxLjEgMiAyWiIgZGF0YS1uYW1lPSJQYXRoIDIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC03NTguMSAtMTg2LjIpIi8+CiAgPHBhdGggZmlsbD0idXJsKCNjKSIgZD0iTTc5MC4xIDIxNnYxNGMwIC44LTEgMS43LTIgMmwtMzAgOHYtMTRjMC0xIC4yLTEuOSAxLTJaIiBkYXRhLW5hbWU9IlBhdGggMyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTc1OC4xIC0xOTEpIi8+CiAgPHBhdGggZmlsbD0idXJsKCNkKSIgZD0iTTgwMC4xIDE3OS42djE0YzAgMSAwIDEuOC0xIDJsLTQxIDExdi0xNGMwLS45LjItMS44IDEtMloiIGRhdGEtbmFtZT0iUGF0aCA0IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNzU4LjEgLTE3OS42KSIvPgo8L3N2Zz4=" alt="Flow"><span class="v2-rail__tag">v2</span></div><nav class="v2-rail__nav" aria-label="Primary">';
+    var html = '<div class="v2-rail__brand"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iNDIiIGhlaWdodD0iNTciPgogIDxkZWZzPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJhIiB4MT0iMS43IiB4Mj0iMi43IiB5MT0iLjIiIHkyPSIuMiIgZ3JhZGllbnRVbml0cz0ib2JqZWN0Qm91bmRpbmdCb3giPgogICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiMzYjQyYjgiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMTgxYjg5Ii8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGxpbmVhckdyYWRpZW50IHhsaW5rOmhyZWY9IiNhIiBpZD0iYiIgeDE9Ii40IiB4Mj0iLjQiIHkxPSIxLjQiIHkyPSIuMiIvPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJjIiB4MT0iMS43IiB4Mj0iMS43IiB5MT0iMSIgeTI9Ii0uMyIgZ3JhZGllbnRVbml0cz0ib2JqZWN0Qm91bmRpbmdCb3giPgogICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM1ODYyZGUiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjOTE2N2ZmIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJkIiB4MT0iMS44IiB4Mj0iMS44IiB5MT0iMS44IiB5Mj0iLjIiIGdyYWRpZW50VW5pdHM9Im9iamVjdEJvdW5kaW5nQm94Ij4KICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjNTg2MmRlIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2VjNTBmZiIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHBhdGggZmlsbD0idXJsKCNhKSIgZD0ibTc1OS4xIDI0OC4yIDIwIDV2LTE2bC0yMS02djE1YzAgMSAuMiAxLjggMSAyWiIgZGF0YS1uYW1lPSJQYXRoIDEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC03NTguMSAtMTk2LjIpIi8+CiAgPHBhdGggZmlsbD0idXJsKCNiKSIgZD0iTTc5MC4xIDIxMC4ydjE1bC0zMS0xMGMtLjgtLjMtMS0xLjEtMS0ydi0xNGwzMCA5Yy45LjMgMiAxLjEgMiAyWiIgZGF0YS1uYW1lPSJQYXRoIDIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC03NTguMSAtMTg2LjIpIi8+CiAgPHBhdGggZmlsbD0idXJsKCNjKSIgZD0iTTc5MC4xIDIxNnYxNGMwIC44LTEgMS43LTIgMmwtMzAgOHYtMTRjMC0xIC4yLTEuOSAxLTJaIiBkYXRhLW5hbWU9IlBhdGggMyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTc1OC4xIC0xOTEpIi8+CiAgPHBhdGggZmlsbD0idXJsKCNkKSIgZD0iTTgwMC4xIDE3OS42djE0YzAgMSAwIDEuOC0xIDJsLTQxIDExdi0xNGMwLS45LjItMS44IDEtMloiIGRhdGEtbmFtZT0iUGF0aCA0IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNzU4LjEgLTE3OS42KSIvPgo8L3N2Zz4=" alt="Flow"><span class="v2-rail__tag">v2</span><button type="button" class="icon-btn v2-rail__close" data-nav-close aria-label="Close navigation"><span class="ic ic--close"></span></button></div><nav class="v2-rail__nav" aria-label="Primary">';
     NAV.forEach(function (item) {
-      if (item.sec) { html += '<div class="v2-rail__sec">' + esc(item.sec) + '</div>'; return; }
-      html += railLink(item, cfg.nav);
-      if (item.id === 'admin' && cfg.zone === 'admin') {
-        html += '<div style="padding:2px 0 4px 30px" class="rail-sub">';
-        ADMIN_SUB.forEach(function (s) {
-          var act = cfg.sub && s.href.indexOf(cfg.sub) === 0;
-          html += '<a class="v2-rail__link' + (act ? ' is-active' : '') + '" style="height:34px;font-size:12.5px" href="' + s.href + '"' + (act ? ' aria-current="page"' : '') + '><span class="lbl">' + esc(s.label) + '</span>' + (s.isNew ? '<span class="badge-new">new</span>' : '') + '</a>';
-        });
-        html += '</div>';
-      }
-      if (item.id === 'tools' && cfg.zone === 'tools') {
-        html += '<div style="padding:2px 0 4px 30px" class="rail-sub">';
-        TOOLS_SUB.forEach(function (s) {
-          var act = cfg.sub && s.href.indexOf(cfg.sub) === 0;
-          html += '<a class="v2-rail__link' + (act ? ' is-active' : '') + '" style="height:34px;font-size:12.5px" href="' + s.href + '"' + (act ? ' aria-current="page"' : '') + '><span class="lbl">' + esc(s.label) + '</span>' + (s.isNew ? '<span class="badge-new">new</span>' : '') + '</a>';
-        });
-        html += '</div>';
-      }
-      if (item.id === 'campaigns' && cfg.zone === 'campaigns') {
-        html += '<div style="padding:2px 0 4px 30px" class="rail-sub">';
-        CAMPAIGNS_SUB.forEach(function (s) {
-          var act = cfg.sub && s.href.indexOf(cfg.sub) === 0;
-          html += '<a class="v2-rail__link' + (act ? ' is-active' : '') + '" style="height:34px;font-size:12.5px" href="' + s.href + '"' + (act ? ' aria-current="page"' : '') + '><span class="lbl">' + esc(s.label) + '</span>' + (s.isNew ? '<span class="badge-new">new</span>' : '') + '</a>';
-        });
-        html += '</div>';
-      }
+      if (item.sec) { html += '<div class="v2-rail__sec" aria-hidden="true">' + esc(item.sec) + '</div>'; return; }
+      var sub = SUBS[item.id] && cfg.zone === item.id ? subBlock(item.id, cfg) : '';
+      html += (sub ? '<div class="v2-rail__group">' : '') + railLink(item, cfg.nav) + sub + (sub ? '</div>' : '');
     });
-    html += '</nav><div class="v2-rail__foot"><button type="button" class="btn btn--ghost btn--sm v2-rail__collapse" data-rail-toggle aria-label="Collapse navigation"><span class="ic ic--back"></span><span class="lbl">Collapse</span></button></div>';
+    html += '</nav><div class="v2-rail__foot"><button type="button" class="btn btn--ghost btn--sm v2-rail__collapse" data-rail-toggle aria-expanded="true" data-tip="Expand navigation" aria-label="Collapse navigation" title="Collapse sidebar  ["><span class="ic ic--back"></span><span class="lbl">Collapse</span></button></div>';
     rail.innerHTML = html;
     return rail;
   }
@@ -162,7 +157,7 @@
     bar.className = 'v2-topbar';
     bar.setAttribute('data-od-id', 'topbar');
     var crumb = (cfg.crumbs || []).map(function (c) { return '<span class="v2-topbar__crumb">' + esc(c) + '</span><span class="v2-topbar__crumb">/</span>'; }).join('');
-    var html = crumb + '<span class="v2-topbar__title">' + esc(cfg.title || '') + '</span><span class="v2-topbar__sp"></span>';
+    var html = '<button type="button" class="icon-btn v2-burger" data-nav-open aria-expanded="false" aria-label="Open navigation"><span class="ic ic--menu"></span></button>' + crumb + '<span class="v2-topbar__title">' + esc(cfg.title || '') + '</span><span class="v2-topbar__sp"></span>';
     if (cfg.lady) {
       html += '<div style="position:relative"><button type="button" class="ctx-switch" data-menu-open="ctx-menu" aria-expanded="false" aria-haspopup="true">' +
         '<span class="avatar avatar--sm">AS</span>' +
@@ -204,12 +199,39 @@
     col.className = 'v2-col';
     document.body.insertBefore(shell, page);
     shell.appendChild(buildRail(cfg));
+    var scrim = document.createElement('button');
+    scrim.type = 'button';
+    scrim.className = 'v2-scrim';
+    scrim.setAttribute('data-nav-close', '');
+    scrim.setAttribute('aria-label', 'Close navigation');
+    scrim.tabIndex = -1;
+    shell.appendChild(scrim);
     shell.appendChild(col);
     col.appendChild(buildTopbar(cfg));
     col.appendChild(page);
-    try {
-      if (localStorage.getItem('v2-rail') === 'min') shell.classList.add('rail-min');
-    } catch (_) {}
+    var mqMin = window.matchMedia ? matchMedia('(max-width:1080px)') : null;
+    var mqMob = window.matchMedia ? matchMedia('(max-width:780px)') : null;
+    function syncRail() {
+      var pref = null;
+      try { pref = localStorage.getItem('v2-rail'); } catch (_) {}
+      var mobile = !!(mqMob && mqMob.matches);
+      var compact = pref === 'min' || (pref !== 'full' && mqMin && mqMin.matches);
+      shell.classList.toggle('rail-min', compact && !mobile);
+      if (!mobile) shell.classList.remove('nav-open');
+      var tg = shell.querySelector('[data-rail-toggle]');
+      if (tg) {
+        var isMin = shell.classList.contains('rail-min');
+        tg.setAttribute('aria-expanded', String(!isMin));
+        tg.setAttribute('aria-label', isMin ? 'Expand navigation' : 'Collapse navigation');
+        tg.title = isMin ? '' : 'Collapse sidebar  [';
+      }
+      var bg = shell.querySelector('[data-nav-open]');
+      if (bg) bg.setAttribute('aria-expanded', String(shell.classList.contains('nav-open')));
+    }
+    if (mqMin) mqMin.addEventListener('change', syncRail);
+    if (mqMob) mqMob.addEventListener('change', syncRail);
+    syncRail();
+    window.FlowUI.syncRail = syncRail;
   }
 
   window.FlowUI = {
