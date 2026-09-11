@@ -29,11 +29,32 @@
   ];
 
   var MAILS = [
-    { id: 'M-101', from: 'Dmitri M.', initials: 'DM', subject: 'Re: Weekend plans', preview: 'I was thinking we could meet at that little place near…', time: '12:20', unread: true, status: 'delivered' },
-    { id: 'M-102', from: 'Andrey K.', initials: 'AK', subject: 'Photos from my trip', preview: 'Attached are the pictures I promised — the mountains were…', time: '09:02', unread: true, status: 'delivered' },
-    { id: 'M-103', from: 'Sergey V.', initials: 'SV', subject: 'About last night', preview: 'I really enjoyed our conversation, let me tell you more…', time: 'Yesterday', unread: false, status: 'opened' },
-    { id: 'M-104', from: 'Igor P.', initials: 'IP', subject: 'Hello again', preview: 'It has been a while — how have you been? I wanted to…', time: 'Yesterday', unread: false, status: 'failed' },
-    { id: 'M-105', from: 'Pavel M.', initials: 'PM', subject: 'Concert photos', preview: 'Here is the setlist and a few shots from the front row…', time: 'Mon', unread: false, status: 'opened' }
+    { id: 'M-101', from: 'Dmitri M.', initials: 'DM', age: 34, subject: 'Re: Weekend plans', preview: 'I was thinking we could meet at that little place near…', time: '12:20', date: '28 Aug 26', unread: 2, status: 'delivered', online: true, starred: true, media: true, lastAuthor: 'male' },
+    { id: 'M-102', from: 'Andrey K.', initials: 'AK', age: 41, subject: 'Photos from my trip', preview: 'You: Attached are the pictures I promised — the mountains…', time: '09:02', date: '28 Aug 26', unread: 0, status: 'opened', online: true, starred: false, media: true, lastAuthor: 'lady', noAnswer: true },
+    { id: 'M-103', from: 'Sergey V.', initials: 'SV', age: 38, subject: 'About last night', preview: 'I really enjoyed our conversation, let me tell you more…', time: 'Yesterday', date: '27 Aug 26', unread: 0, status: 'opened', online: false, starred: false, media: false, lastAuthor: 'male' },
+    { id: 'M-104', from: 'Igor P.', initials: 'IP', age: 45, subject: 'Hello again', preview: 'You: It has been a while — how have you been? I wanted to…', time: 'Yesterday', date: '27 Aug 26', unread: 0, status: 'failed', online: false, starred: false, media: false, lastAuthor: 'lady' },
+    { id: 'M-105', from: 'Pavel M.', initials: 'PM', age: 29, subject: 'Welcome Letter', preview: 'You: Hello! I am new here and your profile stood out…', time: 'Mon', date: '25 Aug 26', unread: 0, status: 'delivered', online: false, starred: false, media: true, lastAuthor: 'lady', welcome: true },
+    { id: 'M-106', from: 'Victor R.', initials: 'VR', age: 52, subject: 'Re: Your photos', preview: 'This conversation was blocked', time: 'Sun', date: '24 Aug 26', unread: 0, status: 'delivered', online: false, starred: false, media: false, lastAuthor: 'male', blocked: true }
+  ];
+
+  var MAIL_THREAD = [
+    { id: 'LT-301', dir: 'in', type: 'letter', from: 'Dmitri M.', to: 'Anna S.', subject: 'Weekend plans', time: '26 Aug 2026 — 18:02',
+      body: 'Anna, I keep thinking about our last conversation. You mentioned a small café near the park — I found it on the map and it looks exactly like the place you described. Would Thursday or Friday evening work for you? Tell me which suits you and I will take care of the rest.\n\n— Dmitri',
+      media: null },
+    { id: 'LT-302', dir: 'out', type: 'welcome', from: 'Anna S.', to: 'Dmitri M.', subject: 'Welcome Letter', time: '27 Aug 2026 — 09:14',
+      body: 'Dmitri, hello! I am so happy you wrote. Your profile caught my eye a few days ago — I loved the photo with the mountain lake. I am attaching a couple of pictures from my own trip last weekend so you can see the place I told you about.\n\nThursday works perfectly for me. I will be waiting for your letter.',
+      media: [{ label: 'Free photo', kind: 'photo', count: 2, seen: [true, false] }], delivery: 'Delivered · opened 09:41', fb: { mode: 'manual', st: 'up', vote: 'up' } },
+    { id: 'LT-303', dir: 'in', type: 'letter', from: 'Dmitri M.', to: 'Anna S.', subject: 'Re: Weekend plans', time: '27 Aug 2026 — 12:20',
+      body: 'Thursday it is — I will take the corner table at 7. These photos are wonderful, Anna. The second one especially — the light on the water looks unreal. Looking forward to finally trying that flat white together.',
+      media: null },
+    { id: 'LT-304', dir: 'out', type: 'letter', from: 'Anna S.', to: 'Dmitri M.', subject: 'Re: Weekend plans', time: '27 Aug 2026 — 12:47',
+      body: 'It is a date then — Thursday, 7 pm. I already know what I am ordering: their flat white really is the best in the neighbourhood, and the corner table has the nicest view of the park. Wear something comfortable, we might take a walk after.\n\nP.S. I am attaching the video I promised — the waterfall near the trail we talked about.',
+      media: [{ label: 'Paid photo', kind: 'photo', count: 1, seen: [true] }, { label: 'Video', kind: 'video', count: 1, seen: [false] }], delivery: 'Delivered 12:47 · not opened yet', fb: { mode: 'ai', st: 'down', comment: 'Too generic — name the café and keep it warmer.' } },
+    { id: 'LT-305', dir: 'out', type: 'letter', from: 'Anna S.', to: 'Dmitri M.', subject: 'One more thought', time: '28 Aug 2026 — 08:15',
+      body: 'Good morning, Dmitri. I woke up thinking about our plans — if the weather stays this nice, maybe we could walk to the river after coffee? There is a path I love. No pressure at all, just an idea. See you Thursday.',
+      media: null, delivery: 'AI draft · sent by operator · delivered 08:15', fb: { mode: 'ai', st: 'lineage' } },
+    { id: 'LT-306', dir: 'in', type: 'review', from: 'Dmitri M.', to: 'Anna S.', subject: null, time: '28 Aug 2026 — 11:30',
+      body: 'This letter under review and will be issued shortly', media: null }
   ];
 
   var MESSAGES = [
@@ -312,7 +333,7 @@
   }
 
   window.Fixtures = {
-    PLATFORMS: PLATFORMS, LADIES: LADIES, MALES: MALES, MAILS: MAILS, MESSAGES: MESSAGES,
+    PLATFORMS: PLATFORMS, LADIES: LADIES, MALES: MALES, MAILS: MAILS, MAIL_THREAD: MAIL_THREAD, MESSAGES: MESSAGES,
     TEMPLATES: TEMPLATES, GROUPS: GROUPS, HISTORY: HISTORY, ADMINS: ADMINS,
     ACCOUNTS: ACCOUNTS, PROFILES: PROFILES, SCHEDULES: SCHEDULES, ALERTS: ALERTS,
     ALERT_FEED: ALERT_FEED, COVERAGE: COVERAGE, STATS: STATS,

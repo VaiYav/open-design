@@ -20,69 +20,62 @@
       <div class="scroll" id="m-lady-list"></div>
     </aside>
 
-    <section class="pane" aria-label="Mail list">
+    <section class="pane" aria-label="Mailbox">
       <div class="pane__head">
         <div class="seg" role="tablist" style="width:100%">
           <button type="button" data-tab="inbox" class="is-active" role="tab" aria-selected="true" style="flex:1">Inbox</button>
-          <button type="button" data-tab="sent" role="tab" aria-selected="false" style="flex:1">Sent</button>
-          <button type="button" data-tab="drafts" role="tab" aria-selected="false" style="flex:1">Drafts</button>
+          <button type="button" data-tab="outbox" role="tab" aria-selected="false" style="flex:1">Outbox</button>
+          <button type="button" data-tab="starred" role="tab" aria-selected="false" style="flex:1">Starred</button>
         </div>
         <div class="search" style="width:100%"><span class="ic ic--search"></span><input class="input" type="search" placeholder="Search mail" aria-label="Search mail" id="m-q"></div>
       </div>
       <div class="scroll" data-tab-scope>
         <div data-tab-panel="inbox" id="m-items"></div>
-        <div data-tab-panel="sent" hidden>
-          <div class="lrow"><span class="avatar">AS</span><div class="main"><div class="t1">To Sergey V. — “Re: Your photos”</div><div class="t2">Sent yesterday · opened 09:14</div></div><span class="badge badge--accent"><span class="ic ic--eye"></span>Opened</span></div>
-          <div class="lrow"><span class="avatar">AS</span><div class="main"><div class="t1">To Pavel M. — “Weekend”</div><div class="t2">Sent Monday · not opened yet</div></div><span class="badge badge--muted">Sent</span></div>
-        </div>
-        <div data-tab-panel="drafts" hidden>
-          <div class="lrow"><span class="avatar avatar--lav">DR</span><div class="main"><div class="t1">To Andrey K. — “Garden photos”</div><div class="t2">Draft saved 12:05 · 140 characters</div></div><button type="button" class="btn btn--ghost btn--sm" data-toast="Draft opened (prototype)">Resume</button></div>
-        </div>
+        <div data-tab-panel="outbox" hidden id="m-outbox"></div>
+        <div data-tab-panel="starred" hidden id="m-starred"></div>
       </div>
     </section>
 
     <section class="pane" aria-label="Mail reader">
       <div class="convo">
-        <div class="convo__head">
+        <div class="convo__head" style="flex-wrap:wrap;row-gap:8px">
           <span class="avatar">DM</span>
           <div class="who">
-            <span class="nm">Dmitri M. <span class="dot dot--on" title="Online"></span></span>
-            <span class="mt"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE4MCAxODAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik00MC40MzIzIDE0LjYyMDFDMzkuOTIzNSAxNC44NzUgMzguMDg2NSAxNS43NjQ4IDM2LjMxIDE2LjU4OThDMjUuOTEzOSAyMS40NzkzIDE5LjM4NTYgMzQuMzA3NiAyMS4zNDc1IDQ1Ljk5MTVDMjUuMTUwNyA2OC4wODkyIDQzLjU5NzIgOTAuMzc3MSA2NC44MzggOTguNDQ1NkM2OC43NzA1IDk5LjkwNTYgNzYuMTIyMyAxMDAuNDE1IDc3LjI2NSA5OS4yNzA2Qzc3LjU4NDEgOTguOTU1MyA3Ny4zMjk3IDk3Ljg3NTQgNzYuNTY2NSA5Ni41NDA3QzcxLjQzMDkgODcuMzk2NyA2OC40NTE0IDc5LjMzMjUgNjcuOTQyNiA3My4wNDM2QzY3LjE4MzYgNjMuNjQ0NyA2OS43ODM4IDU2LjIxNTQgNzYuMTgyOCA0OS44NjZDODEuNjk3OCA0NC4zNDE2IDg3LjIxMjcgNDEuOTI3IDkzLjkzNTEgNDEuOTI3QzEwMC42NTcgNDEuOTI3IDEwNS43MjggNDMuODMxOCAxMTIuMjU3IDQ5LjIzMUwxMTYuMjQ5IDUyLjUzMUwxMjAuMDU3IDQ5LjIzMUwxMjMuNzk1IDQ1Ljg2NjNMMTIzLjY3IDQwLjU5NjZDMTIzLjM1NiAyOS41NDc3IDExNy4zOTYgMjAuMjc0MSAxMDcuOTQ5IDE2LjIwOTZDMTA2LjU1MiAxNS41NzQ3IDEwNC45MDUgMTQuODc1IDEwNC4zMzYgMTQuNTU5N0MxMDIuNzQ5IDEzLjczNDcgOTQuMDY0NSAxMy44NTk5IDkxLjk3MzIgMTQuNjg0OUM4Ny4yODE3IDE2LjY1NDUgODUuODg4OSAxNy4zNTQzIDgzLjA5OTEgMTkuNTE0Qzc5LjgwMDUgMjEuOTg5IDc2LjM3NjggMjUuMjkzMyA3NC4yMjUxIDI4LjE0ODNMNzIuODI4IDI5Ljk5MjdMNjcuMjQ4MyAyNC4zMzg2QzYyLjA0ODEgMTkuMTMzOCA2MC43ODA0IDE4LjMwNDUgNTIuOTg0NCAxNC40OTQ5QzUxLjUyNjkgMTMuODU5OSA0MS43IDEzLjkyNDcgNDAuNDMyMyAxNC42MjAxWk00NS42OTI4IDI5LjczMzVDNTAuMzE5NiAzMy45MjMzIDQ5LjM3MSA0MC41MzE5IDQzLjczMDkgNDMuMjYxN0M0MS4wNjYxIDQ0LjU5NjQgNDAuOTQxMSA0NC41OTYzIDM4LjE1MTIgNDMuNTE2NUMzMi43MDA5IDQxLjQyMTYgMzAuOTg5IDM1LjEzMjYgMzQuNzI3NSAzMC44NzgxQzM1LjgwNTUgMjkuNjczIDM3LjMyNzYgMjguNTI4NCAzOC4wODY1IDI4LjQwMzFDNDAuNDMyMiAyNy44OTM0IDQ0LjQyNTEgMjguNTkzMiA0NS42OTI4IDI5LjczNzhWMjkuNzMzNVoiIGZpbGw9IiMzNTdDQjkiLz4KPHBhdGggZD0iTTkwLjczNDQgNDYuNjc5MUM4Ni43NTM4IDQ3LjM3NTMgODEuMjUxNCA1MC4zNDQ2IDc4LjcyODEgNTMuMjQ5NkM3My41NDgyIDU5LjI1MjkgNzEuNDU5IDY2LjcwODggNzIuNzg3MyA3NC4xMDAxQzc0LjE3NTggODEuNTU1OSA3OC4zNDk4IDkwLjU4ODkgODMuNTI5OCA5Ny42MDIxQzg4LjQ2MDQgMTA0LjIzNyA5OC42OTk5IDExMi44OTIgMTA1LjAxOSAxMTUuNzM3QzExNC41NjIgMTIwLjA5OCAxMTguNDE4IDExOS45NyAxMjcuODM3IDExNS4yOTRDMTQyLjk0MiAxMDcuNzA5IDE1Ni41OTUgODkuODMyNiAxNTkuMzEyIDczLjk3NTZDMTYxLjIwNyA2My4zNjEyIDE1Ni4wODggNTIuOTM2IDE0Ni44NTggNDguNTE0MUMxNDMuMjU2IDQ2LjgwOCAxNDIuMDU3IDQ2LjU1NDQgMTM3LjYzMyA0Ni42MTg5QzEzMC44NzEgNDYuNjE4OSAxMjYuNzAyIDQ4LjcwMzEgMTIwLjUwNyA1NS4wODQ2TDExNi4wODQgNTkuNjk1NkwxMTEuMjE4IDU0Ljc3MDlDMTA0LjM5MSA0Ny44ODIzIDk4LjE5NyA0NS40ODQ1IDkwLjczODcgNDYuNjgzNEw5MC43MzQ0IDQ2LjY3OTFaTTkxLjkzMzggNTguODEwNEM5NC4zOTY5IDYwLjA3MzggOTUuNTM2MSA2Mi4wMzMzIDk1LjUzNjEgNjUuMTI3NEM5NS41MzYxIDY5LjIzNTYgOTMuMzg2NyA3MS4zOCA4OS4yMTcgNzEuMzhDODQuNjA0NCA3MS4zOCA4MS42OTQyIDY3Ljk2NzkgODIuNTE5NiA2My41NDZDODMuMzQwNiA1OS4zNzc2IDg4LjIwNjcgNTYuOTExIDkxLjkzOCA1OC44MTA0SDkxLjkzMzhaIiBmaWxsPSIjRkY1OTY2Ii8+CjxwYXRoIGQ9Ik03Ny4xMTU5IDEwMy44ODhDNzYuMjE1MSAxMDQuMjU0IDczLjMyMDUgMTA0LjQzNyA3MC40OTU4IDEwNC4yNTRMNjUuNDE1IDEwMy45NTFMNjQuNTE0MiAxMDUuOTY3QzYyLjc3ODMgMTA5Ljk5OSA2NC44Mzc3IDExMS4xNjMgNzMuNTEyOSAxMTEuMTYzQzc4LjQ2MjYgMTExLjE2MyA3OS44MTM3IDExMC45OCA4MS4wMzM3IDExMC4wMDNDODIuNTExNiAxMDguODQzIDgyLjU3NzIgMTA4Ljc4MSA4MS42MTA4IDEwNi4xNTRDODAuNTgzMyAxMDMuMzQ0IDc5LjY4MjYgMTAyLjkxNSA3Ny4xMTE1IDEwMy44OTJMNzcuMTE1OSAxMDMuODg4WiIgZmlsbD0iIzM1N0NCOSIvPgo8cGF0aCBkPSJNNzAuOTg5NSAxMjEuNDk3QzcwLjk4OTUgMTI0LjA3IDcxLjY5MzYgMTI4Ljc2NSA3MS42OTM2IDEyOC43NjVDNzEuNjkzNiAxMjguNzY1IDcyLjQzNzMgMTM0LjE2OSA3Mi44Nzg1IDEzNi42MTRDNzMuNjk2NyAxNDEuMzIgNzMuNTQwMSAxNDEuNjQ3IDc0LjE1NzkgMTQzLjU1Qzc0Ljk5MzggMTQ2LjEyNiA3Ni4wNDc5IDE0OC45NjQgNzguMzgyNCAxNTIuMzUxQzgyLjk3ODQgMTU5LjA2MyA4NS43NDk4IDE2MS4wNzIgODcuNTc4OCAxNTkuMjVDODguNzEzOSAxNTguMTI0IDg4LjUyNTQgMTU3LjM2OSA4Ni4zODM3IDE1NC45ODRDNzkuNzkwNSAxNDguMTI3IDc3Ljg1NTggMTQ0LjM5MiA3NS41ODk5IDEyMS44NzNMNzUuMDg0NSAxMTcuMTcxTDczLjA3MTMgMTE2Ljk4M0w3MC45OTM4IDExNi43OTVWMTIxLjUwMkw3MC45ODk1IDEyMS40OTdaIiBmaWxsPSIjMzU3Q0I5Ii8+CjxwYXRoIGQ9Ik0xMjAuMjUyIDEyMy43OTNDMTE5LjA1NyAxMjQuMTUyIDExNi4yODYgMTI0LjI3NCAxMTQuMDgxIDEyNC4wMzNDMTEwLjM2NCAxMjMuNzMyIDExMC4xMTUgMTIzLjc5MyAxMDkuNDIxIDEyNS4xNzZDMTA4LjQxNSAxMjcuMzM0IDEwOS4xNjkgMTI4LjIzNSAxMTIuNjMzIDEyOS4wNzJDMTE2LjQ3NSAxMjkuOTEyIDEyMS41NzUgMTI5LjM2OSAxMjMuNDY0IDEyNy45MzNDMTI0Ljc4NyAxMjYuOTE0IDEyNC43ODcgMTI2Ljg1MiAxMjMuNzc3IDEyNC45OTZDMTIzLjIxMSAxMjMuOTE1IDEyMi42NDIgMTIzLjA3NSAxMjIuNTgyIDEyMy4xMzZDMTIyLjUxOCAxMjMuMTM2IDEyMS40NDcgMTIzLjQzNCAxMjAuMjUyIDEyMy43OTdWMTIzLjc5M1oiIGZpbGw9IiNGRjU5NjYiLz4KPHBhdGggZD0iTTExMy44OTIgMTM0Ljg1MkMxMTMuNzAxIDEzNS4xNjkgMTEzLjM4MSAxMzcuNjI1IDExMy4xMjYgMTQwLjM5OUMxMTIuNzQ1IDE0NS4xMjIgMTEyLjQyNSAxNDcuMDE3IDExMC43NzMgMTUzLjk0N0MxMDkuODk0IDE1Ny42MzIgMTA4Ljk5IDE1OC4xNiAxMDguOTkgMTU4LjE2QzEwNy42MDIgMTYwLjQ0OCAxMDUuOTQgMTYyLjMxNyAxMDYuMTkxIDE2My41MThDMTA2Ljc2MiAxNjUuNTk2IDEwOC44IDE2NS40NjggMTEwLjc3MyAxNjMuMjY1QzExMi4xNzggMTYxLjY5NSAxMTQuMzQ5IDE1OS4wNCAxMTUuNDE5IDE1NC44OUMxMTYuODE2IDE0OS40NzMgMTE4LjUzNCAxMzYuNDg5IDExOC4wOTIgMTM1LjE2NUMxMTcuNzcyIDEzNC4zNDYgMTE0LjMzNyAxMzQuMDkzIDExMy44OTYgMTM0Ljg0OEwxMTMuODkyIDEzNC44NTJaIiBmaWxsPSIjRkY1OTY2Ii8+Cjwvc3ZnPgo=" alt="RealLoves">RealLoves · mail thread · ID <span class="mono">884217</span></span>
+            <span class="nm">Dmitri M., 34 <span class="dot dot--on" title="Online"></span></span>
+            <span class="mt"><img id="m-plat-logo" src="" alt=""> ID 884217 · last visit today 11:56</span>
           </div>
-          <button type="button" class="btn btn--ghost btn--sm" data-toast="Thread bookmarked"><span class="ic ic--bookmark"></span>Bookmark</button>
+          <div class="row" style="gap:6px;flex-wrap:nowrap">
+            <span class="badge badge--accent" title="Letters left this month"><span class="ic ic--mail"></span>12 mails left</span>
+            <button type="button" class="icon-btn" style="width:34px;height:34px" aria-label="Premium male" title="Premium" data-toast="Premium toggled"><span class="ic ic--crown"></span></button>
+            <button type="button" class="icon-btn" style="width:34px;height:34px" aria-label="Starred" title="Starred" data-toast="Male starred"><span class="ic ic--bookmark"></span></button>
+            <button type="button" class="icon-btn" style="width:34px;height:34px" aria-label="Mail blacklist" title="Blacklist" data-toast="Blacklist popup (prototype)"><span class="ic ic--blacklist"></span></button>
+          </div>
         </div>
-        <div class="convo__msgs" style="gap:14px">
-          <div class="card card--pad" style="box-shadow:none">
-            <div class="row row--between"><strong style="font-size:15px">Re: Weekend plans</strong><span class="tiny mono muted">12:20</span></div>
-            <p class="mt-2" style="font-size:14px;line-height:1.6">Anna, I was thinking we could meet at that little place near the park you mentioned. Thursday or Friday evening work best for me — tell me which suits you and I'll take care of the rest.<br><br>— Dmitri</p>
-          </div>
-          <div class="card card--pad" style="box-shadow:none;background:var(--surface-2)">
-            <div class="row row--between"><strong style="font-size:15px">Re: Weekend plans</strong><span class="tiny mono muted">11:02</span></div>
-            <p class="mt-2" style="font-size:14px;line-height:1.6;color:var(--fg-2)">Dmitri, that sounds wonderful. There's a café on the corner that makes the best flat white — I keep telling everyone about it…</p>
-            <p class="tiny mono mt-2" style="color:var(--faint)">Sent by operator · opened 11:40</p>
-          </div>
-          <div data-fb-unit data-fb='{"mode":"manual","st":"up","vote":"up"}'></div>
-          <div class="card card--pad" style="box-shadow:none;background:var(--surface-2)">
-            <div class="row row--between"><strong style="font-size:15px">Re: Weekend plans</strong><span class="tiny mono muted">12:47</span></div>
-            <p class="mt-2" style="font-size:14px;line-height:1.6;color:var(--fg-2)">Thursday it is — I'll take the corner table at 7. Looking forward to finally trying that flat white together.</p>
-            <p class="tiny mono mt-2" style="color:var(--faint)">AI draft · sent by operator · delivered 12:47</p>
-          </div>
-          <div data-fb-unit data-fb='{"mode":"ai","st":"lineage"}'></div>
-          <div class="notice notice--danger" data-view="send-failed" hidden role="alert">
+        <div class="convo__msgs" id="m-thread" style="gap:0">
+          <div class="notice notice--danger" data-view="send-failed" hidden role="alert" style="align-self:stretch">
             <span class="ic ic--warn"></span>
-            <div style="flex:1"><span class="t">Reply not delivered.</span> RealLoves mail gateway returned an error. Retry or save to drafts.</div>
-            <button type="button" class="btn btn--danger btn--sm" data-toast="Retried — reply queued">Retry</button>
+            <div style="flex:1"><span class="t">Letter not delivered.</span> RealLoves mail gateway returned an error. Retry or save to drafts.</div>
+            <button type="button" class="btn btn--danger btn--sm" data-toast="Retried — letter queued">Retry</button>
           </div>
         </div>
         <div class="convo__composer">
-          <div class="composer">
-            <textarea id="mail-input" placeholder="Write a reply…" maxlength="300" aria-label="Reply"></textarea>
+          <div class="composer composer--mail">
+            <div class="composer__subject">
+              <input id="mail-subject" type="text" placeholder="Subject" maxlength="120" aria-label="Subject" autocomplete="off">
+              <span class="cnt" id="mail-subj-cnt">0 / 120</span>
+            </div>
+            <textarea id="mail-input" placeholder="Write a letter…" maxlength="2000" aria-label="Letter text"></textarea>
+            <div class="attach-strip" id="m-attach">
+              <span class="attach-chip"><span class="ic ic--media"></span>free-photo-1.jpg<button type="button" class="attach-chip__x" aria-label="Remove attachment" data-toast="Attachment removed"><span class="ic ic--cross"></span></button></span>
+              <span class="attach-chip"><span class="ic ic--media"></span>garden-02.jpg<button type="button" class="attach-chip__x" aria-label="Remove attachment" data-toast="Attachment removed"><span class="ic ic--cross"></span></button></span>
+              <span class="attach-req" title="This platform requires one free photo per letter"><span class="ic ic--warn"></span>1 free photo required</span>
+            </div>
             <div class="composer__bar">
-              <button type="button" class="icon-btn" style="border:0;width:34px;height:34px" aria-label="Attach photo" data-toast="Attach photo (prototype)"><span class="ic ic--media"></span></button>
-              <button type="button" class="icon-btn" style="border:0;width:34px;height:34px" aria-label="Templates" data-toast="Insert preset (prototype)"><span class="ic ic--templates"></span></button>
-              <button type="button" class="icon-btn" style="border:0;width:34px;height:34px" aria-label="AI draft" data-toast="Beloved is drafting…"><span class="ic ic--omni"></span></button>
-              <span class="cnt" id="mail-cnt">0 / 300</span>
-              <button type="button" class="btn btn--primary btn--sm" data-od-id="mail-send" onclick="flowToast('Reply sent (prototype)')">Send reply</button>
+              <button type="button" class="icon-btn" style="border:0;width:34px;height:34px" aria-label="Attach media" title="Attach photo or video" data-toast="Media picker (prototype)"><span class="ic ic--media"></span></button>
+              <button type="button" class="icon-btn" style="border:0;width:34px;height:34px" aria-label="Templates" title="Insert preset" data-toast="Insert preset (prototype)"><span class="ic ic--templates"></span></button>
+              <button type="button" class="icon-btn" style="border:0;width:34px;height:34px" aria-label="AI draft" title="Beloved drafts the letter" data-toast="Beloved is drafting…"><span class="ic ic--omni"></span></button>
+              <span class="cnt" id="mail-cnt">0 / 2000</span>
+              <button type="button" class="btn btn--primary btn--sm" data-od-id="mail-send" onclick="flowToast('Letter queued for delivery (prototype)')"><span class="ic ic--send" style="width:14px;height:14px"></span>Send letter</button>
             </div>
           </div>
         </div>
@@ -92,14 +85,14 @@
 
   <div class="chat3" data-view="no-selection" hidden>
     <aside class="pane" aria-label="Ladies"><div class="pane__head"><div class="search"><span class="ic ic--search"></span><input class="input" type="search" placeholder="Search ladies" aria-label="Search ladies"></div></div><div class="scroll" id="m-lady-list-2"></div></aside>
-    <section class="pane" aria-label="Mail list"><div class="pane__head"><span class="pane__title">Inbox</span></div><div class="scroll" id="m-items-2"></div></section>
-    <section class="pane" aria-label="Mail reader"><div class="state" style="height:100%"><div class="state__icon state__icon--muted"><span class="ic ic--mail ic--lg"></span></div><h2>Pick a thread</h2><p>Select a lady, then a mail thread — the letter opens here.</p></div></section>
+    <section class="pane" aria-label="Mailbox"><div class="pane__head"><span class="pane__title">Inbox</span></div><div class="scroll" id="m-items-2"></div></section>
+    <section class="pane" aria-label="Mail reader"><div class="state" style="height:100%"><div class="state__icon state__icon--muted"><span class="ic ic--mail ic--lg"></span></div><h2>Pick a correspondence</h2><p>Select a lady, then a male — the letter thread opens here.</p></div></section>
   </div>
 
   <div class="chat3" data-view="loading" role="status" aria-busy="true" hidden>
     <aside class="pane"><div class="pane__head"><span class="skeleton" style="height:44px;border-radius:999px"></span></div><div id="m-sk-1"></div></aside>
     <section class="pane"><div class="pane__head"><span class="skeleton" style="height:34px;border-radius:999px"></span></div><div id="m-sk-2"></div></section>
-    <section class="pane"><div style="padding:22px;display:flex;flex-direction:column;gap:14px"><span class="skeleton" style="height:120px;border-radius:16px"></span><span class="skeleton" style="height:120px;border-radius:16px"></span></div></section>
+    <section class="pane"><div style="padding:22px;display:flex;flex-direction:column;gap:14px"><span class="skeleton" style="height:150px;border-radius:16px"></span><span class="skeleton" style="height:150px;border-radius:16px"></span></div></section>
   </div>
 
   <div data-view="error" style="height:100%" hidden>
@@ -122,6 +115,9 @@
 (function () {
   FlowUI.mount({ nav: 'mails', zone: 'workspace', title: 'Mails', lady: true });
   var F = window.Fixtures;
+
+  document.getElementById('m-plat-logo').src = F.PLATFORMS.realloves.logo;
+
   function ladyItem(l, i) {
     return '<button type="button" class="lady-item' + (i === 0 ? ' is-active' : '') + '">' +
       '<span class="avatar avatar--sm">' + l.initials + '</span>' +
@@ -132,18 +128,82 @@
   var ladiesHtml = F.LADIES.map(ladyItem).join('');
   document.getElementById('m-lady-list').innerHTML = ladiesHtml;
   document.getElementById('m-lady-list-2').innerHTML = ladiesHtml;
-  function mailItem(m, active) {
-    var st = m.status === 'failed' ? '<span class="badge badge--danger">Failed</span>' : (m.status === 'opened' ? '<span class="badge badge--accent">Opened</span>' : '');
-    return '<button type="button" class="chat-item' + (active ? ' is-active' : '') + '">' +
-      '<span class="avatar">' + m.initials + '</span>' +
-      '<span style="flex:1;min-width:0"><span class="who"><span class="nm">' + m.from + '</span><span class="tm">' + m.time + '</span></span>' +
-      '<span class="pv"><span class="sn"><strong style="color:var(--fg);font-weight:600">' + m.subject + '</strong> — ' + m.preview + '</span>' + (m.unread ? '<span class="unread">1</span>' : st) + '</span></span></button>';
+
+  /* ---- mail list rows: subject-forward, read/unread explicit ---- */
+  function mailRow(m, active) {
+    var unread = m.unread > 0;
+    var right;
+    if (unread) right = '<span class="unread">' + m.unread + '</span>';
+    else if (m.status === 'failed') right = '<span class="badge badge--danger"><span class="ic ic--warn"></span>Failed</span>';
+    else if (m.noAnswer) right = '<span class="badge badge--warning">No answer</span>';
+    else if (m.status === 'opened') right = '<span class="badge badge--accent"><span class="ic ic--eye"></span>Opened</span>';
+    else right = '';
+    var subject = m.blocked ? '<span style="color:var(--muted);font-weight:600">This conversation was blocked</span>'
+      : (m.welcome ? '<span class="badge badge--welcome" style="margin-right:6px">Welcome</span>' : '') +
+        '<strong style="font-weight:' + (unread ? '800' : '600') + ';color:var(--fg)">' + m.subject + '</strong>';
+    return '<button type="button" class="chat-item' + (active ? ' is-active' : '') + '"' + (unread ? ' style="background:var(--surface-2)"' : '') + '>' +
+      '<span class="avatar">' + m.initials + (m.online ? '<span class="dot dot--on" style="position:absolute;right:-1px;bottom:-1px"></span>' : '') + '</span>' +
+      '<span style="flex:1;min-width:0">' +
+        '<span class="who"><span class="nm" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + m.from + ', ' + m.age +
+          (m.starred ? ' <span class="ic ic--bookmark" style="width:13px;height:13px;color:var(--warning)"></span>' : '') +
+          '</span><span class="tm">' + m.time + '</span></span>' +
+        '<span class="pv" style="align-items:flex-start;flex-direction:column;gap:2px">' +
+          '<span class="sn" style="width:100%">' + subject + (m.media ? ' <span class="ic ic--media" style="width:12px;height:12px;vertical-align:-2px;color:var(--faint)"></span>' : '') + '</span>' +
+          '<span class="sn" style="width:100%">' + m.preview + '</span>' +
+        '</span>' +
+      '</span>' + right + '</button>';
   }
-  var mailsHtml = F.MAILS.map(function (m, i) { return mailItem(m, i === 0); }).join('');
+  var inbox = F.MAILS.filter(function (m) { return !m.blocked; });
+  var mailsHtml = inbox.map(function (m, i) { return mailRow(m, i === 0); }).join('');
   document.getElementById('m-items').innerHTML = mailsHtml;
   document.getElementById('m-items-2').innerHTML = mailsHtml;
+  document.getElementById('m-outbox').innerHTML = F.MAILS.filter(function (m) { return m.lastAuthor === 'lady'; })
+    .map(function (m) { return mailRow(m, m.id === 'M-104'); }).join('');
+  document.getElementById('m-starred').innerHTML = F.MAILS.filter(function (m) { return m.starred; })
+    .map(function (m) { return mailRow(m, true); }).join('');
+
+  /* ---- reader: letter cards ---- */
+  function mediaBlock(md, mine) {
+    var tiles = '';
+    for (var i = 0; i < md.count; i++) {
+      var flag = '';
+      if (mine && md.seen) {
+        flag = '<span class="seen-flag' + (md.seen[i] ? '' : ' seen-flag--no') + '"><span class="ic ' + (md.seen[i] ? 'ic--eye' : 'ic--eye') + '"></span>' + (md.seen[i] ? 'Seen' : 'Unseen') + '</span>';
+      }
+      var play = md.kind === 'video' ? '<span class="ic ic--play" style="position:absolute;width:22px;height:22px;color:#fff;filter:drop-shadow(0 1px 3px rgba(0,0,0,.5))"></span>' : '';
+      tiles += '<span class="media-tile">' + play + flag + '</span>';
+    }
+    return '<div class="letter__media"><div class="letter__media-label"><span class="ic ic--media"></span>' + md.label + '</div><div class="media-grid">' + tiles + '</div></div>';
+  }
+  function letter(l) {
+    if (l.type === 'review') {
+      return '<article class="letter letter--in letter--review"><div class="letter__review-note"><span class="ic ic--warn"></span><span>This letter is under review and will be issued shortly.</span></div>' +
+        '<footer class="letter__foot"><span class="letter__meta">' + l.time + '</span></footer></article>';
+    }
+    var out = l.dir === 'out';
+    var media = (l.media || []).map(function (md) { return mediaBlock(md, out); }).join('');
+    var welcome = l.type === 'welcome' ? '<span class="badge badge--welcome"><span class="ic ic--mail"></span>Welcome Letter</span>' : '';
+    var mediaInside = l.media ? '<span class="letter__meta"><span class="ic ic--media"></span>Media inside</span>' : '';
+    var delivery = l.delivery ? '<span class="letter__meta"><span class="ic ic--double-check"></span>' + l.delivery + '</span>' : '';
+    return '<article class="letter ' + (out ? 'letter--out' : 'letter--in') + (l.type === 'welcome' ? ' letter--welcome' : '') + '">' +
+      '<header class="letter__head"><span class="letter__from"><span class="ic ic--' + (out ? 'send' : 'mail') + '"></span><b>' + l.from + '</b> → ' + l.to + '</span><time class="letter__date">' + l.time + '</time></header>' +
+      (l.subject ? '<h3 class="letter__subject">' + l.subject + '</h3>' : '') +
+      '<div class="letter__body">' + l.body.replace(/\n/g, '<br>') + '</div>' +
+      media +
+      '<footer class="letter__foot">' + welcome + mediaInside + '<span class="sp"></span>' + delivery + '</footer>' +
+      '</article>' +
+      (l.fb ? '<div data-fb-unit data-fb=\'' + JSON.stringify(l.fb) + '\'></div>' : '');
+  }
+  var thread = document.getElementById('m-thread');
+  thread.insertAdjacentHTML('afterbegin', F.MAIL_THREAD.map(letter).join(''));
+  document.addEventListener('DOMContentLoaded', function () { thread.scrollTop = thread.scrollHeight; });
+
+  /* ---- composer counters ---- */
   var input = document.getElementById('mail-input');
-  input.addEventListener('input', function () { document.getElementById('mail-cnt').textContent = input.value.length + ' / 300'; });
+  input.addEventListener('input', function () { document.getElementById('mail-cnt').textContent = input.value.length + ' / 2000'; });
+  var subj = document.getElementById('mail-subject');
+  subj.addEventListener('input', function () { document.getElementById('mail-subj-cnt').textContent = subj.value.length + ' / 120'; });
+
   function filt(inputId, sel) {
     var el = document.getElementById(inputId);
     if (el) el.addEventListener('input', function () {
@@ -153,6 +213,7 @@
   }
   filt('m-lady-q', '#m-lady-list .lady-item');
   filt('m-q', '#m-items .chat-item');
+
   var sk = '';
   for (var i = 0; i < 6; i++) sk += '<div class="sk-row"><span class="skeleton" style="width:32px;height:32px;border-radius:50%"></span><span style="flex:1"><span class="skeleton" style="display:block;width:50%;height:12px"></span><span class="skeleton" style="display:block;width:78%;height:10px;margin-top:6px"></span></span></div>';
   document.getElementById('m-sk-1').innerHTML = sk;
