@@ -105,8 +105,20 @@ Shipped on top of the v1 contract; nothing below weakens the "no verdict automat
 - Daily chart: pending + unknown render as a hatched cap segment (never colored negative); hover tooltip shows the full breakdown.
 - Line charts: Catmull-Rom smoothed paths, gradient area fill, end-value labels, dashed grid. Null runs still break the line — no interpolation.
 
+## v1.3 — shared chart engine (`assets/charts.js`)
+
+All visualizations moved onto `window.FlowCharts` — a zero-dependency SVG engine whose colors resolve through `fc-*` classes in `tokens-v2.css` (dark theme is automatic, no re-render):
+
+- **Real axes** — Y ticks computed by a nice-number pass; gridlines align to them. Line charts auto-fit the domain (e.g. 60–90%) with labeled ticks; bar charts always start at zero.
+- **Crosshair tooltips** — one HTML overlay per chart: bars show per-segment rows + rated/awaiting-lineage meta; lines show every series at the hovered date plus `n / pending / unknown` and cohort coverage. Tooltips flip left near the right edge.
+- **Clickable legends** — `aria-pressed` buttons dim a series/segment without rescaling the axis.
+- **Keyboard access** — every datum has a focusable hit target (`tabindex`, `aria-label`); focus raises the same tooltip.
+- **`hbars`** — shared horizontal-bar renderer used by Send→vote lag (median bucket highlighted + annotated) and Top negative reasons (value + share of all negatives).
+- Table-backed equivalents (`details.data-table`) are preserved for every chart.
+
 ## Verified
 
 - `node --check` on all touched JS; inline scripts extracted and checked.
 - Playwright smoke: 58 pageviews (4 screens × all states × light/dark) — zero console/page/network errors.
 - `?state=fb-no-perm` renders zero controls on every surface.
+- v1.3: 20 pageviews (10 states × light/dark) clean; tooltip/crosshair/legend/keyboard interactions verified; zero horizontal overflow at 390px.

@@ -73,16 +73,13 @@
           <div class="card card--pad" data-od-id="fb-chart-daily">
             <h3 style="font-size:14px;margin-bottom:4px">Feedback over time</h3>
             <p class="tiny muted" style="margin-bottom:10px">Votes per day · hatched cap is pending / unknown — reported, never scored as negative</p>
-            <div class="fchart" id="ch-daily"></div>
-            <div class="fchart-x" id="ch-daily-x"></div>
-            <div class="flegend mt-2"><span><i class="sw-p"></i>Positive</span><span><i class="sw-n"></i>Negative</span><span><i class="sw-x"></i>Pending / unknown</span></div>
+            <div id="ch-daily"></div>
             <details class="data-table"><summary>Data table</summary><div class="tbl-wrap mt-1"><table class="tbl" id="tb-daily"></table></div></details>
           </div>
           <div class="card card--pad" data-od-id="fb-chart-reply">
             <h3 style="font-size:14px;margin-bottom:4px">Reply rate</h3>
             <p class="tiny muted" style="margin-bottom:10px">Share of rated messages with a reply inside the window</p>
             <div id="ch-reply"></div>
-            <div class="flegend mt-2"><span><i class="sw-24"></i>Within 24h</span><span><i class="sw-72"></i>Within 72h</span></div>
             <details class="data-table"><summary>Data table</summary><div class="tbl-wrap mt-1"><table class="tbl" id="tb-reply"></table></div></details>
           </div>
         </div>
@@ -92,8 +89,7 @@
           <div class="card card--pad" data-od-id="fb-ttf">
             <h3 style="font-size:14px;margin-bottom:4px">Send → vote lag</h3>
             <p class="tiny muted" style="margin-bottom:8px">Fresher votes change reviewer behaviour; older ones feed analysis — both are useful</p>
-            <div id="fb-ttf-bars"></div>
-            <div class="ttf-median"><span class="ic ic--clock"></span>Median <b id="fb-ttf-med"></b> between send and vote</div>
+            <div id="fb-ttf-bars" style="--hbl:64px"></div>
           </div>
           <div class="card card--pad" data-od-id="fb-models">
             <h3 style="font-size:14px;margin-bottom:4px">Positive rate by model</h3>
@@ -106,7 +102,7 @@
           <div class="card card--pad" data-od-id="fb-reasons">
             <h3 style="font-size:14px;margin-bottom:4px">Top negative reasons</h3>
             <p class="tiny muted" style="margin-bottom:8px">Structured chips from the comment editor — <span class="mono">89 / 126</span> negative votes carry a reason</p>
-            <div id="fb-reason-bars"></div>
+            <div id="fb-reason-bars" style="--hbl:128px"></div>
           </div>
           <div class="card card--pad" data-od-id="fb-reviewers">
             <h3 style="font-size:14px;margin-bottom:4px">Reviewer coverage</h3>
@@ -125,10 +121,7 @@
           <h3 style="font-size:14px;margin-bottom:4px">Cohort retention</h3>
           <p class="tiny muted" style="margin-bottom:10px">D1 / D7 by send-date cohort — immature windows are marked pending or unknown, never 0%</p>
           <div class="grid cols-2" style="align-items:start">
-            <div>
-              <div id="ch-ret"></div>
-              <div class="flegend mt-2"><span><i class="sw-d1"></i>D1</span><span><i class="sw-d7"></i>D7</span></div>
-            </div>
+            <div id="ch-ret"></div>
             <div class="tbl-wrap"><table class="tbl" id="tb-cohorts"></table></div>
           </div>
         </div>
@@ -244,6 +237,7 @@
 <script src="assets/fixtures.js"></script>
 <script src="assets/components.js"></script>
 <script src="assets/stateful.js"></script>
+<script src="assets/charts.js"></script>
 <script src="assets/app.js"></script>
 <script>
 (function () {
@@ -277,27 +271,33 @@
   document.getElementById('k-ret').innerHTML = S.d1 + '% <span class="unit">/ ' + S.d7 + '%</span>';
   document.getElementById('k-retn').textContent = '6 complete · 2 maturing cohorts';
 
-  /* ---------- feedback-over-time stacked bars ---------- */
-  var maxD = Math.max.apply(null, F.FB_DAILY.map(function (d) { return d.pos + d.neg + d.pending + d.unknown; }));
-  var chDaily = document.getElementById('ch-daily');
-  chDaily.style.setProperty('--max', maxD);
-  chDaily.innerHTML = F.FB_DAILY.map(function (d) {
-    var x = d.pending + d.unknown;
-    return '<div class="fcol" style="--p:' + d.pos + ';--n:' + d.neg + ';--x:' + x + '">' +
-      '<span class="fcol-tip"><b>+' + d.pos + '</b> positive · <span class="n">−' + d.neg + ' neg</span><br><span class="n">' + d.pending + ' pending · ' + d.unknown + ' unknown</span></span>' +
-      (x ? '<i class="seg-x" title="Pending + unknown — not scored"></i>' : '') +
-      (d.neg ? '<i class="seg-n"></i>' : '') + (d.pos ? '<i class="seg-p"></i>' : '') + '</div>';
-  }).join('');
-  document.getElementById('ch-daily-x').innerHTML = F.FB_DAILY.map(function (d) { return '<span>' + d.d + '</span>'; }).join('');
+  /* ---------- charts (shared engine: assets/charts.js) ---------- */
+  var CH = window.FlowCharts;
+
+  CH.bars(document.getElementById('ch-daily'), {
+    rows: F.FB_DAILY.map(function (d) { return { d: d.d, p: d.pos, n: d.neg, x: d.pending + d.unknown }; }),
+    segments: [
+      { k: 'p', label: 'Positive', cls: 'p' },
+      { k: 'n', label: 'Negative', cls: 'n' },
+      { k: 'x', label: 'Pending / unknown', cls: 'x' }
+    ],
+    aria: 'Feedback votes per day',
+    tip: function (r) {
+      return '<div class="fc-tip-m">' + (r.p + r.n) + ' rated · ' + r.x + ' awaiting lineage</div>';
+    }
+  });
   document.getElementById('tb-daily').innerHTML = '<thead><tr><th>Date</th><th class="num">Positive</th><th class="num">Negative</th><th class="num">Pending</th><th class="num">Unknown</th></tr></thead><tbody>' +
     F.FB_DAILY.map(function (d) { return '<tr><td>' + d.d + '</td><td class="num">' + d.pos + '</td><td class="num">' + d.neg + '</td><td class="num">' + d.pending + '</td><td class="num">' + d.unknown + '</td></tr>'; }).join('') + '</tbody>';
 
-  /* ---------- send → vote lag + per-model quality ---------- */
-  var maxT = Math.max.apply(null, F.FB_TTF.map(function (t) { return t.n; }));
-  document.getElementById('fb-ttf-bars').innerHTML = F.FB_TTF.map(function (t) {
-    return '<div class="ttf-bar"><span class="l">' + t.l + '</span><span class="t"><i style="width:' + (t.n / maxT * 100).toFixed(1) + '%" title="' + t.n + ' votes"></i></span><span class="v">' + t.n + '</span></div>';
-  }).join('');
-  document.getElementById('fb-ttf-med').textContent = S.medTtf;
+  /* send → vote lag — histogram; median bucket highlighted */
+  CH.hbars(document.getElementById('fb-ttf-bars'), {
+    rows: F.FB_TTF,
+    total: S.rated,
+    label: function (t) { return t.l; },
+    value: function (t) { return t.n; },
+    highlight: function (t) { return t.l === '1–4h'; },
+    extra: function (t) { return t.l === '1–4h' ? 'median ' + S.medTtf + ' lands in this bucket' : ''; }
+  });
 
   var fleetP = S.aiPos / S.aiN * 100;
   document.getElementById('tb-models').innerHTML = '<thead><tr><th>Model</th><th class="num">Rated</th><th class="num">Positive</th><th class="num" style="width:110px">vs fleet</th></tr></thead><tbody>' +
@@ -308,75 +308,16 @@
     }).join('') +
     '<tr><td class="muted">Fleet (verified AI)</td><td class="num muted">' + S.aiN + '</td><td class="num muted">' + Math.round(fleetP) + '%</td><td class="num muted">—</td></tr></tbody>';
 
-  /* ---------- line chart helper (no interpolation over null) ---------- */
-  var chartUid = 0;
-  function smoothPath(pts) {
-    /* Catmull-Rom → cubic bezier; pts: [[x,y,…],…] inside one contiguous run */
-    var f = function (p) { return p[0].toFixed(1) + ',' + p[1].toFixed(1); };
-    if (pts.length < 3) return 'M' + pts.map(f).join(' L');
-    var d = 'M' + f(pts[0]);
-    for (var i = 0; i < pts.length - 1; i++) {
-      var p0 = pts[i - 1] || pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] || p2;
-      var c1x = p1[0] + (p2[0] - p0[0]) / 6, c1y = p1[1] + (p2[1] - p0[1]) / 6;
-      var c2x = p2[0] - (p3[0] - p1[0]) / 6, c2y = p2[1] - (p3[1] - p1[1]) / 6;
-      d += 'C' + c1x.toFixed(1) + ',' + c1y.toFixed(1) + ' ' + c2x.toFixed(1) + ',' + c2y.toFixed(1) + ' ' + f(p2);
-    }
-    return d;
-  }
-  function lineChart(el, rows, series, opts) {
-    opts = opts || {};
-    var W = 640, H = 178, pl = 34, pr = 40, pt = 12, pb = 24, min = 30, max = 100;
-    var n = rows.length;
-    var x = function (i) { return pl + i * (W - pl - pr) / (n - 1); };
-    var y = function (v) { return pt + (max - v) / (max - min) * (H - pt - pb); };
-    var uid = 'lg' + (++chartUid);
-    var s = '<defs>' +
-      '<linearGradient id="' + uid + 'a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--accent)" stop-opacity=".14"/><stop offset="1" stop-color="var(--accent)" stop-opacity="0"/></linearGradient>' +
-      '<linearGradient id="' + uid + 'b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--accent-2)" stop-opacity=".10"/><stop offset="1" stop-color="var(--accent-2)" stop-opacity="0"/></linearGradient></defs>';
-    [40, 60, 80, 100].forEach(function (g) {
-      s += '<line class="gl" x1="' + pl + '" y1="' + y(g) + '" x2="' + (W - pr) + '" y2="' + y(g) + '"/><text class="ax-t" x="4" y="' + (y(g) + 3) + '">' + g + '%</text>';
-    });
-    if (opts.bandFrom != null) {
-      var bx = x(opts.bandFrom) - (x(1) - x(0)) / 2;
-      s += '<rect class="band" x="' + bx + '" y="' + pt + '" width="' + (W - pr - bx) + '" height="' + (H - pt - pb) + '"/>' +
-           '<text class="band-t" x="' + (bx + 8) + '" y="' + (pt + 12) + '">maturing</text>';
-    }
-    series.forEach(function (sr, si) {
-      var cls = si === 0 ? 'a' : 'b';
-      var run = [], runs = [];
-      rows.forEach(function (r, i) {
-        var v = r[sr.k];
-        if (v == null) { if (run.length) runs.push(run); run = []; return; }
-        run.push([x(i), y(v), i]);
-      });
-      if (run.length) runs.push(run);
-      runs.forEach(function (rpts) {
-        var line = smoothPath(rpts);
-        if (rpts.length > 1) {
-          s += '<path d="' + line + ' L' + rpts[rpts.length - 1][0].toFixed(1) + ',' + (H - pb) + ' L' + rpts[0][0].toFixed(1) + ',' + (H - pb) + ' Z" fill="url(#' + uid + cls + ')" stroke="none"/>';
-        }
-        s += '<path class="ln-' + cls + '" d="' + line + '"/>';
-      });
-      /* last real point carries an end label */
-      for (var li = rows.length - 1; li >= 0; li--) {
-        if (rows[li][sr.k] != null) {
-          s += '<text class="ax-v" x="' + (W - pr + 8) + '" y="' + (y(rows[li][sr.k]) + 3) + '">' + rows[li][sr.k] + '%</text>';
-          break;
-        }
-      }
-      rows.forEach(function (r, i) {
-        var v = r[sr.k];
-        if (v == null) return;
-        s += '<circle class="pt-' + cls + '" cx="' + x(i).toFixed(1) + '" cy="' + y(v).toFixed(1) + '" r="4"><title>' + r.d + ' — ' + sr.label + ' ' + v + '% (n=' + r.n + ', pending ' + r.pending + ', unknown ' + r.unknown + ')</title></circle>';
-      });
-    });
-    rows.forEach(function (r, i) { s += '<text class="ax-t" x="' + x(i) + '" y="' + (H - 8) + '" text-anchor="middle">' + r.d + '</text>'; });
-    el.innerHTML = '<svg class="lchart" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + (opts.aria || 'chart') + '">' + s + '</svg>';
-  }
-
-  lineChart(document.getElementById('ch-reply'), F.FB_REPLY, [
-    { k: 'h24', label: '≤24h' }, { k: 'h72', label: '≤72h' }
-  ], { aria: 'Reply rate within 24 and 72 hours' });
+  CH.lines(document.getElementById('ch-reply'), {
+    rows: F.FB_REPLY,
+    series: [
+      { k: 'h24', label: 'Within 24h', cls: 'a' },
+      { k: 'h72', label: 'Within 72h', cls: 'b' }
+    ],
+    unit: '%', clampTop: 100,
+    aria: 'Reply rate within 24 and 72 hours',
+    meta: function (r) { return 'n=' + r.n + ' · ' + r.pending + ' pending · ' + r.unknown + ' unknown'; }
+  });
 
   document.getElementById('tb-reply').innerHTML = '<thead><tr><th>Date</th><th class="num">≤24h</th><th class="num">≤72h</th><th class="num">N</th><th class="num">Pending</th><th class="num">Unknown</th></tr></thead><tbody>' +
     F.FB_REPLY.map(function (r) { return '<tr><td>' + r.d + '</td><td class="num">' + r.h24 + '%</td><td class="num">' + (r.h72 == null ? 'pending' : r.h72 + '%') + '</td><td class="num">' + r.n + '</td><td class="num">' + r.pending + '</td><td class="num">' + r.unknown + '</td></tr>'; }).join('') + '</tbody>';
@@ -384,9 +325,17 @@
   /* retention chart — band over pending/unknown cohorts */
   var bandFrom = null;
   F.FB_COHORTS.forEach(function (c, i) { if (c.cov !== 'complete' && bandFrom == null) bandFrom = i; });
-  lineChart(document.getElementById('ch-ret'), F.FB_COHORTS, [
-    { k: 'd1', label: 'D1' }, { k: 'd7', label: 'D7' }
-  ], { aria: 'D1 and D7 retention by cohort', bandFrom: bandFrom });
+  CH.lines(document.getElementById('ch-ret'), {
+    rows: F.FB_COHORTS,
+    series: [
+      { k: 'd1', label: 'D1', cls: 'a' },
+      { k: 'd7', label: 'D7', cls: 'b' }
+    ],
+    unit: '%', clampTop: 100,
+    bandFrom: bandFrom, bandLabel: 'maturing',
+    aria: 'D1 and D7 retention by cohort',
+    meta: function (r) { return 'cohort n=' + r.size + ' · coverage ' + r.cov; }
+  });
 
   var COV = {
     complete: '<span class="cov cov--complete"><span class="ic ic--check"></span>Complete</span>',
@@ -400,10 +349,13 @@
     }).join('') + '</tbody>';
 
   /* ---------- v1.1: reason bars / reviewers / slice matrix ---------- */
-  var rMax = Math.max.apply(null, F.FB_REASONS.map(function (r) { return r.n; }));
-  document.getElementById('fb-reason-bars').innerHTML = F.FB_REASONS.map(function (r) {
-    return '<div class="rbar"><span class="rbar__l" title="' + r.l + '">' + r.l + '</span><span class="rbar__t"><i style="width:' + Math.round(r.n / rMax * 100) + '%"></i></span><span class="rbar__v">' + r.n + '</span></div>';
-  }).join('');
+  CH.hbars(document.getElementById('fb-reason-bars'), {
+    rows: F.FB_REASONS,
+    total: S.negTotal,
+    cls: 'fc-hbr-f--danger',
+    label: function (r) { return r.l; },
+    value: function (r) { return r.n; }
+  });
 
   document.getElementById('tb-reviewers').innerHTML = '<thead><tr><th>Reviewer</th><th class="num">Rated</th><th class="num">% pos</th><th class="num">Agreement</th></tr></thead><tbody>' +
     F.FB_REVIEWERS.map(function (r) {

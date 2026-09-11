@@ -13,6 +13,7 @@ Status: pitch/research version. Baseline for before/after diffs: `../design-copy
 | `assets/components.js` | shell | `FlowUI.mount`, rail/topbar, `platformTag`, `avatar`, `dot`, `stateBlock` |
 | `assets/fixtures.js` | demo data | All screens render from `window.Fixtures` |
 | `assets/feedback.js` | FLOW-8555 | `FlowFB` feedback units + `fb-*` state mapping |
+| `assets/charts.js` | charts | `FlowCharts` — `bars` / `lines` / `hbars`: computed axes, crosshair tooltips, toggle legends, keyboard hits; all colors via `fc-*` classes |
 | `assets/manifest.js` | source of truth | Zones, screens, state lists, v1-route coverage |
 | `manifest-v2.json` | generated | Same data as JSON — regenerate after manifest edits |
 | `feedback-spec.md` | feature spec | FLOW-8555 handoff (collection UI + management + analytics) |
