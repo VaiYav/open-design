@@ -1,0 +1,6 @@
+.od-skills/
+.open-design/
+.vercel/
+.DS_Store
+*.artifact.json
+renders/
